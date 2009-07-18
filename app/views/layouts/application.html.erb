@@ -12,11 +12,10 @@
 </head>
 <body>
   <div id="messages">
-    <p style="color: green"><%= flash[:notice] %></p>
   </div>
   
   <div id="navigation">
-    <%= yield :navigation %>
+    <%= render :partial => 'layouts/navigation' %>
   </div>
   <div id="container">
     <div id="header" class="vevent">

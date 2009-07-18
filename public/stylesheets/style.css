@@ -55,12 +55,18 @@ body {
     border:3px solid #B0BFC7;
     border-top-width:0px;
     margin-bottom:1em;
-    padding:0.5em 2em;
+    padding:0.5em 1em;
   }
 
     #navigation ul li {
+      padding:0 1.0em;
+      border-left:2px solid #B0BFC7;
       list-style-type:none;
       float:left;
+    }
+    
+    #navigation ul li:first-child {
+      border-left:none;
     }
 
   #navigation a, #navigation a:visited {
