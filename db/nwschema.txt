@@ -2,25 +2,25 @@
 
 
                              +---------------+            +------+
-+--------------+ 1       1.. |  people       |            | room |
-| family       |------------>+---------------+            +------+
-+--------------+             | last name     |               
-| principal    |             | first name    |              
-| photo        |             | address1      |          
-| family name  |             | address2      |          
-| note         |             | city          |          
-| haswarmfuzzy |             | state         |          
-| photolist    |             | zip           |          
-+--------------+             | home church   |
-                             | pastor        |
-                             | email         |
-                             | gender        |
-                             | birth date    |
-                             | occupation    |
-                             | profile       |
-                             | grade         |
-                             | school        |
-                             | phone         |
++--------------+ 1      1..* |  participant  |            | room |    
+| family       |------------>+---------------+            +------+    
++--------------+             | last name     |                         
+| principal    |             | first name    |                         
+| photo        |             | address1      |        +----------------+
+| family name  |             | address2      |        | user           |
+| note         |             | city          |        +----------------+
+| haswarmfuzzy |             | state         |        | login          |
+| photolist    |             | zip           |        | email          |
++--------------+             | home church   |        | crypted_pwd    |
+                             | pastor        |        | salt           |
+                             | email         |        | created_at     |
++--------------+             | gender        |        | updated_at     |
+| registration |             | birth date    | 1    1 | position       |
++--------------+             | occupation    |<------>| participant_id |
+| year         | 1..*      1 | profile       |        +----------------+
+| participant  |<------------| grade         |        
+| room         |             | school        |
++--------------+             | phone         |
                              | employer      |
                              | room          |
                              +---------------+
