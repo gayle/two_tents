@@ -31,4 +31,7 @@
  <%= form.text_field :phone -%><br />
  <%= form.label "Employer" -%>
  <%= form.text_field :employer -%><br />
+ <%= form.collection_select :family_id, Family.all, :id, :familyname, {:prompt => true} -%>
 <br />
+
+

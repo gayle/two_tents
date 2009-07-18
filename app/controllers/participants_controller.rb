@@ -42,6 +42,8 @@ class ParticipantsController < ApplicationController
   # POST /participants
   # POST /participants.xml
   def create
+    @family = Family.find(params[:participant][:family]) rescue nil
+    params[:participant][:family] = @family
     @participants = Participant.new(params[:participant])
 
     respond_to do |format|
