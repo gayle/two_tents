@@ -11,3 +11,13 @@ quentin:
   state:                     ok
   zip:                       55555
   user_id:                   1
+
+non_user:
+  id:                        2
+  lastname:                  User
+  firstname:                 Non
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
