@@ -3,10 +3,10 @@
 <% form_for(@family) do |f| %>
   <%= f.error_messages %>
 
+  <%= render :partial => f -%>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @family %> |
 <%= link_to 'Back', families_path %>

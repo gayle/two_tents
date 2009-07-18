@@ -1,20 +1,9 @@
 <h1>New families</h1>
 
-<% form_for(@family) do |f| %>
-  <%= f.error_messages %><br />
-  <%= f.label "Principal" -%>
-  <%= f.text_field :principal -%><br />
-  <%= f.label "Family Name" -%>
-  <%= f.text_field :familyname -%><br />
-  <%= f.label "Has Warm Fuzzy" -%>
-  <%= f.check_box :haswarmfuzzy -%><br />
-  <%= f.label "Photo List" -%>
-  <%= f.check_box :photolist -%><br />
-  <%= f.label "Notes" -%>
-  <%= f.text_area :note, :cols => 30, :rows => 5 -%><br />
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
+<% form_for (Family.new) do |f| %>
+  <%= render :partial => f -%>
+  <p/>
+  <%= f.submit 'Create' %>
+<% end -%>
+<p/>
 <%= link_to 'Back', families_path %>
