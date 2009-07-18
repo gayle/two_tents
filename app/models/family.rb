@@ -1,3 +1,8 @@
 class Family < ActiveRecord::Base
-  has_many :participants #TODO would like to maybe reference this as "members" instead of "participants" here? Or is that more confusing? 
+  has_many :participants 
+
+  # Alias method 'members' to 'participants'.  Use either one.
+  def members
+    participants
+  end
 end
