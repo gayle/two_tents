@@ -13,31 +13,32 @@ class ParticipantsControllerTest < ActionController::TestCase
   end
 
   test "should create participants" do
-    assert_difference('Participants.count') do
+    assert_difference('Participant.count') do
       post :create, :participants => { }
     end
 
-    assert_redirected_to participants_path(assigns(:participants))
+    assert_redirected_to participant_path(assigns(:participants))
   end
 
   test "should show participants" do
-    get :show, :id => participants(:one).to_param
+    get :show, :id => participants(:quentin).to_param
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, :id => participants(:one).to_param
+    get :edit, :id => participants(:quentin).to_param
     assert_response :success
   end
 
-  test "should update participants" do
-    put :update, :id => participants(:one).to_param, :participants => { }
-    assert_redirected_to participants_path(assigns(:participants))
+  test "should update participant" do
+    put :update, :id => participants(:quentin).to_param, :participants => { }
+    assert assigns(:participants)
+    assert_redirected_to participant_path(assigns(:participants))
   end
 
   test "should destroy participants" do
-    assert_difference('Participants.count', -1) do
-      delete :destroy, :id => participants(:one).to_param
+    assert_difference('Participant.count', -1) do
+      delete :destroy, :id => participants(:quentin).to_param
     end
 
     assert_redirected_to participants_path

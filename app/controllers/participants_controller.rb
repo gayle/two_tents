@@ -34,7 +34,7 @@ class ParticipantsController < ApplicationController
 
   # GET /participants/1/edit
   def edit
-    @participants = Participants.find(params[:id])
+    @participant = Participant.find(params[:id])
   end
 
   # POST /participants

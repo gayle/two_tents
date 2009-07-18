@@ -13,7 +13,7 @@ class FamiliesControllerTest < ActionController::TestCase
   end
 
   test "should create families" do
-    assert_difference('Families.count') do
+    assert_difference('Family.count') do
       post :create, :families => { }
     end
 
@@ -21,23 +21,23 @@ class FamiliesControllerTest < ActionController::TestCase
   end
 
   test "should show families" do
-    get :show, :id => families(:one).to_param
+    get :show, :id => families(:smith).to_param
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, :id => families(:one).to_param
+    get :edit, :id => families(:smith).to_param
     assert_response :success
   end
 
   test "should update families" do
-    put :update, :id => families(:one).to_param, :families => { }
+    put :update, :id => families(:smith).to_param, :families => { }
     assert_redirected_to families_path(assigns(:families))
   end
 
   test "should destroy families" do
-    assert_difference('Families.count', -1) do
-      delete :destroy, :id => families(:one).to_param
+    assert_difference('Family.count', -1) do
+      delete :destroy, :id => families(:smith).to_param
     end
 
     assert_redirected_to families_path

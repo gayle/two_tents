@@ -1,6 +1,6 @@
 <h1>Editing participants</h1>
 
-<% form_for(@participants) do |f| %>
+<% form_for(@participant) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -8,5 +8,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @participants %> |
+<%= link_to 'Show', @participant %> |
 <%= link_to 'Back', participants_path %>

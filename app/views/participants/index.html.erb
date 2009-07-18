@@ -4,15 +4,15 @@
   <tr>
   </tr>
 
-<% @participants.each do |participants| %>
+<% @participants.each do |participant| %>
   <tr>
-    <td><%= link_to 'Show', participants %></td>
-    <td><%= link_to 'Edit', edit_participants_path(participants) %></td>
-    <td><%= link_to 'Destroy', participants, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', participant %></td>
+    <td><%= link_to 'Edit', edit_participant_path(participant) %></td>
+    <td><%= link_to 'Destroy', participant, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New participants', new_participants_path %>
+<%= link_to 'Add new participant', new_participant_path %>

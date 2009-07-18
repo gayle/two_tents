@@ -4,15 +4,15 @@
   <tr>
   </tr>
 
-<% @families.each do |families| %>
+<% @families.each do |family| %>
   <tr>
-    <td><%= link_to 'Show', families %></td>
-    <td><%= link_to 'Edit', edit_families_path(families) %></td>
-    <td><%= link_to 'Destroy', families, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', family %></td>
+    <td><%= link_to 'Edit', edit_family_path(family) %></td>
+    <td><%= link_to 'Destroy', family, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New families', new_families_path %>
+<%= link_to 'New family', new_family_path %>
