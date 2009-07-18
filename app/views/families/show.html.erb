@@ -1,3 +1,41 @@
+<table>
+  <tr>
+    <td>Principal</td>
+    <td><%= @family.principal -%></td>
+  </tr>
+  <tr>
+  <td>Family Name</td>
+  <td><%= @family.familyname -%></td>
+  </tr>
+  <tr>
+  <td>Has Warm Fuzzy</td>
+  <td><%= @family.haswarmfuzzy -%></td>
+  </tr>
+  <tr>
+  <td>Photo List</td>
+  <td><%= @familyphotolist -%></td>
+  </tr>
+</table>
+<p>
+<%= @family.note -%>
+<p>
+<table>
+  <tr>
+    <th>First</th>
+    <th>Last</th>
+    <th>City</th>
+    <th>School</th>
+    <th>Grade</th>
+  <tr/>
+  <% @family.participants.each do |p| -%>
+    <tr>
+      <td><%= p.firstname -%></td>
+      <td><%= p.lastname -%></td>
+      <td><%= p.city -%></td>
+      <td><%= p.school -%></td>
+      <td><%= p.grade -%></td>
+    </tr>
+  <% end -%>
 
 <%= link_to 'Edit', edit_family_path(@family) %> |
 <%= link_to 'Back', families_path %>
