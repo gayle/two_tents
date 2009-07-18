@@ -1,4 +1,6 @@
 class FamiliesController < ApplicationController
+  before_filter :login_required
+
   # GET /families
   # GET /families.xml
   def index
