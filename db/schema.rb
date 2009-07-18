@@ -9,35 +9,45 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090718035914) do
+ActiveRecord::Schema.define(:version => 20090718131239) do
 
   create_table "families", :force => true do |t|
-    t.string "principal"
-    t.string "photo"
-    t.string "familyname"
-    t.string "note"
+    t.string  "principal"
+    t.string  "photo"
+    t.string  "familyname"
+    t.string  "note"
+    t.boolean "haswarmfuzzy"
+    t.boolean "photolist"
+    t.integer "participant_id"
   end
 
   create_table "participants", :force => true do |t|
-    t.string "lastname"
-    t.string "firstname"
-    t.string "address1"
-    t.string "address2"
-    t.string "city"
-    t.string "state"
-    t.string "zip"
-    t.string "homechurch"
-    t.string "pastor"
-    t.string "email"
-    t.string "gender"
-    t.string "birthdate"
-    t.string "occupation"
-    t.string "profile"
-    t.string "grade"
-    t.string "school"
-    t.string "phone"
-    t.string "employer"
-    t.string "room"
+    t.string  "lastname"
+    t.string  "firstname"
+    t.string  "address1"
+    t.string  "address2"
+    t.string  "city"
+    t.string  "state"
+    t.string  "zip"
+    t.string  "homechurch"
+    t.string  "pastor"
+    t.string  "email"
+    t.string  "gender"
+    t.string  "birthdate"
+    t.string  "occupation"
+    t.string  "profile"
+    t.string  "grade"
+    t.string  "school"
+    t.string  "phone"
+    t.string  "employer"
+    t.integer "family_id"
+    t.integer "user_id"
+  end
+
+  create_table "registrations", :force => true do |t|
+    t.integer "year"
+    t.integer "participant_id"
+    t.string  "room"
   end
 
   create_table "roles", :force => true do |t|
@@ -65,6 +75,11 @@ ActiveRecord::Schema.define(:version => 20090718035914) do
     t.datetime "updated_at"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
+    t.string   "workphone"
+    t.string   "mobilephone"
+    t.string   "photourl"
+    t.string   "position"
+    t.integer  "participant_id"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
