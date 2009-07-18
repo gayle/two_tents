@@ -8,7 +8,14 @@ class UsersController < ApplicationController
  
   def create
     logout_keeping_session!
-    @participant = Participant.new(params[:participant])
+    if params[:user][:participant]
+      @participant = Participant.find(params[:user][:participant])
+      # Once we have participant form attributes partial rendered on the same page, update attributes
+      # @participant.update_attributes(params[])
+    else
+      # Once we have participant form attributes partial rendered on the same page, use form params to create new obj
+      @participant = Participant.new()
+    end 
     success = @participant && @participant.save
     if success && @participant.errors.empty?
       @user = User.new(params[:user])
@@ -19,14 +26,15 @@ class UsersController < ApplicationController
         # protection if visitor resubmits an earlier form using back
         # button. Uncomment if you understand the tradeoffs.
         # reset session
-        self.current_user = @user # !! now logged in
-        redirect_back_or_default('/')
+        redirect_to 
         flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
       else
+        @participants = Participant.find(:all)
         flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
         render :action => 'new'
       end
     else
+      @participants = Participant.find(:all)
       flash[:error] = "Problem with participant creation, please try again"
       render :action => 'new'
     end
