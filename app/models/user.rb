@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # You may wish to modify it to suit your need
   has_and_belongs_to_many :roles
 
-  belongs_to :participant
+  has_one :participant
   validates_presence_of :participant
 
   # has_role? simply needs to return true or false whether a user has a role or not.  
