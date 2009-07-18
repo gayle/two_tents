@@ -1,0 +1,40 @@
+body {
+  background:#86C9EF;
+}
+
+#container {
+  width:760px;
+  margin:0 100px 0 auto;
+  background:#FFFFFF;
+  clear:both;
+  -moz-border-radius:15px;
+  -webkit-border-radius:15px;
+}
+
+#navigation {
+  width:760px;
+  margin:0 100px 0 auto;
+}
+
+#navigation ul {
+  float:right;
+  background:#E6E6DC;
+  -moz-border-radius-bottomright:15px;
+  -moz-border-radius-bottomleft:15px;
+  -webkit-border-bottom-right-radius:15px;
+  -webkit-border-bottom-left-radius:15px;
+  margin-bottom:10em;
+}
+
+#navigation ul li {
+  list-style-type:none;
+  float:right;
+}
+
+#header, #content, #footer, #navigation ul {
+  padding:1em;
+}
+
+h1 {
+  font-size:1.5em;
+}
