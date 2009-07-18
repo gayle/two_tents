@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # render new.rhtml
   def new
     @user = User.new
-    @participants = Participant.find(:all)
+    @participants = Participant.find_non_staff_participants
   end
  
   def create
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
         # protection if visitor resubmits an earlier form using back
         # button. Uncomment if you understand the tradeoffs.
         # reset session
-        redirect_to 
+        redirect_to :action => 'index'
         flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
       else
         @participants = Participant.find(:all)
@@ -34,9 +34,21 @@ class UsersController < ApplicationController
         render :action => 'new'
       end
     else
-      @participants = Participant.find(:all)
+      @participants = Participant.find_non_staff_participants
       flash[:error] = "Problem with participant creation, please try again"
       render :action => 'new'
     end
   end
+
+  # GET /users
+  # GET /users.xml
+  def index
+    @users = User.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @participants }
+    end
+  end
+
 end
