@@ -1,7 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+
+quentin:
+  id:                        1
+  lastname:                  User
+  firstname:                 Quentin
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
+
