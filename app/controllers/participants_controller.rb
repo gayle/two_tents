@@ -2,7 +2,7 @@ class ParticipantsController < ApplicationController
   # GET /participants
   # GET /participants.xml
   def index
-    @participants = Participants.all
+    @participants = Participant.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/1
   # GET /participants/1.xml
   def show
-    @participants = Participants.find(params[:id])
+    @participants = Participant.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +24,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    @participants = Participants.new
+    @participants = Participant.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,7 +40,7 @@ class ParticipantsController < ApplicationController
   # POST /participants
   # POST /participants.xml
   def create
-    @participants = Participants.new(params[:participants])
+    @participants = Participant.new(params[:participants])
 
     respond_to do |format|
       if @participants.save
@@ -57,7 +57,7 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1
   # PUT /participants/1.xml
   def update
-    @participants = Participants.find(params[:id])
+    @participants = Participant.find(params[:id])
 
     respond_to do |format|
       if @participants.update_attributes(params[:participants])
@@ -74,7 +74,7 @@ class ParticipantsController < ApplicationController
   # DELETE /participants/1
   # DELETE /participants/1.xml
   def destroy
-    @participants = Participants.find(params[:id])
+    @participants = Participant.find(params[:id])
     @participants.destroy
 
     respond_to do |format|
