@@ -1,0 +1,18 @@
+<h1>Listing registrations</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% @registrations.each do |registration| %>
+  <tr>
+    <td><%= link_to 'Show', registration %></td>
+    <td><%= link_to 'Edit', edit_registration_path(registration) %></td>
+    <td><%= link_to 'Destroy', registration, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New registration', new_registration_path %>
