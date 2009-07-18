@@ -5,6 +5,7 @@ class CreateFamily < ActiveRecord::Migration
       f.column :photo, :string
       f.column :familyname, :string
       f.column :note, :string
+    end
   end
 
   def self.down
