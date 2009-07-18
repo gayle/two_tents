@@ -1,8 +1,7 @@
 <h1>Editing participants</h1>
 
 <% form_for(@participant) do |f| %>
-  <%= f.error_messages %>
-
+  <%= render :partial => f%>
   <p>
     <%= f.submit 'Update' %>
   </p>

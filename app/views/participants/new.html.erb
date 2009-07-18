@@ -1,8 +1,7 @@
 <h1>New participants</h1>
 
 <% form_for(@participants) do |f| %>
-  <%= f.error_messages %>
-
+  <%= render :partial => f%>
   <p>
     <%= f.submit 'Create' %>
   </p>
