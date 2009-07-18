@@ -1,9 +1,9 @@
 class CreateRegistrations < ActiveRecord::Migration
   def self.up
     create_table :registrations do |t|
-      add_column :registrations, :year, :integer
-      add_column :registrations, :participant_id, :integer
-      add_column :registrations, :room, :string
+      t.column :year, :integer
+      t.column :participant_id, :integer
+      t.column :room, :string
     end
     remove_column :participants, :room
   end
