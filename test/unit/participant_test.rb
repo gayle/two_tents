@@ -20,6 +20,18 @@ fixtures :participants
       assert_not_equal staff, non_staff[0]
     end
 
+    def test_fullname_should_handle_nil_values
+      p = participants(:quentin)
+
+      p.firstname=nil
+      assert p.fullname, "resulting fullname was nil"
+      assert_equal false, p.fullname.include?("nil"), "the string fullname shouldn't contain the word nil if the value is nil"
+
+      p.lastname = nil
+      assert p.fullname, "resulting fullname was nil"
+      assert_equal false, p.fullname.include?("nil"), "the string fullname shouldn't contain the word nil if the value is nil"
+    end
+
   protected
     def create_user
       record = User.new({ :login => 'quire', :email => 'quire@example.com',

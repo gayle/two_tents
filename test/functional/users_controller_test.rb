@@ -49,7 +49,14 @@ class UsersControllerTest < ActionController::TestCase
       assert_response :success
     end
   end
-  
+
+
+  def test_should_allow_edit
+    #user = User.find(:first)
+    #old_name = user.name
+    #user.name = "newname"
+    get :edit, :user_id => User.find(:first).id    
+  end
 
   
 
