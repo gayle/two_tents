@@ -1,4 +1,6 @@
 class FamiliesController < ApplicationController
+  before_filter :login_required
+
   # GET /families
   # GET /families.xml
   def index
@@ -40,7 +42,7 @@ class FamiliesController < ApplicationController
   # POST /families
   # POST /families.xml
   def create
-    @family = Family.new(params[:families])
+    @family = Family.new(params[:family])
 
     respond_to do |format|
       if @family.save
@@ -60,7 +62,7 @@ class FamiliesController < ApplicationController
     @family = Family.find(params[:id])
 
     respond_to do |format|
-      if @family.update_attributes(params[:families])
+      if @family.update_attributes(params[:family])
         flash[:notice] = 'Families was successfully updated.'
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }

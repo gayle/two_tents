@@ -1,0 +1,28 @@
+
+
+
+                             +---------------+            +------+
++--------------+ 1       1.. |  people       |            | room |
+| family       |------------>+---------------+            +------+
++--------------+             | last name     |               
+| principal    |             | first name    |              
+| photo        |             | address1      |          
+| family name  |             | address2      |          
+| note         |             | city          |          
+| haswarmfuzzy |             | state         |          
+| photolist    |             | zip           |          
++--------------+             | home church   |
+                             | pastor        |
+                             | email         |
+                             | gender        |
+                             | birth date    |
+                             | occupation    |
+                             | profile       |
+                             | grade         |
+                             | school        |
+                             | phone         |
+                             | employer      |
+                             | room          |
+                             +---------------+
+
+

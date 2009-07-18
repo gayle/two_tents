@@ -1,4 +1,6 @@
 class ParticipantsController < ApplicationController
+  before_filter :login_required
+  
   # GET /participants
   # GET /participants.xml
   def index
@@ -40,7 +42,7 @@ class ParticipantsController < ApplicationController
   # POST /participants
   # POST /participants.xml
   def create
-    @participants = Participant.new(params[:participants])
+    @participants = Participant.new(params[:participant])
 
     respond_to do |format|
       if @participants.save
@@ -60,7 +62,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.find(params[:id])
 
     respond_to do |format|
-      if @participants.update_attributes(params[:participants])
+      if @participants.update_attributes(params[:participant])
         flash[:notice] = 'Participants was successfully updated.'
         format.html { redirect_to(@participants) }
         format.xml  { head :ok }
