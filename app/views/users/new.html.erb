@@ -1,4 +1,18 @@
-<h1>Sign up as a new user</h1>
+<h1>Enter a new staff person</h1>
+
+Select form drop down list
+<% # Need something like this
+   # select("participant", "firstname", @participants) %>
+<select name="participants">
+  <option>Joe Jones</option>
+  <option>Mary Smith</option>
+  <option>Ingrid Wilson</option>
+</select>
+
+Or create new Participant. (Include same form fields as when entering new participant here)
+
+<hr />
+Then enter staff-specific information: 
 <% @user.password = @user.password_confirmation = nil %>
 
 <%= error_messages_for :user %>
@@ -15,5 +29,5 @@
 <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
 <%= f.password_field :password_confirmation %></p>
 
-<p><%= submit_tag 'Sign up' %></p>
+<p><%= submit_tag 'Create Staff Member' %></p>
 <% end -%>
