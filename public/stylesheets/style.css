@@ -11,6 +11,7 @@ body {
 }
 
 #header {
+  margin-top:4em;
   padding:0 3px 74px;
   background:url(/images/header-bg.png) transparent no-repeat bottom left;
 }
@@ -37,11 +38,14 @@ body {
   }
 
 #navigation {
+  position:absolute;
+  top:0;
   width:560px;
   margin:0 0 0 100px;
 }
 
   #navigation ul {
+    clear:left;
     float:left;
     background:#E0D2C2;
     -moz-border-radius-bottomright:15px;
@@ -62,6 +66,15 @@ body {
   #navigation a, #navigation a:visited {
     color:#2A1A05;
     text-decoration:none;
+  }
+  
+  #login-form {
+    display:none;
+    padding:0.5em 2em;
+    float:left;
+    background:#E0D2C2;
+    border:3px solid #B0BFC7;
+    margin-bottom:-3px;
   }
 
 #content, #footer {
