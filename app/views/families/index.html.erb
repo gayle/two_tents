@@ -4,7 +4,6 @@
   <tr>
   </tr>
 
-<% @families.each do |family| %>
   <tr>
     <th>Family Name</th>
     <th>Principal</th>
@@ -12,6 +11,7 @@
     <th>Photo List</th>
     <th>Links</th>
   </tr>
+<% @families.each do |family| %>
   <tr>
     <td><%= family.familyname -%></td>
     <td><%= family.principal -%></td>
@@ -23,7 +23,7 @@
   </tr>
 <% end %>
 </table>
-
+<%= will_paginate @families -%>
 <br />
 
 <%= link_to 'New family', new_family_path %>
