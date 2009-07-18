@@ -6,7 +6,17 @@
 
 <% @families.each do |family| %>
   <tr>
-    <td><%= link_to 'Show', family %></td>
+    <th>Family Name</th>
+    <th>Principal</th>
+    <th>Has Warm Fuzzy</th>
+    <th>Photo List</th>
+    <th>Links</th>
+  </tr>
+  <tr>
+    <td><%= family.familyname -%></td>
+    <td><%= family.principal -%></td>
+    <td><%= family.haswarmfuzzy ? "Yes" : "No" -%></td>
+    <td><%= family.photolist ? "Yes" : "No" -%></td>
     <td><%= link_to 'Edit', edit_family_path(family) %></td>
     <td><%= link_to 'Destroy', family, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
