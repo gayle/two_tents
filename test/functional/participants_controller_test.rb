@@ -1,6 +1,14 @@
 require 'test_helper'
 
 class ParticipantsControllerTest < ActionController::TestCase
+  include AuthenticatedTestHelper
+
+  fixtures :users
+
+  def setup
+    login_as :quentin
+  end
+
   test "should get index" do
     get :index
     assert_response :success
