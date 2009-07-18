@@ -1,0 +1,18 @@
+<h1>Listing participants</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% @participants.each do |participants| %>
+  <tr>
+    <td><%= link_to 'Show', participants %></td>
+    <td><%= link_to 'Edit', edit_participants_path(participants) %></td>
+    <td><%= link_to 'Destroy', participants, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New participants', new_participants_path %>
