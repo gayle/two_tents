@@ -35,24 +35,6 @@ class UsersController < ApplicationController
       @participants = Participant.find_non_staff_participants
       render :action => 'new'
     end
-    success = @participant && @participant.save
-    if success && @participant.errors.empty?
-      @user = User.new(params[:user])
-      @user.participant = @participant
-      success = @user && @user.save
-      if success && @user.errors.empty?
-        # Protects against session fixation attacks, causes request forgery
-        # protection if visitor resubmits an earlier form using back
-        # button. Uncomment if you understand the tradeoffs.
-        # reset session
-        redirect_to :action => 'index'
-        flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
-      else
-        @participants = Participant.find_non_staff_participants
-        flash[:error]  = "Problem with participant creation, please correct the errors and try again."
-        render :action => 'new'
-      end
-    end            
   end
 
   # GET /users

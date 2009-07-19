@@ -31,11 +31,11 @@
     
     <div id="content">
       <div id="context-nav">
-      <%= render :partial => 'layouts/navigation' %>
-		  <%= get_messages %>
-	    <%= yield %>
+        <%= render :partial => 'layouts/navigation' %>
+	<%= get_messages %>
+	<%= yield %>
+      </div>
     </div>
-    
     <div id="footer">
       <%= yield :footer %>
     </div>

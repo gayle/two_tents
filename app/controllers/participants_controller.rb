@@ -46,7 +46,7 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participants.save
-        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", participant_url(@participants))
+        AuditTrail.audit("Participant #{@participants.fullname} created by #{current_user.login}", participant_url(@participants))
         flash[:notice] = 'Participants was successfully created.'
         format.html { redirect_to(new_user_path) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
@@ -66,7 +66,7 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participants.save
-        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participants))
+        AuditTrail.audit("Participant #{@participants.fullname} created by #{current_user.login}", edit_participant_url(@participants))
         flash[:notice] = 'Participants was successfully created.'
         format.html { params[:commit] == 'Save' ? redirect_to(participants_path) : redirect_to(new_participant_path) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
