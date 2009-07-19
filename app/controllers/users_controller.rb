@@ -15,26 +15,21 @@ class UsersController < ApplicationController
       # Once we have participant form attributes partial rendered on the same page, use form params to create new obj
       @participant = Participant.new()
     end 
-    success = @participant && @participant.save
-    if success && @participant.errors.empty?
-      @user = User.new(params[:user])
-      @user.participant = @participant
-      success = @user && @user.save
-      if success && @user.errors.empty?
-        # Protects against session fixation attacks, causes request forgery
-        # protection if visitor resubmits an earlier form using back
-        # button. Uncomment if you understand the tradeoffs.
-        # reset session
-        redirect_to :action => 'index'
-        flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
-      else
-        @participants = Participant.find_non_staff_participants
-        flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
-        render :action => 'new'
-      end
+
+    params[:user][:participant] = @participant
+    @user = User.new(params[:user])
+    @user.participant = @participant
+    success = @user && @user.save
+    if success && @user.errors.empty?
+      # Protects against session fixation attacks, causes request forgery
+      # protection if visitor resubmits an earlier form using back
+      # button. Uncomment if you understand the tradeoffs.
+      # reset session
+      redirect_to :action => 'index'
+      flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
     else
+      flash[:error]  = "Detected Ninja Dinasours"
       @participants = Participant.find_non_staff_participants
-      flash[:error] = "Problem with participant creation, please try again"
       render :action => 'new'
     end
   end
