@@ -1,6 +1,5 @@
 (function() {
 
-jQuery.noConflict();
 $(document).ready(function() {
   $("#navigation .login").toggle(function(event) {
     event.preventDefault();
