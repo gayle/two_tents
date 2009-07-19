@@ -1,7 +1,8 @@
-<h1>Enter a new staff person</h1>
+<h1>Update staff information</h1>
 
 <%= error_messages_for :user %>
 
 <% form_for @user do |form| -%>
 <%= render :partial => form %>
+<p><%= submit_tag 'Save Staff Member' %></p>
 <% end -%>

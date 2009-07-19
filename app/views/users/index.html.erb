@@ -1,6 +1,7 @@
 <h1>Listing Staff</h1>
 
 <table>
+  <thead>
   <tr>
 		<td>Name</td>
 		<td>Login</td>
@@ -8,17 +9,18 @@
     <td></td>
     <td></td>
 	</tr>
+	</thead>
+	<tbody>
 <% @users.each do |user| %>
   <tr>
 		<td><%=h user.participant.fullname%>
 		<td><%=h user.login%></td>
 		<td><%=h user.email%></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <% if not user.administrator? %>
-       <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
-    <% end %>
+    <td><%= link_to 'Edit', edit_user_path(user), :class => 'edit' %></td>
+    <td><% unless user.administrator? %><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
   </tr>
 <% end %>
+  </tbody>
 </table>
 
 <br />

@@ -1,16 +1,26 @@
 <h1>Listing participants</h1>
 
 <table>
-  <tr>
-  </tr>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Edit</th>
+      <th>Delete</th>
+        
+    </tr>
+  </thead>
+  <tbody>
 
-<% @participants.each do |participant| %>
-  <tr>
-    <td><%= link_to 'Show', participant %></td>
-    <td><%= link_to 'Edit', edit_participant_path(participant) %></td>
-    <td><%= link_to 'Destroy', participant, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<% @participants.each do |p| %>
+    <tr>
+  		<td><%=h p.id %>
+  		<td><%=h p.fullname %></td>
+      <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+      <td><% unless p.user.administrator? %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
+    </tr>
 <% end %>
+  </tbody>
 </table>
 
 <br />

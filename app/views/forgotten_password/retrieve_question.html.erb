@@ -1,0 +1,12 @@
+<h1>Security Question</h1>
+
+<% form_tag :action => 'answer_question' do %>
+	<p><%= @user.security_question %><br/>
+	<%= hidden_field :user, :id %>
+	<%= text_field_tag :security_answer %></p>
+
+
+  <p>
+    <%= submit_tag 'Reset Password' %>
+  </p>
+<% end %>

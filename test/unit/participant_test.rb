@@ -31,6 +31,13 @@ fixtures :participants
       assert p.fullname, "resulting fullname was nil"
       assert_equal false, p.fullname.include?("nil"), "the string fullname shouldn't contain the word nil if the value is nil"
     end
+    
+    def test_participant_cannot_be_destroyed_if_it_belongs_to_a_user
+      p = create_user.participant
+      
+      p.destroy
+      assert_equal p, participants(:quentin)
+    end
 
   protected
     def create_user

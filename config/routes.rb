@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.staff '/staff', :controller => 'staff', :action => 'index'
   map.resources :users
   map.resources :files
+  map.password '/password', :controller => 'forgotten_password', :action => 'index'
 
   map.resource :session
 

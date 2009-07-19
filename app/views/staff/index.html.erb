@@ -1,8 +1,1 @@
-<% content_for :navigation do %>
-  <ul>
-    <li><%= link_to 'Families', families_url, :controller => :families -%></li>
-    <li><%= link_to 'Participants', participants_url, :controller => :participants -%></li>
-    <li><%= link_to 'Staff', users_url, :controller => :users -%></li>
-    <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
-  </ul>
-<% end %>
+<h2>Hello, <%= current_user.participant.firstname %>!</h2>
