@@ -8,28 +8,29 @@ body {
   display:none;
 }
 
-  #messages div {
+  #messages {
   	padding:1em;
   	margin-bottom:1em;
   }
 
-  #messages div.error {
+  #messages.error {
   	color:red;
   	background:pink;
   	border:2px solid red;
   }
 
-  #messages div.success {
+  #messages.success, #messages.notice {
     color:#030;
     background:#393;
     border:2px solid #030;
   }
 
-  #messages div.notice {
+/* IN CASE THERE'S EVER A NEED TO USE NOTICE FOR SOMETHING OTHER THAN SUCCESS 
+  #messages.notice {
     color:#33F;
     background:#86C9EF;;
     border:2px solid #33F;
-  }
+  } */
 
 #flash{
 font-size:12px;
