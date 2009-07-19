@@ -55,7 +55,7 @@ class UsersControllerTest < ActionController::TestCase
     user = User.find(:first)
     get :edit, :id => user.id
     participants = assigns :participants
-    assert_equal(true, participants.include? (user.participant))
+    assert_equal(true, participants.include?(user.participant))
   end
 
   def test_should_update_user
