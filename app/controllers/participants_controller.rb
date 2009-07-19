@@ -26,12 +26,11 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    @participants = Participant.new
+    create_new_participant 
+  end
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @participants }
-    end
+  def new_from_user
+    create_new_participant
   end
 
   # GET /participants/1/edit
@@ -88,4 +87,14 @@ class ParticipantsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  private
+  
+  def create_new_participant 
+    @participants = Participant.new
+
+  end  
+  
+  
+  
 end
