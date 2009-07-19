@@ -6,5 +6,6 @@ class StaffController < ApplicationController
   before_filter :login_required
 
   def index
+    @audits = AuditTrail.paginate :all, :page => params[:page], :order => "created_at DESC"
   end
 end

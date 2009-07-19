@@ -2,7 +2,7 @@
 
 <%= error_messages_for :user %>
 
-<% form_for User.new, :html => {:multipart => true} do |form| -%>
+<% form_for @user, :html => {:multipart => true} do |form| -%>
 <%= render :partial => form %>
 <p><%= submit_tag 'Create Staff Member' %></p>
 <% end -%>

@@ -44,6 +44,7 @@ class RegistrationsController < ApplicationController
 
     respond_to do |format|
       if @registration.save
+        AuditTrail.audit("Registration created for #{@registration.participant.full_name}", registration_url(@registration))
         flash[:notice] = 'Registration was successfully created.'
         format.html { redirect_to(@registration) }
         format.xml  { render :xml => @registration, :status => :created, :location => @registration }
@@ -62,6 +63,7 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       if @registration.update_attributes(params[:registration])
         flash[:notice] = 'Registration was successfully updated.'
+        AuditTrail.audit("Registration for #{@registration.participant.full_name} updated by #{current_user.login}", registration_url(@registration))
         format.html { redirect_to(@registration) }
         format.xml  { head :ok }
       else
@@ -76,6 +78,7 @@ class RegistrationsController < ApplicationController
   def destroy
     @registration = Registration.find(params[:id])
     @registration.destroy
+    AuditTrail.audit("Registration for #{@registration.participant.full_name} destroyed by #{curent_user.login}")
 
     respond_to do |format|
       format.html { redirect_to(registrations_url) }

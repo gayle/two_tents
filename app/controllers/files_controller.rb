@@ -11,6 +11,8 @@ class FilesController < ApplicationController
     @file = Files.new(params[:files])
     respond_to do |format|
       if @file.save
+        AuditTrail.audit("File #{@file.description} uploaded by #{current_user.login}")
+        
         flash[:notice] = 'File was successfully uploaded.'
         format.html { redirect_to(files_path) }
         format.xml  { render :xml => @files, :status => :created, :location => @files }
@@ -29,19 +31,11 @@ class FilesController < ApplicationController
     end
   end
 
-  def edit
-    @file = Files.find(params[:id])
-  end
-
-  #  def show
-  #  end
-
-  #  def update
-  #  end
-
   def destroy
     @file = Files.find(params[:id])
     @file.destroy
+    AuditTrail.audit("File #{@file.description} destroyed by #{current_user.login}")
+    
     respond_to do |format|
       format.html { redirect_to(files_url) }
       format.xml  { head :ok }

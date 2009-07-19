@@ -25,21 +25,15 @@ class UsersController < ApplicationController
       # protection if visitor resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset session
+      AuditTrail.audit("User #{@user.login} created by #{current_user.login}", user_url(@user))
       redirect_to :action => 'index'
       flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
     else
       flash[:error]  = "Detected Ninja Dinasours"
+      AuditTrail.audit("Creation of user #{@user.login} failed, attempted by #{current_user.login}")
       @participants = Participant.find_non_staff_participants
       render :action => 'new'
     end
-  end
-
-  def update
-    @user = User.find(params[:id])
-    @user.update_attributes(params[:user])
-    @user.save!
-    flash[:error] = @user.errors.full_messages 
-    redirect_to users_path
   end
 
   # GET /users
@@ -72,6 +66,8 @@ class UsersController < ApplicationController
         User.transaction do
           @user.update_attributes!(params[:user])
           @user && @user.save!
+          AuditTrail.audit("User #{@user.login} updated by #{current_user.login}", edit_user_url(@user))
+          flash[:notice] = "#{@user.participant.fullname} updated."
           redirect_to :action => 'index'
         end
       rescue
@@ -85,4 +81,14 @@ class UsersController < ApplicationController
 
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    if (@user.destroy)
+      AuditTrail.audit("Family #{@family.familyname} destroyed by #{current_user.login}")
+      flash[:notice] = "User #{@user.login} destroyed"
+    else
+      flash[:error] = "Failed to destroy #{@user.login}"
+    end
+    redirect_to :users
+  end
 end

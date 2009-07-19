@@ -46,6 +46,8 @@ class FamiliesController < ApplicationController
 
     respond_to do |format|
       if @family.save
+        AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
+        
         flash[:notice] = 'Families was successfully created.'
         format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
@@ -63,6 +65,7 @@ class FamiliesController < ApplicationController
 
     respond_to do |format|
       if @family.update_attributes(params[:family])
+        AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", family_url(@family))
         flash[:notice] = 'Families was successfully updated.'
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
@@ -79,6 +82,8 @@ class FamiliesController < ApplicationController
     @family = Family.find(params[:id])
     @family.destroy
 
+    AuditTrail.audit("Family #{@family.familyname} destroyed by #{current_user.login}")
+    flash[:notice] = "Family #{@family.familyname} destroyed"
     respond_to do |format|
       format.html { redirect_to(families_url) }
       format.xml  { head :ok }

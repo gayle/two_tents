@@ -46,6 +46,7 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participants.save
+        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", participant_url(@participants))
         flash[:notice] = 'Participants was successfully created.'
         format.html { redirect_to(new_user_path) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
@@ -65,8 +66,9 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participants.save
+        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participants))
         flash[:notice] = 'Participants was successfully created.'
-        format.html { params[:commit] == 'Save' ? redirect_to(@participants) : redirect_to(new_participant_path) }
+        format.html { params[:commit] == 'Save' ? redirect_to(participants_path) : redirect_to(new_participant_path) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
       else
         format.html { render :action => "new" }
@@ -82,8 +84,9 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       if @participants.update_attributes(params[:participant])
+        AuditTrail.audit("Participant #{@participants.fullname} updated by #{current_user.login}", edit_participant_url(@participants))
         flash[:notice] = 'Participants was successfully updated.'
-        format.html { redirect_to(@participants) }
+        format.html { redirect_to(participants_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -98,6 +101,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.find(params[:id])
     @participants.destroy
 
+    AuditTrail.audit("Participant #{@participants.fullname} destroyed by #{current_user.login}")
     flash[:error] = @participants.errors.full_messages
 
     respond_to do |format|
