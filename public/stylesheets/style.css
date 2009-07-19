@@ -100,7 +100,7 @@ padding:4px;
 
 #main-nav {
   width:560px;
-  margin:-3px auto 0 100px;
+  margin:0 auto 0 100px;
 }
 
 #main-nav ul {
@@ -120,6 +120,7 @@ padding:4px;
   padding:0.5em 1em;
   background:#E0D2C2;
   border:3px solid #B0BFC7;
+  border-top:none;
   text-decoration:none;
   color:#2A1A05;
 }
@@ -159,6 +160,16 @@ padding:4px;
 
 #main-nav li.hover ul {
   visibility:visible;
+}
+
+#login-form {
+  width:250px;
+  background:#E0D2C2;
+  border:3px solid #B0BFC7;
+  padding:2em 1em 0;
+  display:none;
+  margin-bottom:-3px;
+  margin-top:-3px;
 }
   
 #content, #footer {
