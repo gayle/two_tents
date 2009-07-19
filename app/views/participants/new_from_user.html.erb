@@ -1,0 +1,10 @@
+<h1>New participants</h1>
+
+<% form_for(@participants) do |f| %>
+  <%= render :partial => f%>
+  <p>
+    <%= f.submit 'Save' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', new_user_path %>
