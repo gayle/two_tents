@@ -1,5 +1,7 @@
 <h2>Hello, <%= current_user.participant.firstname %>!</h2>
+<%= will_paginate @audits -%><br/>
 <% @audits.each do |a| -%>
   <%= a.created_at -%> <%= a.message -%><br />
   <%= link_to "Go!", a.link unless a.link.nil? -%><p/>
-<% end -%>
+<% end -%><br/>
+<%= will_paginate @audits -%>
