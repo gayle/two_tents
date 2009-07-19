@@ -11,4 +11,11 @@ class Participant < ActiveRecord::Base
       p.user
     end
   end
+  def destroy
+    if user.nil?
+      super
+    else
+      errors.add(:user, "Must be nil before destroying")
+    end
+  end
 end
