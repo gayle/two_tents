@@ -99,54 +99,68 @@ padding:4px;
   }
 
 #main-nav {
-  position:absolute;
-  top:0;
   width:560px;
-  margin:0 0 0 100px;
+  margin:-3px auto 0 100px;
 }
-  #main-nav span {
-    float:right;
-    padding:0.5em 1.0em;
-  }
 
-  #main-nav ul {
-    clear:left;
-    float:right;
-    margin-bottom:1em;
-  }
+#main-nav ul {
+  float:left;
+}
 
-    #main-nav ul li {
-      list-style-type:none;
-      float:left;
-      margin-right:3px;
-    }
-    
-  #main-nav a, #main-nav a:visited {
-    background:#E0D2C2;
-    color:#2A1A05;
-    -moz-border-radius-bottomright:15px;
-    -moz-border-radius-bottomleft:15px;
-    -webkit-border-bottom-right-radius:15px;
-    -webkit-border-bottom-left-radius:15px;
-    border:3px solid #B0BFC7;
-    border-top-width:0px;
-    padding:0.5em 1.0em;
-    display:block;
-    text-decoration:none;
-  }
+#main-nav li {
+  float:left;
+  display:block;
+  position:relative;
+  margin-right:3px;
+}
+
+#main-nav a, #main-nav a:visited {
+  display:block;
+  float:left;
+  padding:0.5em 1em;
+  background:#E0D2C2;
+  border:3px solid #B0BFC7;
+  text-decoration:none;
+  color:#2A1A05;
+}
+
+#main-nav a:hover, #main-nav a:focus {
+  color:#2A1A05;
+  text-decoration:underline;
+}
+
+
+#main-nav li.hover a {
+  position:relative;
+  border-bottom:none;
+  z-index:2;
+}
+
+#main-nav ul.pulldown {
+  z-index:1;
+  top:100%;
+  width:250px;
+  margin-top:-3px;
+  position:absolute;
+  visibility:hidden;
+  background:#E0D2C2;
+  border:3px solid #B0BFC7;
+}
+
+#main-nav ul.pulldown li {
+  width:100px;
+}
+
+#main-nav ul.pulldown a {
+  border:none;
+  background:none;
+  font-size:0.8em;
+}
+
+#main-nav li.hover ul {
+  visibility:visible;
+}
   
-  #login-form {
-    display:none;
-    padding:1.5em 2em 0.5em;
-    float:left;
-    background:#E0D2C2;
-    border:3px solid #B0BFC7;
-    margin-bottom:-3px;
-    margin-top:-3px;
-    -moz-border-radius-bottomright:15px;
-    -webkit-border-bottom-right-radius:15px;
-  }
-
 #content, #footer {
   padding:1em;
 }
@@ -154,8 +168,6 @@ padding:4px;
 #content {
   background:#FFFFFF;
   border:3px solid #8EAFC2;
-  -moz-border-radius:15px;
-  -webkit-border-radius:15px;
 }
 
 a.edit {
