@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_one :participant
   validates_presence_of :participant
+  has_attached_file :head_shot
 
   # has_role? simply needs to return true or false whether a user has a role or not.  
   # It may be a good idea to have "admin" roles return true always
@@ -42,8 +43,12 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :password, :password_confirmation, :security_question, :security_answer,
-                  :mobilephone, :participant, :photourl, :workphone, :position
+  attr_accessible(:login, :email, :name, :password,
+                  :password_confirmation, :security_question,
+                  :security_answer, :mobilephone, :participant,
+                  :photourl, :workphone, :position,
+                  :head_shot_file_name, :head_shot_content_type,
+                  :head_shot_file_size, :head_shot)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #

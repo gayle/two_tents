@@ -34,6 +34,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+    @user.save!
+    flash[:error] = @user.errors.full_messages 
+    redirect_to users_path
+  end
+
   # GET /users
   # GET /users.xml
   def index

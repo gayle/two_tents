@@ -2,7 +2,7 @@
 <div style="background-color:red">
 <%= error_messages_for :user %>
 </div>
-<% form_for @user do |form| -%>
+<% form_for @user, :html => {:multipart => true} do |form| -%>
 <%= render :partial => form %>
 <p><%= submit_tag 'Save Staff Member' %></p>
 <% end -%>
