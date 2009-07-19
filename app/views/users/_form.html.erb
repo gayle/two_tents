@@ -1,7 +1,6 @@
-<% form_for :user, :url => users_path do |f| -%>
 
 Select someone from this list
-<br /><%= f.select("participant", @participants.collect{|p| [p.fullname, p.id]}) %>
+<br /><%= form.select("participant", @participants.collect{|p| [p.fullname, p.id]}) %>
 
 <br />
 Or create new Participant. (Include same form fields as when entering new participant here)
@@ -11,28 +10,27 @@ Then enter staff-specific information:
 <% @user.password = @user.password_confirmation = nil %>
 
 <p><%= label_tag 'login' %><br/>
-<%= f.text_field :login %></p>
+<%= form.text_field :login %></p>
 
 <p><%= label_tag 'email' %><br/>
-<%= f.text_field :email %></p>
+<%= form.text_field :email %></p>
 
 <p><%= label_tag 'mobilephone' %><br/>
-<%= f.text_field :mobilephone %></p>
+<%= form.text_field :mobilephone %></p>
 
 <p><%= label_tag 'workphone' %><br/>
-<%= f.text_field :workphone %></p>
+<%= form.text_field :workphone %></p>
 
 <p><%= label_tag 'position' %><br/>
-<%= f.text_field :position %></p>
+<%= form.text_field :position %></p>
 
 <p><%= label_tag 'photourl' %><br/>
-<%= f.text_field :photourl %></p>
+<%= form.text_field :photourl %></p>
 
 <p><%= label_tag 'password' %><br/>
-<%= f.password_field :password %></p>
+<%= form.password_field :password %></p>
 
 <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
-<%= f.password_field :password_confirmation %></p>
+<%= form.password_field :password_confirmation %></p>
 
 <p><%= submit_tag 'Create Staff Member' %></p>
-<% end -%>
