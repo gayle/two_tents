@@ -80,6 +80,8 @@ class ParticipantsController < ApplicationController
   def destroy
     @participants = Participant.find(params[:id])
     @participants.destroy
+    
+    flash[:error] = @participants.errors.on_base
 
     respond_to do |format|
       format.html { redirect_to(participants_url) }
