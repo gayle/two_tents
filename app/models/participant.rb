@@ -14,15 +14,8 @@ class Participant < ActiveRecord::Base
     end
   end
 
-  def destroy
-    if user.nil?
-      super
-    else
-      errors.add(:user, "Must be nil before destroying")
-    end
-  end
-  
   def validate_no_dependents
-    errors.add_to_base "Cannot destroy a participant with a user account" and return false if self.user
+    errors.add_to_base "Cannot destroy a participant with a user account" and 
+      return false if self.user
   end
 end

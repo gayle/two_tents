@@ -1,9 +1,15 @@
 
-Select someone from this list
-<br /><%= form.select("participant", @participants.collect{|p| [p.fullname, p.id]}) %>
+If the new staff member is already a participant, please select them from the list.
+<br/>
+<br/>
+If the new staff member is not already a participant, first create a new participant and then select them from this list.
+<br />
+<br />
+<%= form.select("participant", 
+      @participants.collect{ |p| [p.fullname, p.id] }, 
+      { :include_blank => "None" } )  %>
   <%= link_to "Create New Participant", new_from_user_participants_path %>
 <br />
-Or create new Participant. (Include same form fields as when entering new participant here)
 
 <hr />
 <%= image_tag @user.head_shot.url -%><br />

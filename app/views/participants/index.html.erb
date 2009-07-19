@@ -12,6 +12,7 @@
   </thead>
   <tbody>
 
+<%= will_paginate @participants -%><br/>
 <% @participants.each do |p| %>
     <tr>
   		<td><%=h p.id %>
@@ -22,7 +23,7 @@
 <% end %>
   </tbody>
 </table>
-
+<%= will_paginate @participants -%>
 <br />
 
 <%= link_to 'Add new participant', new_participant_path %>

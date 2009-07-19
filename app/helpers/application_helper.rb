@@ -1,11 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def get_messages
-    if flash[:error]
+    if ! flash[:error].blank?
       create_message_tag(:error)
-    elsif flash[:notice]
+    elsif ! flash[:notice].blank?
       create_message_tag(:notice)
-    elsif flash[:success]
+    elsif ! flash[:success].blank?
       create_message_tag(:success)
     end
   end
@@ -15,6 +15,6 @@ module ApplicationHelper
   end
   
   def greeting
-    "Hello, #{ current_user.participant.firstname }!"
+    "Logged in as #{ current_user.name }!"
   end
 end

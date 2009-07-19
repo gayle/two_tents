@@ -19,6 +19,7 @@ $(document).ready(function() {
     });
   }, 750);
 
+  $("#main-nav > ul > li").dropdown();
 });
 
 })(jQuery);

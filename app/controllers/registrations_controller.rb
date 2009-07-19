@@ -2,7 +2,7 @@ class RegistrationsController < ApplicationController
   # GET /registrations
   # GET /registrations.xml
   def index
-    @registrations = Registration.all
+    @registrations = Registration.paginate :all, :page => params[:page], :order => "created_at ASC"
 
     respond_to do |format|
       format.html # index.html.erb
