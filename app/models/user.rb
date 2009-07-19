@@ -45,7 +45,6 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :name, :password, :password_confirmation, :security_question, :security_answer,
                   :mobilephone, :participant, :photourl, :workphone, :position
 
-
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
   # uff.  this is really an authorization, not authentication routine.  
