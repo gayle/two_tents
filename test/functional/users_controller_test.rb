@@ -50,7 +50,6 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-
   def test_should_allow_edit
     user = User.find(:first)
     get :edit, :id => user.id
@@ -59,7 +58,10 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   def test_should_update_user
-    post :update, :params => {:login => "changedlogin"}
+    user = User.find(:first)
+    user.participant = Participant.find(:first)
+    user.login = "changedlogin"
+    put :update, :params => {:user => user}
 
   end
 

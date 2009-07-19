@@ -7,7 +7,6 @@ class UsersController < ApplicationController
   end
  
   def create
-    logout_keeping_session!
     if params[:user][:participant]
       @participant = Participant.find(params[:user][:participant])
       # Once we have participant form attributes partial rendered on the same page, update attributes
@@ -52,8 +51,35 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])  
+    @user = User.find(params[:id])
     @participants = Participant.find_non_staff_participants
     @participants.unshift(@user.participant)
   end
+
+  def update
+    @user = User.find(params[:id])
+    @participant = Participant.find(params[:user][:participant])
+    # Once we have participant form attributes partial rendered on the same page, update attributes
+    # @participant.update_attributes(params[])
+    success = @participant && @participant.save
+    if success && @participant.errors.empty?
+      params[:user][:participant] = @participant
+      params[:user][:password] = "" if params[:user][:password_confirmation].empty? 
+      begin
+        User.transaction do
+          @user.update_attributes!(params[:user])
+          @user && @user.save!
+          redirect_to :action => 'index'
+        end
+      rescue
+        flash[:error] = @user.errors.full_messages + @participant.errors.full_messages
+        redirect_to :action => 'edit', :user => @user
+      end
+    else
+      flash[:error] = "Problem with participant creation, please try again"
+      render :action => 'edit'
+    end
+
+  end
+
 end
