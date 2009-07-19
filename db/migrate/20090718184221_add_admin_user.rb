@@ -6,7 +6,7 @@ class AddAdminUser < ActiveRecord::Migration
     u = User.new(:login => "administrator", 
                  :password => "administrator", 
                  :password_confirmation => "administrator", 
-                 :email => "admin@example.com")
+                 :email => "administrator@example.com")
     u.participant = p
     u.save_without_validation!
   end
