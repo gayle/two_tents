@@ -1,0 +1,16 @@
+<h1>Files</h1>
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Download</th>
+  </tr>
+  <% @files.each do |file| -%>
+    <tr>
+      <td><%= file.description -%></td>
+      <td><%= link_to 'Download', file.att.url -%></td>
+      <td><%= link_to 'Destroy', file, :method => :delete -%></td>
+    </tr>
+  <% end -%>  
+</table>
+<%= link_to "Upload new file", new_file_path -%>
+

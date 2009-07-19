@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  att_file_name: MyString
+  att_content_type: MyString
+  att_file_size: MyString
+
+two:
+  att_file_name: MyString
+  att_content_type: MyString
+  att_file_size: MyString
