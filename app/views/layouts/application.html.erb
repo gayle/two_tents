@@ -11,8 +11,9 @@
 	<script src="/javascripts/script.js" type="text/javascript"></script>
 </head>
 <body>
-  <div id="messages">
-  </div>
+  
+
+
   
   <div id="navigation">
     <%= render :partial => 'layouts/navigation' %>
@@ -23,6 +24,10 @@
     </div>
     
     <div id="content">
+		<div id="messages">
+			<%= get_messages %>
+		</div>
+	
       <%= yield %>
     </div>
     
