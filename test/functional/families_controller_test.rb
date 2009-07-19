@@ -22,7 +22,7 @@ class FamiliesControllerTest < ActionController::TestCase
 
   test "should create families" do
     assert_difference('Family.count') do
-      post :create, :families => { }
+      post :create, :commit => 'Save', :families => { }
     end
 
     assert_redirected_to families_path(assigns(:families))
