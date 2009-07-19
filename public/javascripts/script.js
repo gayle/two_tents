@@ -1,3 +1,6 @@
+(function() {
+
+jQuery.noConflict();
 $(document).ready(function() {
   $("#navigation .login").toggle(function(event) {
     event.preventDefault();
@@ -17,4 +20,6 @@ $(document).ready(function() {
     });
   }, 750);
 
-})
+});
+
+})(jQuery);
