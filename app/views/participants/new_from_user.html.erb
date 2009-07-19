@@ -1,6 +1,6 @@
 <h1>New participants</h1>
 
-<% form_for(@participants) do |f| %>
+<% form_for(@participant, :url => { :action => "create_from_user" }) do |f| %>
   <%= render :partial => f%>
   <p>
     <%= f.submit 'Save' %>

@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :registrations
 
-  map.resources :participants, :collection => {:new_from_user => :get}
+  map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
 
   map.resources :families
 

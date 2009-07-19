@@ -26,16 +26,34 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    create_new_participant 
+    @participant = Participant.new 
   end
 
   def new_from_user
-    create_new_participant
+    @participant = Participant.new
+    
   end
 
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
+  end
+
+  def create_from_user
+    @family = Family.find(params[:participant][:family]) rescue nil
+    params[:participant][:family] = @family
+    @participants = Participant.new(params[:participant])
+
+    respond_to do |format|
+      if @participants.save
+        flash[:notice] = 'Participants was successfully created.'
+        format.html { redirect_to(new_user_path) }
+        format.xml  { render :xml => @participants, :status => :created, :location => @participants }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   # POST /participants
@@ -89,12 +107,7 @@ class ParticipantsController < ApplicationController
   end
   
   private
-  
-  def create_new_participant 
-    @participants = Participant.new
-
-  end  
-  
+    
   
   
 end

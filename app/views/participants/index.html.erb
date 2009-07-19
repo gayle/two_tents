@@ -17,7 +17,7 @@
   		<td><%=h p.id %>
   		<td><%=h p.fullname %></td>
       <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
-      <td><% unless p.user.administrator? %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
+      <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
     </tr>
 <% end %>
   </tbody>
