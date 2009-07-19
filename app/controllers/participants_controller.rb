@@ -4,7 +4,7 @@ class ParticipantsController < ApplicationController
   # GET /participants
   # GET /participants.xml
   def index
-    @participants = Participant.all
+    @participants = Participant.paginate :all, :page => params[:page], :order => "lastname ASC, firstname ASC"
 
     respond_to do |format|
       format.html # index.html.erb
