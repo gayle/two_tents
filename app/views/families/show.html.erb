@@ -1,42 +1,42 @@
+Participants of this family:
+<%= @participants.size %>
 <table>
   <tr>
     <td>Principal</td>
     <td><%= @family.principal -%></td>
   </tr>
   <tr>
-  <td>Family Name</td>
-  <td><%= @family.familyname -%></td>
+    <td>Family Name</td>
+    <td><%= @family.familyname -%></td>
   </tr>
   <tr>
-  <td>Has Warm Fuzzy</td>
-  <td><%= @family.haswarmfuzzy -%></td>
+    <td>Has Warm Fuzzy</td>
+    <td><%= @family.haswarmfuzzy -%></td>
   </tr>
   <tr>
-  <td>Photo List</td>
-  <td><%= @familyphotolist -%></td>
+    <td>Photo List</td>
+    <td><%= @familyphotolist -%></td>
   </tr>
 </table>
 <p>
-<%= @family.note -%>
-<p>
+  <%= @family.note -%>
+<p/>
 <%= image_tag @family.photograph.url -%>
-<table>
-  <tr>
-    <th>First</th>
-    <th>Last</th>
-    <th>City</th>
-    <th>School</th>
-    <th>Grade</th>
-  <tr/>
-  <% @family.participants.each do |p| -%>
+<% form_for :participants, :url => { :controller => :families, :action => :register, :method => :post} do |form| -%>
+  <table>
     <tr>
-      <td><%= p.firstname -%></td>
-      <td><%= p.lastname -%></td>
-      <td><%= p.city -%></td>
-      <td><%= p.school -%></td>
-      <td><%= p.grade -%></td>
-    </tr>
-  <% end -%>
+      <th>First</th>
+      <th>Last</th>
+      <th>City</th>
+      <th>School</th>
+      <th>Grade</th>
+      <th>Registered?</th>
+      <th>Room</th>
+    <tr/>
+    <%= render :partial => 'participant', :collection => @participants -%>
+  </table>
+  <%= form.submit 'Update' %>
+<% end -%>
 
-<%= link_to 'Edit', edit_family_path(@family) %> |
+<%= link_to 'Edit Family', edit_family_path(@family) %> |
 <%= link_to 'Back', families_path %>

@@ -16,6 +16,7 @@ class FamiliesController < ApplicationController
   # GET /families/1.xml
   def show
     @family = Family.find(params[:id])
+    @participants = @family.participants
 
     respond_to do |format|
       format.html # show.html.erb

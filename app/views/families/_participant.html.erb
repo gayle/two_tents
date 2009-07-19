@@ -1,0 +1,14 @@
+<% @reg = Registration.find(:first,
+                           :conditions =>
+                           ["participant_id = ? and year = ?",
+                             participant.id,
+                             Configuration.find(:first).year] ) -%>
+<tr>
+  <td><%= participant.firstname -%></td>
+  <td><%= participant.lastname -%></td>
+  <td><%= participant.city -%></td>
+  <td><%= participant.school -%></td>
+  <td><%= participant.grade -%></td>
+  <td><%= @reg.nil? ? 'no' : 'yes' -%></td>
+  <td><%= text_field_tag "participant_#{participant.id}", @reg.nil? ? '' : @reg.room_id -%></td>
+</tr>
