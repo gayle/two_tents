@@ -102,7 +102,7 @@ class ParticipantsController < ApplicationController
     @participants.destroy
 
     AuditTrail.audit("Participant #{@participants.fullname} destroyed by #{current_user.login}")
-    flash[:error] = @participants.errors.full_messages
+    flash[:error] = "Participant #{@participants.fullname} destroyed"
 
     respond_to do |format|
       format.html { redirect_to(participants_url) }
