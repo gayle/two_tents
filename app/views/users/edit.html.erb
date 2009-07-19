@@ -1,5 +1,7 @@
 <h1>Enter a new staff person</h1>
 
 <%= error_messages_for :user %>
-<%= render :partial => "form" %>
 
+<% form_for @user do |form| -%>
+<%= render :partial => form %>
+<% end -%>

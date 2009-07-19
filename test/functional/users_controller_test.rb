@@ -52,13 +52,17 @@ class UsersControllerTest < ActionController::TestCase
 
 
   def test_should_allow_edit
-    #user = User.find(:first)
-    #old_name = user.name
-    #user.name = "newname"
-    get :edit, :user_id => User.find(:first).id    
+    user = User.find(:first)
+    get :edit, :id => user.id
+    participants = assigns :participants
+    assert_equal(true, participants.include? (user.participant))
   end
 
-  
+  def test_should_update_user
+    post :update, :params => {:login => "changedlogin"}
+
+  end
+
 
   protected
     def create_user(options = {})
