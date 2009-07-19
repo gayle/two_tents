@@ -49,7 +49,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       if @participants.save
         flash[:notice] = 'Participants was successfully created.'
-        format.html { redirect_to(@participants) }
+        format.html { params[:commit] == 'Save' ? redirect_to(@participants) : redirect_to(new_participant_path) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
       else
         format.html { render :action => "new" }

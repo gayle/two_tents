@@ -47,7 +47,7 @@ class FamiliesController < ApplicationController
     respond_to do |format|
       if @family.save
         flash[:notice] = 'Families was successfully created.'
-        format.html { redirect_to(families_path) }
+        format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
       else
         format.html { render :action => "new" }

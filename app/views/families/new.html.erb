@@ -3,7 +3,8 @@
 <% form_for Family.new, :html => {:multipart => true} do |f| %>
   <%= render :partial => f -%>
   <p/>
-  <%= f.submit 'Create' %>
+  <%= f.submit 'Save' %>
+  <%= f.submit 'Save then create another' %>
 <% end -%>
 <p/>
 <%= link_to 'Back', families_path %>
