@@ -26,8 +26,8 @@ class UsersController < ApplicationController
       # button. Uncomment if you understand the tradeoffs.
       # reset session
       AuditTrail.audit("User #{@user.login} created by #{current_user.login}", user_url(@user))
-      redirect_to :action => 'index'
       flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
+      redirect_to :action => 'index'
     else
       flash[:error]  = "Detected Ninja Dinasours"
       AuditTrail.audit("Creation of user #{@user.login} failed, attempted by #{current_user.login}")
