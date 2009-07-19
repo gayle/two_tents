@@ -7,8 +7,9 @@ class UsersController < ApplicationController
   end
  
   def create
-    if params[:user][:participant]
+    if params[:user][:participant]    
       @participant = Participant.find(params[:user][:participant])
+      params[:user].delete(:participant)
       # Once we have participant form attributes partial rendered on the same page, update attributes
       # @participant.update_attributes(params[])
     else
@@ -29,11 +30,29 @@ class UsersController < ApplicationController
       flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
       redirect_to :action => 'index'
     else
-      flash[:error]  = "Detected Ninja Dinasours"
+      flash[:error]  = @user.errors.full_messages
       AuditTrail.audit("Creation of user #{@user.login} failed, attempted by #{current_user.login}")
       @participants = Participant.find_non_staff_participants
       render :action => 'new'
     end
+    success = @participant && @participant.save
+    if success && @participant.errors.empty?
+      @user = User.new(params[:user])
+      @user.participant = @participant
+      success = @user && @user.save
+      if success && @user.errors.empty?
+        # Protects against session fixation attacks, causes request forgery
+        # protection if visitor resubmits an earlier form using back
+        # button. Uncomment if you understand the tradeoffs.
+        # reset session
+        redirect_to :action => 'index'
+        flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
+      else
+        @participants = Participant.find_non_staff_participants
+        flash[:error]  = "Problem with participant creation, please correct the errors and try again."
+        render :action => 'new'
+      end
+    end            
   end
 
   # GET /users
@@ -71,11 +90,11 @@ class UsersController < ApplicationController
           redirect_to :action => 'index'
         end
       rescue
-        flash[:error] = @user.errors.full_messages + @participant.errors.full_messages
+        flash[:error] = "Problem with participant creation, please correct the errors and try again."
         redirect_to :action => 'edit', :user => @user
       end
     else
-      flash[:error] = "Problem with participant creation, please try again"
+      flash[:error] = "Problem with participant creation, please correct the errors and try again."
       render :action => 'edit'
     end
 
