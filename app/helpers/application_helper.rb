@@ -13,4 +13,8 @@ module ApplicationHelper
   def create_message_tag(type)
     content_tag(:div, flash[type], { :id => "messages", :class => type })
   end
+  
+  def greeting
+    "Hello, #{ current_user.participant.firstname }!"
+  end
 end
