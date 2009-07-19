@@ -8,7 +8,7 @@ class AddAdminUser < ActiveRecord::Migration
                  :password_confirmation => "administrator", 
                  :email => "admin@example.com")
     u.participant = p
-    u.save
+    u.save_without_validation!
   end
 
   def self.down

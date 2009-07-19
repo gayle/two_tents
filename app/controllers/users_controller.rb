@@ -27,9 +27,9 @@ class UsersController < ApplicationController
         # button. Uncomment if you understand the tradeoffs.
         # reset session
         redirect_to :action => 'index'
-        flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+        flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
       else
-        @participants = Participant.find(:all)
+        @participants = Participant.find_non_staff_participants
         flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
         render :action => 'new'
       end

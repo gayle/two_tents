@@ -33,4 +33,8 @@ Then enter staff-specific information:
 <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
 <%= form.password_field :password_confirmation %></p>
 
-<p><%= submit_tag 'Create Staff Member' %></p>
+<p><%= label_tag 'security_question'%><br/>
+<%= form.text_field :security_question %></p>
+
+<p><%= label_tag 'security_answer'%><br/>
+<%= form.text_field :security_answer %></p>
