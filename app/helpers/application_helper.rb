@@ -11,6 +11,6 @@ module ApplicationHelper
   end
   
   def create_message_tag(type)
-    content_tag(:div, flash[type], :class => type)
+    content_tag(:div, flash[type], { :id => "messages", :class => type })
   end
 end
