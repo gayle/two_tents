@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 
 $(document).ready(function() {
   $("#navigation .login").toggle(function(event) {
