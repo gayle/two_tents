@@ -1,7 +1,7 @@
 (function($) {
 
 $(document).ready(function() {
-  $("#navigation .login").toggle(function(event) {
+  $("#main-nav .login").toggle(function(event) {
     event.preventDefault();
     var target = $(this).attr("target");
     $(target).slideDown();

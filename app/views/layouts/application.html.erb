@@ -16,15 +16,22 @@
 	<%= yield :head %>
 </head>
 <body>
-  <div id="navigation">
-    <%= render :partial => 'layouts/navigation' %>
+  <div id="main-nav">
+    <%= render :partial => 'layouts/login_status' %>
   </div>
   <div id="container">
     <div id="header" class="vevent">
-      <%= yield :header %>
+      <!-- need to fill the href with the full domain for vEvent -->
+      <h1><a href="/" class="url summary">Northwest Plains District Family Camp</a></h1>
+      <div class="meta">
+        <p class="date">July 8th - 12th, 2009</p>
+        <p class="location"><a href="#" title="Map of Widewater Retreat & Ministry Center">Widewater Retreat & Ministry Center. Liberty Center, OH</a></p>
+      </div>
     </div>
     
     <div id="content">
+      <div id="context-nav">
+      <%= render :partial => 'layouts/navigation' %>
 		  <%= get_messages %>
 	    <%= yield %>
     </div>
