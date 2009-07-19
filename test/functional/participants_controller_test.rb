@@ -44,9 +44,16 @@ class ParticipantsControllerTest < ActionController::TestCase
     assert_redirected_to participant_path(assigns(:participants))
   end
 
-  test "should destroy participants" do
-    assert_difference('Participant.count', -1) do
+  test "should not destroy participants with a user" do
+    assert_difference('Participant.count', 0) do
       delete :destroy, :id => participants(:quentin).to_param
+    end
+
+    assert_redirected_to participants_path
+  end
+  test "should destroy participants without a user" do
+    assert_difference('Participant.count', -1) do
+      delete :destroy, :id => participants(:non_user).to_param
     end
 
     assert_redirected_to participants_path
