@@ -15,6 +15,6 @@ module ApplicationHelper
   end
   
   def greeting
-    "Hello, #{ current_user.participant.firstname }!"
+    "Logged in as #{ current_user.name }!"
   end
 end
