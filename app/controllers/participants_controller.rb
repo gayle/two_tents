@@ -99,11 +99,14 @@ class ParticipantsController < ApplicationController
   # DELETE /participants/1.xml
   def destroy
     @participants = Participant.find(params[:id])
-    @participants.destroy
+    success = @participants.destroy
 
-    AuditTrail.audit("Participant #{@participants.fullname} destroyed by #{current_user.login}")
-    flash[:error] = "Participant #{@participants.fullname} destroyed"
-
+    if success and @participants.errors.empty?
+      AuditTrail.audit("Participant #{@participants.fullname} destroyed by #{current_user.login}")
+      flash[:success] = "Participant #{@participants.fullname} destroyed"
+    else
+      flash[:error] = @participants.errors.full_messages
+    end
     respond_to do |format|
       format.html { redirect_to(participants_url) }
       format.xml  { head :ok }
