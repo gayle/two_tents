@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @participants = Participant.find_non_staff_participants
+    @participant = params[:participant].to_i
   end
  
   def create
