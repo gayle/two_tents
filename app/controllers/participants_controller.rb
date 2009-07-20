@@ -48,7 +48,7 @@ class ParticipantsController < ApplicationController
       if @participants.save
         AuditTrail.audit("Participant #{@participants.fullname} created by #{current_user.login}", participant_url(@participants))
         flash[:notice] = 'Participants was successfully created.'
-        format.html { redirect_to(new_user_path) }
+        format.html { redirect_to new_user_path(:participant => @participants) }
         format.xml  { render :xml => @participants, :status => :created, :location => @participants }
       else
         format.html { render :action => "new" }
