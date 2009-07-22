@@ -16,6 +16,7 @@ class FamiliesController < ApplicationController
   # GET /families/1.xml
   def show
     @family = Family.find(params[:id])
+    @participants = @family.participants
 
     respond_to do |format|
       format.html # show.html.erb
@@ -74,6 +75,23 @@ class FamiliesController < ApplicationController
         format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  def family_registration
+    params[:participant].each_pair do |k,v|
+      p = Participant.find(k)
+      year = Configuration.find(:first).year
+      reg = p.registrations.find(:first, :conditions => ["year = ?", year] )
+      room = Room.find(v)
+      if reg.nil?
+        reg = Registration.create(:year => year)
+        reg.room = room
+        p.registrations << reg
+      else
+        reg.room = Room.find(v.to_i)
+      end
+    end
+    redirect_to family_url(params[:family][:id])
   end
 
   # DELETE /families/1
