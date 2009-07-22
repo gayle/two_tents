@@ -22,7 +22,8 @@ Participants of this family:
   <%= @family.note -%>
 <p/>
 <%= image_tag @family.photograph.url -%>
-<% form_for :participants, :url => { :controller => :families, :action => :register, :method => :post} do |form| -%>
+<% form_tag family_registration_path do -%>
+  <%= hidden_field :family, :id -%>
   <table>
     <tr>
       <th>First</th>
@@ -35,7 +36,7 @@ Participants of this family:
     <tr/>
     <%= render :partial => 'participant', :collection => @participants -%>
   </table>
-  <%= form.submit 'Update' %>
+  <%= submit_tag 'Update' %>
 <% end -%>
 
 <%= link_to 'Edit Family', edit_family_path(@family) %> |

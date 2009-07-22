@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :registrations
 
   map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
 
@@ -7,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
+  map.family_registration '/family_registration', :controller => 'families', :action => 'family_registration'
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.staff '/staff', :controller => 'staff', :action => 'index'

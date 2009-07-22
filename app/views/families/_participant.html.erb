@@ -10,5 +10,5 @@
   <td><%= participant.school -%></td>
   <td><%= participant.grade -%></td>
   <td><%= @reg.nil? ? 'no' : 'yes' -%></td>
-  <td><%= text_field_tag "participant_#{participant.id}", @reg.nil? ? '' : @reg.room_id -%></td>
+  <td><%= text_field_tag "participant[#{participant.id}]", @reg.nil? ? '' : @reg.room_id -%></td>
 </tr>

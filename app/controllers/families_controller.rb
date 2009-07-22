@@ -77,6 +77,23 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def family_registration
+    params[:participant].each_pair do |k,v|
+      p = Participant.find(k)
+      year = Configuration.find(:first).year
+      reg = p.registrations.find(:first, :conditions => ["year = ?", year] )
+      room = Room.find(v)
+      if reg.nil?
+        reg = Registration.create(:year => year)
+        reg.room = room
+        p.registrations << reg
+      else
+        reg.room = Room.find(v.to_i)
+      end
+    end
+    redirect_to family_url(params[:family][:id])
+  end
+
   # DELETE /families/1
   # DELETE /families/1.xml
   def destroy

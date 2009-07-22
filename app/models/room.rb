@@ -1,3 +1,3 @@
-class Rooms < ActiveRecord::Base
+class Room < ActiveRecord::Base
   has_many :registrations
 end
