@@ -1,0 +1,14 @@
+<h1>Edit current Configuration</h1>
+<%= form_for :config, @config do -%>
+  <table>
+    <tr>
+      <th>Year</th>
+    </tr>
+    <tr>
+      <td>
+        <%= text_field_tag "year", Configuration.current.year -%>
+      </td>
+    </tr>
+    </table>
+  <%= submit_tag 'Save' -%>
+<% end -%>
