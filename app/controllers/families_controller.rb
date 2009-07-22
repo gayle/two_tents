@@ -80,7 +80,7 @@ class FamiliesController < ApplicationController
   def family_registration
     params[:participant].each_pair do |k,v|
       p = Participant.find(k)
-      year = Configuration.find(:first).year
+      year = Configuration.current.year
       reg = p.registrations.find(:first, :conditions => ["year = ?", year] )
       room = Room.find(v)
       if reg.nil?

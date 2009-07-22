@@ -2,7 +2,7 @@
                            :conditions =>
                            ["participant_id = ? and year = ?",
                              participant.id,
-                             Configuration.find(:first).year] ) -%>
+                             Configuration.current.year] ) -%>
 <tr>
   <td><%= participant.firstname -%></td>
   <td><%= participant.lastname -%></td>
