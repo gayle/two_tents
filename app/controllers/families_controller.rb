@@ -89,6 +89,7 @@ class FamiliesController < ApplicationController
         p.registrations << reg
       else
         reg.room = Room.find(v.to_i)
+        reg.save
       end
     end
     redirect_to family_url(params[:family][:id])

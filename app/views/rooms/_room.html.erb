@@ -1,4 +1,9 @@
 <tr>
   <td><%= room.id -%></td>
   <td><%= text_field_tag  "beds[#{room.id}]", room.beds -%></td>
+  <td><%= room.participants.count -%></td>
+  <td><% room.participants.each do |p| -%>
+      <%= link_to p.fullname, edit_participant_path(p) -%>&nbsp;
+      <% end -%>
+  </td>
 </tr>
