@@ -4,6 +4,9 @@ body {
   font:0.95em/1.2 Arial, sans-serif;
 }
 
+tr.overload {
+    background:#ff3366
+    }
 #messages {
   display:none;
 }
