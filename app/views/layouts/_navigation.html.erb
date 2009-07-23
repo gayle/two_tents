@@ -8,6 +8,7 @@
         <li><%= link_to 'Participants', participants_url, :controller => :participants -%></li>
         <li><%= link_to 'Staff', users_url, :controller => :users -%></li>
         <li><%= link_to 'Files', files_url, :controller => :files -%></li>
+        <li><%= link_to 'Configuration', config_edit_url, :controller => :config_edit -%>
       </ul>
     </li>
     <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
