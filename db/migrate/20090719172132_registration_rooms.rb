@@ -4,7 +4,8 @@ class RegistrationRooms < ActiveRecord::Migration
     remove_column :registrations, :room
     add_column :registrations, :room_id, :integer
 
-    1.upto(20) { Rooms.create(:availability => true) }
+    Room.reset_column_information
+    1.upto(20) { Room.create(:availability => true) }
   end
 
   def self.down
