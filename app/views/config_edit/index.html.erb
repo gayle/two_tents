@@ -1,13 +1,15 @@
 <h1>Edit current Configuration</h1>
-<% form_for :config, @config do |form| -%>
+<% form_for :config, @config, :url => {:action => 'update'} do |form| -%>
   <table>
     <tr>
-      <th>Year</th>
+      <th>Year</th><th>Date Description</th>
     </tr>
     <tr>
       <td>
         <%= form.text_field "year" -%>
       </td>
+      <td>
+        <%= form.text_field "dates" -%>
     </tr>
     </table>
   <%= form.submit 'Save' -%>

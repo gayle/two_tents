@@ -13,7 +13,8 @@ ActionController::Routing::Routes.draw do |map|
   map.password '/password', :controller => 'forgotten_password', :action => 'index'
   map.resource :session
   map.landing '/', :controller => 'landing', :action => 'index'
-  map.config_edit '/config', :controller => 'config_edit', :action => 'index'
+  map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
+  map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

@@ -5,6 +5,7 @@ class ConfigEditController < ApplicationController
 
   def update
     Configuration.create(params[:config])
+    redirect_to :action => 'index'
   end
 
 end
