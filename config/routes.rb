@@ -15,6 +15,8 @@ ActionController::Routing::Routes.draw do |map|
   map.landing '/', :controller => 'landing', :action => 'index'
   map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
   map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
+  map.rooms '/rooms', :controller => 'rooms', :action => 'index', :conditions => {:method => :get}
+  map.rooms '/rooms', :controller => 'rooms', :action => 'update', :conditions => {:method => :post}
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

@@ -1,0 +1,11 @@
+<h1>Room Listing</h1>
+<% form_tag rooms_path do -%>
+  <table>
+    <tr>
+      <th>Room</th>
+      <th>Bed</th>
+    </tr>
+    <%= render :partial => 'room', :collection => @rooms -%>
+    </table>
+  <%= submit_tag 'Update' -%>
+<% end -%>
