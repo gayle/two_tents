@@ -1,5 +1,5 @@
 class Configuration < ActiveRecord::Base
-  def current
+  def self.current
     find(:first, :order => "created_at DESC")
   end
 end

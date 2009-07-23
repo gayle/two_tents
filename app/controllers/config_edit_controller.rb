@@ -4,7 +4,7 @@ class ConfigEditController < ApplicationController
   end
 
   def update
-    Configuration.create(params[:configuration])
+    Configuration.create(params[:config])
   end
 
 end

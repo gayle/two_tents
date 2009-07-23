@@ -1,9 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
-
   map.resources :families
-
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.family_registration '/family_registration', :controller => 'families', :action => 'family_registration'
@@ -13,10 +11,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
   map.resources :files
   map.password '/password', :controller => 'forgotten_password', :action => 'index'
-
   map.resource :session
-
   map.landing '/', :controller => 'landing', :action => 'index'
+  map.config_edit '/config', :controller => 'config_edit', :action => 'index'
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
