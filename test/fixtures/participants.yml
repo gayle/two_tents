@@ -12,8 +12,20 @@ quentin:
   zip:                       55555
   user_id:                   1
 
-non_user:
+aaron:
   id:                        2
+  lastname:                  Space
+  firstname:                 Aaron
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
+  user_id:                   2
+
+
+non_user:
+  id:                        3
   lastname:                  User
   firstname:                 Non
   address1:                  an address1
@@ -21,3 +33,26 @@ non_user:
   city:                      oz
   state:                     ok
   zip:                       55555
+
+
+admin:
+  id:                        4
+  lastname:                  Annie
+  firstname:                 Admin
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
+  user_id:                   4
+
+old_password_holder:
+  id:                        5
+  lastname:                  MacDonald
+  firstname:                 Old
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
+  user_id:                   3
