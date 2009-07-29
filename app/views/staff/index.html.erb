@@ -1,7 +1,8 @@
 <h2>Hello, <%= current_user.participant.firstname %>!</h2>
+<p>Here's what the family camp staff has been up to on the website lately:</p>
 <%= will_paginate @audits -%><br/>
 <% @audits.each do |a| -%>
-  <%= a.created_at -%> <%= a.message -%><br />
-  <%= link_to "Go!", a.link unless a.link.nil? -%><p/>
+  (<%= h(a.created_at.strftime('%b %d, %Y %I:%M %p')) %>) <%= a.message -%>
+      <%= link_to "(details)", a.link unless a.link.nil? -%><p/>
 <% end -%><br/>
 <%= will_paginate @audits -%>
