@@ -1,14 +1,16 @@
 class UsersController < ApplicationController
-  
+  require_role "admin", :for => [:new, :create, :destroy]
+  require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
+
   # render new.rhtml
   def new
     @user = User.new
     @participants = Participant.find_non_staff_participants
     @participant = params[:participant].to_i
   end
- 
+
   def create
-    if params[:user][:participant]    
+    if params[:user][:participant]
       @participant = Participant.find(params[:user][:participant])
       params[:user].delete(:participant)
       # Once we have participant form attributes partial rendered on the same page, update attributes
@@ -16,7 +18,7 @@ class UsersController < ApplicationController
     else
       # Once we have participant form attributes partial rendered on the same page, use form params to create new obj
       @participant = Participant.new()
-    end 
+    end
 
     params[:user][:participant] = @participant
     @user = User.new(params[:user])
@@ -63,7 +65,7 @@ class UsersController < ApplicationController
     success = @participant && @participant.save
     if success && @participant.errors.empty?
       params[:user][:participant] = @participant
-      params[:user][:password] = "" if params[:user][:password_confirmation].empty? 
+      params[:user][:password] = "" if params[:user][:password_confirmation].empty?
       begin
         User.transaction do
           @user.update_attributes!(params[:user])

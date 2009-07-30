@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates_presence_of :participant
   has_attached_file :head_shot
 
-  # has_role? simply needs to return true or false whether a user has a role or not.  
+  # has_role? simply needs to return true or false whether a user has a role or not.
   # It may be a good idea to have "admin" roles return true always
   def has_role?(role_in_question)
     @_list ||= self.roles.collect(&:name)
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     (@_list.include?(role_in_question.to_s) )
   end
   # ---------------------------------------
-  
+
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of     :security_question
   validates_presence_of     :security_answer
-  
+
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
-  # uff.  this is really an authorization, not authentication routine.  
+  # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
   #
@@ -74,8 +74,12 @@ class User < ActiveRecord::Base
     login == "administrator"
   end
 
+  def authorized_for_listing?(param_id)
+    id == param_id.to_i
+  end
+
   protected
-    
+
 
 
 end
