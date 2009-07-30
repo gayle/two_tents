@@ -31,6 +31,10 @@
  <%= form.text_field :phone -%><br />
  <%= form.label "Employer" -%>
  <%= form.text_field :employer -%><br />
+ <%= form.label "Health Form" -%>
+ <%= form.check_box :health -%><br />
+<%= form.label "Liability Form" -%>
+ <%= form.check_box :liability -%><br />
  <%= form.label "Family" -%>
  <%= form.collection_select :family_id, Family.all, :id, :familyname, {:prompt => true} -%>
 <br />

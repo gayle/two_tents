@@ -80,6 +80,7 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1
   # PUT /participants/1.xml
   def update
+    debugger
     @participants = Participant.find(params[:id])
 
     respond_to do |format|
