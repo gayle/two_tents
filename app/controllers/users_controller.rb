@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @participant = Participant.find(params[:user][:participant])
+    @participant = (params[:user][:participant])? Participant.find(params[:user][:participant]) : @user.participant
     # Once we have participant form attributes partial rendered on the same page, update attributes
     # @participant.update_attributes(params[])
     success = @participant && @participant.save
@@ -95,5 +95,17 @@ class UsersController < ApplicationController
       flash[:error] = "Failed to destroy #{@user.login}"
     end
     redirect_to :users
+  end
+
+  def reset_password
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+    if @user.save
+      flash[:success] = "Your password has been reset!"
+      redirect_to login_path
+    else
+      flash[:error] = @user.errors.full_messages
+      render :template => 'forgotten_password/answer_question'
+    end
   end
 end

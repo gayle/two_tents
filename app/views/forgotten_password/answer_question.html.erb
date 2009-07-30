@@ -1,1 +1,10 @@
-New password stuff go here
+<% form_for @user, :url => reset_password_user_path(@user) do |form| %>
+<p><%= label_tag 'password' %><br/>
+<%= form.password_field :password %></p>
+
+<p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
+<%= form.password_field :password_confirmation %></p>
+
+<%= hidden_field_tag 'password_reset', 'true' %>
+<%= submit_tag 'Change password' %>
+<% end %>
