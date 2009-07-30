@@ -53,6 +53,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @participant = @user.participant
     @participants = Participant.find_non_staff_participants
     @participants.unshift(@user.participant)
   end

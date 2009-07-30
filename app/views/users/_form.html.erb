@@ -5,9 +5,9 @@ If the new staff member is already a participant, please select them from the li
 If the new staff member is not already a participant, first create a new participant and then select them from this list.
 <br />
 <br />
-<%= form.select("participant", 
-      @participants.collect{ |p| [p.fullname, p.id] }, 
-      { :include_blank => "None", :selected => @participant  } ) %>
+<%= form.select("participant",
+      @participants.collect{ |p| [p.fullname, p.id] },
+      { :include_blank => "None", :selected => @participant.id } ) %>
   <%= link_to "Create New Participant", new_from_user_participants_path %>
 <br />
 
