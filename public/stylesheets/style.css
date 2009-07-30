@@ -12,14 +12,14 @@ tr.overload {
 }
 
   #messages {
-  	padding:1em;
-  	margin-bottom:1em;
+    padding:1em;
+    margin-bottom:1em;
   }
 
   #messages.error {
-  	color:red;
-  	background:pink;
-  	border:2px solid red;
+    color:red;
+    background:pink;
+    border:2px solid red;
   }
 
   #messages.success, #messages.notice {
@@ -28,7 +28,7 @@ tr.overload {
     border:2px solid #030;
   }
 
-/* IN CASE THERE'S EVER A NEED TO USE NOTICE FOR SOMETHING OTHER THAN SUCCESS 
+/* IN CASE THERE'S EVER A NEED TO USE NOTICE FOR SOMETHING OTHER THAN SUCCESS
   #messages.notice {
     color:#33F;
     background:#86C9EF;;
@@ -36,9 +36,9 @@ tr.overload {
   } */
 
 #errorExplanation {
-  	color:red;
-  	background:pink;
-  	border:2px solid red;
+    color:red;
+    background:pink;
+    border:2px solid red;
 }
 
 #flash{
@@ -46,14 +46,14 @@ font-size:12px;
 text-align:center;
 }
 .flash_html {
-	display: block;
-	text-align:center;
-	bottom:0px;
-	width:100%;
-	z-index:1003;
-	color:#F33;
-	background-color:#000;
-	padding:4px;
+  display: block;
+  text-align:center;
+  bottom:0px;
+  width:100%;
+  z-index:1003;
+  color:#F33;
+  background-color:#000;
+  padding:4px;
 
 }
 .flash_ajax{
@@ -85,7 +85,7 @@ padding:4px;
     font-size:1.25em;
     margin-bottom:0.25em;
   }
-  
+
   #header h1 a, #header h1 a:hover, #header h1 a:focus, #header h1 a:visited {
     text-decoration:none;
     color:#2A1A05;
@@ -96,7 +96,7 @@ padding:4px;
     text-align:right;
     margin-bottom:0;
   }
-  
+
   #header .location {
     display:none;
   }
@@ -117,7 +117,7 @@ padding:4px;
   margin-right:3px;
 }
 
-#main-nav a, #main-nav a:visited {
+#main-nav li a, #main-nav li a:visited {
   display:block;
   float:left;
   padding:0.5em 1em;
@@ -128,7 +128,7 @@ padding:4px;
   color:#2A1A05;
 }
 
-#main-nav a:hover, #main-nav a:focus {
+#main-nav li a:hover, #main-nav li a:focus {
   color:#2A1A05;
   text-decoration:underline;
 }
@@ -175,7 +175,7 @@ padding:4px;
   margin-bottom:-3px;
   margin-top:-3px;
 }
-  
+
 #content, #footer {
   padding:1em;
 }
