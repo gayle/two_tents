@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :find_user, :only => [:edit, :update, :destroy, :answer_question, :reset_password]
+
   require_role "admin", :for => [:new, :create, :destroy]
   require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
 
@@ -52,14 +54,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
     @participant = @user.participant
     @participants = Participant.find_non_staff_participants
     @participants.unshift(@user.participant)
   end
 
   def update
-    @user = User.find(params[:id])
     @participant = (params[:user][:participant])? Participant.find(params[:user][:participant]) : @user.participant
     # Once we have participant form attributes partial rendered on the same page, update attributes
     # @participant.update_attributes(params[])
@@ -87,7 +87,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
     if (@user.destroy)
       AuditTrail.audit("Family #{@family.familyname} destroyed by #{current_user.login}")
       flash[:notice] = "User #{@user.login} destroyed"
@@ -97,6 +96,28 @@ class UsersController < ApplicationController
     redirect_to :users
   end
 
+  def reset_login
+    render :template => 'users/enter_login'
+  end
+
+  def enter_login
+    @user = User.find_by_login(params[:user][:login])
+    if @user
+      render :template => 'users/answer_question'
+    else
+      flash.now[:error] = "That username could not be found."
+    end
+  end
+
+  def answer_question
+    @user = User.find(params[:id])
+    if (@user.security_answer == params[:user][:security_answer])
+      render :template => 'users/reset_password'
+    else
+      flash.now[:error] = "Your answer did not match the answer we have."
+    end
+  end
+
   def reset_password
     @user = User.find(params[:id])
     @user.update_attributes(params[:user])
@@ -104,8 +125,11 @@ class UsersController < ApplicationController
       flash[:success] = "Your password has been reset!"
       redirect_to login_path
     else
-      flash[:error] = @user.errors.full_messages
-      render :template => 'forgotten_password/answer_question'
+      flash.now[:error] = @user.errors.full_messages
     end
+  end
+
+  def find_user
+    @user = User.find(params[:id])
   end
 end

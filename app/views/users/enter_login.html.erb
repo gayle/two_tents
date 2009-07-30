@@ -1,0 +1,7 @@
+<h1>Forgotten Password</h1>
+<% form_for :user, :url => enter_login_users_path, :action => 'retrieve_question' do |form| %>
+<p><%= form.label :login, 'Username: ' %>
+<%= form.text_field :login %></p>
+
+<p><%= submit_tag 'Next' %></p>
+<% end %>

@@ -7,15 +7,11 @@ ActionController::Routing::Routes.draw do |map|
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.staff '/staff', :controller => 'staff', :action => 'index'
-  map.resources :users, :member => { :reset_password => :put }
+  map.resources :users,
+                :collection => { :enter_login => :post },
+                :member => { :get_question => :get, :answer_question => :post, :reset_password => :put }
+  map.password '/password', :controller => 'users', :action => 'reset_login'
   map.resources :files
-
-  map.with_options :controller => 'forgotten_password' do |p|
-    p.password '/password', :action => 'index'
-    p.retrieve_question '/password/retrieve_question', :action => 'retrieve_question'
-    p.retrieve_question '/password/answer_question', :action => 'answer_question'
-  end
-  map.password '/password', :controller => 'forgotten_password', :action => 'index'
   map.resource :session
   map.landing '/', :controller => 'landing', :action => 'index'
   map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
