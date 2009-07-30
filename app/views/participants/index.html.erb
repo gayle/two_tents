@@ -1,5 +1,4 @@
 <h1>Listing participants</h1>
-
 <table>
   <thead>
     <tr>
@@ -7,6 +6,8 @@
       <th>Name</th>
       <th>Edit</th>
       <th>Delete</th>
+	  <th>Health Form</th>
+	  <th>Liability Form</th>
         
     </tr>
   </thead>
@@ -19,6 +20,20 @@
   		<td><%=h p.fullname %></td>
       <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
       <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
+	  <td>
+		<%= p.health %>
+		<% form_for p do |form|%>
+			<%= form.hidden_field :health, :value => p.health ? "0":"1" %>
+			<%= form.submit %>
+		<% end %>
+		</td>
+	  <td>
+		<%= p.liability %>
+			<% form_for p do |form|%>
+				<%= form.hidden_field :liability, :value => p.liability ? "0":"1" %>
+				<%= form.submit %>
+			<% end %>
+		</td>
     </tr>
 <% end %>
   </tbody>
