@@ -22,6 +22,17 @@ $(document).ready(function() {
   $("#main-nav ul.pulldown").each(function() {
     $(this).closest("li").dropdown();
   });
-});
+
+  $(".flipflop").each(function() {
+    $(this).click(function(event) {
+      var str = $(this).closest("form").serialize();
+      jQuery.post($(this).closest("form").attr("action")+".js",
+                  str,
+                  function(data,status){ },
+                  "script");
+      event.preventDefault();
+      });     
+    });
+  });
 
 })(jQuery);

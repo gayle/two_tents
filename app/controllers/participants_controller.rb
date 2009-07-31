@@ -80,7 +80,6 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1
   # PUT /participants/1.xml
   def update
-    debugger
     @participants = Participant.find(params[:id])
 
     respond_to do |format|
@@ -89,6 +88,16 @@ class ParticipantsController < ApplicationController
         flash[:notice] = 'Participants was successfully updated.'
         format.html { redirect_to(participants_url) }
         format.xml  { head :ok }
+        format.js   do
+          flash.discard
+          render(:update) do |page|
+            element = "#{@participants.class}_#{@participants.id}_#{params[:participant].keys[0]}"
+            page.replace_html(element,
+                              :partial => 'flipflop',
+                              :locals => {:p => @participants,
+                                :type => params[:participant].keys[0] } )
+          end
+        end
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
