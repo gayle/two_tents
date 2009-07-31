@@ -70,6 +70,16 @@ class FamiliesController < ApplicationController
         flash[:notice] = 'Families was successfully updated.'
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
+        format.js do
+          flash.discard
+          render(:update) do |page|
+            element = "#{@family.class}_#{@family.id}_#{params[:family].keys[0]}"
+            page.replace_html(element,
+                              :partial => 'flipflop',
+                              :locals => {:family => @family,
+                                :type => params[:family].keys[0] } )
+          end
+        end
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }

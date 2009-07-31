@@ -12,8 +12,16 @@
   <tr>
     <td><%= family.familyname -%></td>
     <td><%= family.principal -%></td>
-    <td><%= family.haswarmfuzzy ? "Yes" : "No" -%></td>
-    <td><%= family.photolist ? "Yes" : "No" -%></td>
+    <% %w(haswarmfuzzy photolist infosheet).each do |what|-%>
+      <td>
+        <% form_for family do |form| -%>
+          <div id="<%= "#{family.class}_#{family.id}_#{what}" -%>">
+            <%= render :partial =>"flipflop", :locals => {:type => what, :family => family } -%>
+          </div>
+          <%= form.submit 'Change', :class => :flipflop -%>
+        <% end -%>
+      </td>
+    <% end -%>
     <td><%= link_to 'Show', family_path(family) -%>
     <td><%= link_to 'Edit', edit_family_path(family), :class => 'edit' %></td>
     <td><%= link_to 'Destroy', family, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %></td>
