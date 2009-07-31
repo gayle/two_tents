@@ -3,13 +3,20 @@
     <li>
       <a href="#" class="pulldown">Manage</a>
       <ul class="pulldown">
-        <li><%= link_to 'Home', staff_url, :controller => :staff -%>
+        <li><%= link_to 'Home', staff_url, :controller => :staff -%></li>
         <li><%= link_to 'Families', families_url, :controller => :families -%></li>
         <li><%= link_to 'Participants', participants_url, :controller => :participants -%></li>
         <li><%= link_to 'Staff', users_url, :controller => :users -%></li>
         <li><%= link_to 'Files', files_url, :controller => :files -%></li>
         <li><%= link_to 'Rooms', rooms_url, :controller => :rooms -%></li>
         <li><%= link_to 'Configuration', config_edit_url, :controller => :config_edit -%>
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="pulldown">Profile</a>
+      <ul class="pulldown">
+        <li><%= link_to 'My Profile', edit_user_path(current_user) %></li>
+        <li><%= link_to 'Change Password', show_password_user_path(current_user) %></li>
       </ul>
     </li>
     <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>

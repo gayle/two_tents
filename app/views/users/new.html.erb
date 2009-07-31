@@ -3,7 +3,7 @@
 <%= error_messages_for :user %>
 
 <% form_for @user, :html => {:multipart => true} do |form| -%>
-<%= render :partial => form %>
+<%= render :partial => form, :locals => { :show_password => true } %>
 <p><%= submit_tag 'Create Staff Member' %></p>
 <% end -%>
 <%= link_to 'Back', users_path %>

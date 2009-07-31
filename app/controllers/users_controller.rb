@@ -118,12 +118,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def show_password
+    @user = User.find(params[:id])
+    render :template => 'users/change_password'
+  end
+
   def change_password
     @user = User.find(params[:id])
     @user.update_attributes(params[:user])
     if @user.save
       flash[:success] = "Your password has been reset!"
-      redirect_to login_path
+      if current_user
+        redirect_to staff_path
+      else
+        redirect_to login_path
+      end
     else
       flash.now[:error] = @user.errors.full_messages
     end
