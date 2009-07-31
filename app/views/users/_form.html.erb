@@ -37,11 +37,13 @@ Then enter staff-specific information:
 <p><%= label_tag 'head shot' -%><br />
 <%= form.file_field :head_shot -%></p>
 
+<% if show_password %>
 <p><%= label_tag 'password' %><br/>
 <%= form.password_field :password %></p>
 
 <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
 <%= form.password_field :password_confirmation %></p>
+<% end %>
 
 <p><%= label_tag 'security_question'%><br/>
 <%= form.text_field :security_question %></p>

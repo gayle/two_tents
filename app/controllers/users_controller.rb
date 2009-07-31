@@ -112,18 +112,27 @@ class UsersController < ApplicationController
   def answer_question
     @user = User.find(params[:id])
     if (@user.security_answer == params[:user][:security_answer])
-      render :template => 'users/reset_password'
+      render :template => 'users/change_password'
     else
       flash.now[:error] = "Your answer did not match the answer we have."
     end
   end
 
-  def reset_password
+  def show_password
+    @user = User.find(params[:id])
+    render :template => 'users/change_password'
+  end
+
+  def change_password
     @user = User.find(params[:id])
     @user.update_attributes(params[:user])
     if @user.save
       flash[:success] = "Your password has been reset!"
-      redirect_to login_path
+      if current_user
+        redirect_to staff_path
+      else
+        redirect_to login_path
+      end
     else
       flash.now[:error] = @user.errors.full_messages
     end

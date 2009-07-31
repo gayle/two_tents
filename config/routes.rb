@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.staff '/staff', :controller => 'staff', :action => 'index'
   map.resources :users,
                 :collection => { :enter_login => :post },
-                :member => { :get_question => :get, :answer_question => :post, :reset_password => :put }
+                :member => { :get_question => :get, :answer_question => :post, :show_password => :get, :change_password => :put }
   map.password '/password', :controller => 'users', :action => 'reset_login'
   map.resources :files
   map.resource :session

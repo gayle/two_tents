@@ -78,6 +78,13 @@ class User < ActiveRecord::Base
     id == param_id.to_i
   end
 
+  # define readable methods for role access
+  Role.all.each do |role|
+    define_method "is_#{role.name}?" do
+      has_role?(role.name)
+    end
+  end
+
   protected
 
 
