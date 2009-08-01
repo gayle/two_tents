@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    if not params[:user][:participant].empty?
+    if not params[:user][:participant].blank?
       @participant = Participant.find(params[:user][:participant])
       params[:user].delete(:participant)
     end
@@ -55,13 +55,13 @@ class UsersController < ApplicationController
   end
 
   def update
-    @participant = (params[:user][:participant])? Participant.find(params[:user][:participant]) : @user.participant
+    @participant = (params[:user][:participant]).blank? ? @user.participant : Participant.find(params[:user][:participant])
     # Once we have participant form attributes partial rendered on the same page, update attributes
     # @participant.update_attributes(params[])
     success = @participant && @participant.save
     if success && @participant.errors.empty?
       params[:user][:participant] = @participant
-      params[:user][:password] = "" if params[:user][:password_confirmation].empty?
+      params[:user][:password] = "" if params[:user][:password_confirmation].blank?
       begin
         User.transaction do
           @user.update_attributes!(params[:user])
