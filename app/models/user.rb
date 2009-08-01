@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
   has_one :participant
-  validates_presence_of :participant
+  validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
+
   has_attached_file :head_shot
 
   # has_role? simply needs to return true or false whether a user has a role or not.

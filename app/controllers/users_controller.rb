@@ -12,14 +12,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    if params[:user][:participant]
+    if not params[:user][:participant].empty?
       @participant = Participant.find(params[:user][:participant])
       params[:user].delete(:participant)
-      # Once we have participant form attributes partial rendered on the same page, update attributes
-      # @participant.update_attributes(params[])
-    else
-      # Once we have participant form attributes partial rendered on the same page, use form params to create new obj
-      @participant = Participant.new()
     end
 
     params[:user][:participant] = @participant
