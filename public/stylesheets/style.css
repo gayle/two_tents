@@ -68,8 +68,12 @@ background-color:#000;
 padding:4px;
 }
 
-#container {
+body.homepage #container {
   width:560px;
+}
+
+#container {
+  width:960px;
   margin:0 0 0 100px;
   clear:both;
 }

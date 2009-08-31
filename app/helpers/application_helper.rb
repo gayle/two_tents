@@ -9,12 +9,16 @@ module ApplicationHelper
       create_message_tag(:success)
     end
   end
-  
+
   def create_message_tag(type)
     content_tag(:div, flash[type], { :id => "messages", :class => type })
   end
-  
+
   def greeting
     "Logged in as #{ current_user.name }!"
+  end
+
+  def body_class
+    "homepage" if controller.controller_name == 'landing' && controller.action_name == 'index'
   end
 end
