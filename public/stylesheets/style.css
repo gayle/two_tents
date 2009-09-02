@@ -206,3 +206,7 @@ a.delete {
   background:url(/images/cross.png) no-repeat top left;
   text-indent:-9999px;
 }
+
+.more_info {
+  display:none;
+}
