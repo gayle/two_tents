@@ -1,42 +1,101 @@
-<%= form.error_messages %><br />
- <%= form.label "First Name" -%>
- <%= form.text_field :firstname -%><br />
- <%= form.label "Last Name" -%>
- <%= form.text_field :lastname -%><br />
- <%= form.label "Address1" -%>
- <%= form.text_field :address1 -%><br />
- <%= form.label "Address2" -%>
- <%= form.text_field :address2 -%><br />
- <%= form.label "City" -%>
- <%= form.text_field :city -%><br />
- <%= form.label "State" -%>
- <%= form.text_field :state -%><br />
- <%= form.label "Zip" -%>
- <%= form.text_field :zip -%><br />
- <%= form.label "Home Church" -%>
- <%= form.text_field :homechurch -%><br />
- <%= form.label "Pastor" -%>
- <%= form.text_field :pastor -%><br />
- <%= form.label "Email" -%>
- <%= form.text_field :email -%><br />
- <%= form.label "Birthdate" -%>
- <%= form.text_field :birthdate -%><br />
- <%= form.label "Occupation" -%>
- <%= form.text_field :occupation -%><br />
- <%= form.label "School Name" -%>
- <%= form.text_field :school -%><br />
- <%= form.label "Grade Level" -%>
- <%= form.text_field :grade -%><br />
- <%= form.label "Phone" -%>
- <%= form.text_field :phone -%><br />
- <%= form.label "Employer" -%>
- <%= form.text_field :employer -%><br />
- <%= form.label "Health Form" -%>
- <%= form.check_box :health -%><br />
-<%= form.label "Liability Form" -%>
- <%= form.check_box :liability -%><br />
- <%= form.label "Family" -%>
- <%= form.collection_select :family_id, Family.all, :id, :familyname, {:prompt => true} -%>
-<br />
+<fieldset>
+  <legend>Basic Info</legend>
+  <div class="field">
+    <%= form.label "First Name" -%>
+    <%= form.text_field :firstname -%>
+  </div>
+  <div class="field">
+    <%= form.label "Last Name" -%>
+    <%= form.text_field :lastname -%>
+  </div>
+  <div class="field">
+    <%= form.label "Birthdate" -%>
+    <%= form.text_field :birthdate -%>
+  </div>
+</fieldset>
 
+<div class="more_info">
+  <fieldset>
+    <legend>Basic Info</legend>
+    <div class="field">
+      <%= form.label "Phone" -%>
+      <%= form.text_field :phone -%>
+    </div>
+    <div class="field">
+      <%= form.label "Email" -%>
+      <%= form.text_field :email -%>
+    </div>
+  </fieldset>
 
+  <fieldset>
+    <legend>Address</legend>
+    <div class="field">
+      <%= form.label "Address1" -%>
+      <%= form.text_field :address1 -%>
+    </div>
+    <div class="field">
+      <%= form.label "Address2" -%>
+      <%= form.text_field :address2 -%>
+    </div>
+    <div class="field">
+      <%= form.label "City" -%>
+      <%= form.text_field :city -%>
+    </div>
+    <div class="field">
+      <%= form.label "State" -%>
+      <%= form.text_field :state -%>
+    </div>
+    <div class="field">
+      <%= form.label "Zip" -%>
+      <%= form.text_field :zip -%>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Church Info</legend>
+    <div class="field">
+      <%= form.label "Home Church" -%>
+      <%= form.text_field :homechurch -%>
+    </div>
+    <div class="field">
+      <%= form.label "Pastor" -%>
+      <%= form.text_field :pastor -%>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Employment Info</legend>
+    <div class="field">
+      <%= form.label "Employer" -%>
+      <%= form.text_field :employer -%>
+    </div>
+    <div class="field">
+      <%= form.label "Occupation" -%>
+      <%= form.text_field :occupation -%>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>School Info</legend>
+    <div class="field">
+      <%= form.label "School Name" -%>
+      <%= form.text_field :school -%>
+    </div>
+    <div class="field">
+      <%= form.label "Grade Level" -%>
+      <%= form.text_field :grade -%>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Camp Info</legend>
+    <div class="field">
+      <%= form.label "Health Form" -%>
+      <%= form.check_box :health -%>
+    </div>
+    <div class="field">
+      <%= form.label "Liability Form" -%>
+      <%= form.check_box :liability -%>
+    </div>
+  </fieldset>
+</div>

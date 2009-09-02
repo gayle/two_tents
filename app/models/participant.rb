@@ -1,10 +1,10 @@
 class Participant < ActiveRecord::Base
-  belongs_to :family 
+  belongs_to :family
   belongs_to :user
   has_many :registrations
-  
+
   before_destroy :validate_no_dependents
-  
+
   def fullname
     "#{firstname} #{lastname}"
   end
@@ -16,7 +16,7 @@ class Participant < ActiveRecord::Base
   end
 
   def validate_no_dependents
-    errors.add_to_base "Cannot destroy a participant with a user account" and 
+    errors.add_to_base "Cannot destroy a participant with a user account" and
       return false if self.user
   end
 end

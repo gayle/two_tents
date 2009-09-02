@@ -1,23 +1,103 @@
-<% @reg = Registration.find(:first,
-                           :conditions =>
-                           ["participant_id = ? and year = ?",
-                             participant.id,
-                             Configuration.current.year] ) -%>
-<tr>
-  <td><%= participant.firstname -%></td>
-  <td><%= participant.lastname -%></td>
-  <td><%= participant.city -%></td>
-  <td><%= participant.school -%></td>
-  <td><%= participant.grade -%></td>
-  <td><%= @reg.nil? ? 'no' : 'yes' -%></td>
-  <td><%= text_field_tag "participant[#{participant.id}]", @reg.nil? ? '' : @reg.room_id , :size => 5 -%></td>
-  <td><% if @reg -%>
-      <% Room.find(@reg.room_id).participants.each do |p| -%>
-        <% next if p == participant -%>
-        <%= link_to p.fullname.gsub(' ','&nbsp;'), edit_participant_path(p) -%>
-      <% end -%>
-      <% else -%>
-        &nbsp;
-    <% end -%>
-    </td>
-</tr>
+<% fields_for "family[participant_attributes][]", participant do |form| %>
+  <fieldset>
+    <legend>Basic Info</legend>
+    <div class="field">
+      <%= form.label "First Name" -%>
+      <%= form.text_field :firstname -%>
+    </div>
+    <div class="field">
+      <%= form.label "Last Name" -%>
+      <%= form.text_field :lastname -%>
+    </div>
+    <div class="field">
+      <%= form.label "Birthdate" -%>
+      <%= form.text_field :birthdate -%>
+    </div>
+  </fieldset>
+
+  <div class="more_info">
+    <fieldset>
+      <legend>Basic Info</legend>
+      <div class="field">
+        <%= form.label "Phone" -%>
+        <%= form.text_field :phone -%>
+      </div>
+      <div class="field">
+        <%= form.label "Email" -%>
+        <%= form.text_field :email -%>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Address</legend>
+      <div class="field">
+        <%= form.label "Address1" -%>
+        <%= form.text_field :address1 -%>
+      </div>
+      <div class="field">
+        <%= form.label "Address2" -%>
+        <%= form.text_field :address2 -%>
+      </div>
+      <div class="field">
+        <%= form.label "City" -%>
+        <%= form.text_field :city -%>
+      </div>
+      <div class="field">
+        <%= form.label "State" -%>
+        <%= form.text_field :state -%>
+      </div>
+      <div class="field">
+        <%= form.label "Zip" -%>
+        <%= form.text_field :zip -%>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Church Info</legend>
+      <div class="field">
+        <%= form.label "Home Church" -%>
+        <%= form.text_field :homechurch -%>
+      </div>
+      <div class="field">
+        <%= form.label "Pastor" -%>
+        <%= form.text_field :pastor -%>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Employment Info</legend>
+      <div class="field">
+        <%= form.label "Employer" -%>
+        <%= form.text_field :employer -%>
+      </div>
+      <div class="field">
+        <%= form.label "Occupation" -%>
+        <%= form.text_field :occupation -%>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>School Info</legend>
+      <div class="field">
+        <%= form.label "School Name" -%>
+        <%= form.text_field :school -%>
+      </div>
+      <div class="field">
+        <%= form.label "Grade Level" -%>
+        <%= form.text_field :grade -%>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Camp Info</legend>
+      <div class="field">
+        <%= form.label "Health Form" -%>
+        <%= form.check_box :health -%>
+      </div>
+      <div class="field">
+        <%= form.label "Liability Form" -%>
+        <%= form.check_box :liability -%>
+      </div>
+    </fieldset>
+  </div>
+<% end %>

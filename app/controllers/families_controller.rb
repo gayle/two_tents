@@ -28,6 +28,9 @@ class FamiliesController < ApplicationController
   # GET /families/new.xml
   def new
     @family = Family.new
+    3.times do
+      @family.participants << Participant.new
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -48,7 +51,7 @@ class FamiliesController < ApplicationController
     respond_to do |format|
       if @family.save
         AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
-        
+
         flash[:notice] = 'Families was successfully created.'
         format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
