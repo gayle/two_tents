@@ -83,7 +83,7 @@ class UsersController < ApplicationController
 
   def destroy
     if (@user.destroy)
-      AuditTrail.audit("Family #{@family.familyname} destroyed by #{current_user.login}")
+      AuditTrail.audit("Family #{@family.familyname} removed by #{current_user.login}")
       flash[:notice] = "User #{@user.login} destroyed"
     else
       flash[:error] = "Failed to destroy #{@user.login}"

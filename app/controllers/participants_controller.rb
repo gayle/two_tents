@@ -112,7 +112,7 @@ class ParticipantsController < ApplicationController
     success = @participants.destroy
 
     if success and @participants.errors.empty?
-      AuditTrail.audit("Participant #{@participants.fullname} destroyed by #{current_user.login}")
+      AuditTrail.audit("Participant #{@participants.fullname} removed by #{current_user.login}")
       flash[:success] = "Participant #{@participants.fullname} destroyed"
     else
       flash[:error] = @participants.errors.full_messages

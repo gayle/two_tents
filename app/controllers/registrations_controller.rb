@@ -78,7 +78,7 @@ class RegistrationsController < ApplicationController
   def destroy
     @registration = Registration.find(params[:id])
     @registration.destroy
-    AuditTrail.audit("Registration for #{@registration.participant.fullname} destroyed by #{curent_user.login}")
+    AuditTrail.audit("Registration for #{@registration.participant.fullname} removed by #{curent_user.login}")
 
     flash[:notice] = "Registration for #{@registration.participant.fullname} destroyed"
 
