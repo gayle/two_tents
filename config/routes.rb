@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.rooms '/rooms', :controller => 'rooms', :action => 'index', :conditions => {:method => :get}
   map.rooms '/rooms', :controller => 'rooms', :action => 'update', :conditions => {:method => :post}
 
+  map.connect ':action', :controller => 'content'
   #map.connect ':controller/:action/:id'
   #map.connect ':controller/:action/:id.:format'
 end

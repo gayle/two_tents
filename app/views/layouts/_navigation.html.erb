@@ -1,5 +1,5 @@
-<% if logged_in? %>
-  <ul>
+<ul>
+  <% if logged_in? %>
     <li>
       <a href="#" class="pulldown">Manage</a>
       <ul class="pulldown">
@@ -7,9 +7,9 @@
         <li><%= link_to 'Families', families_url, :controller => :families -%></li>
         <li><%= link_to 'Participants', participants_url, :controller => :participants -%></li>
         <li><%= link_to 'Staff', users_url, :controller => :users -%></li>
-        <li><%= link_to 'Files', files_url, :controller => :files -%></li>
-        <li><%= link_to 'Rooms', rooms_url, :controller => :rooms -%></li>
         <li><%= link_to 'Configuration', config_edit_url, :controller => :config_edit -%>
+         <!--<li><%= link_to 'Files', files_url, :controller => :files -%></li>-->
+        <!--<li><%= link_to 'Rooms', rooms_url, :controller => :rooms -%></li>-->
       </ul>
     </li>
     <li>
@@ -19,13 +19,25 @@
         <li><%= link_to 'Change Password', show_password_user_path(current_user) %></li>
       </ul>
     </li>
-    <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
-  </ul>
-<% else %>
-  <div id="login-form">
-    <%= render :partial => 'sessions/login_form' %>
-  </div>
-  <ul>
+      <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
+  <% else %>
+    <div id="login-form">
+      <%= render :partial => 'sessions/login_form' %>
+    </div>
     <li><a class="login" href="/login" target="#login-form">Staff Login</a></li>
-  </ul>
-<% end %>
+  <% end %>
+
+  <li>
+    <a href="#" class="pulldown">About</a>
+    <ul class="pulldown">
+      <li><a href="/" >About Camp</a></li>
+      <li><a href="/mission">Our Mission</a></li>
+      <li><a href="/philosophy">Our Philosophy</a></li>
+      <li><a href="/facilities">Facilities</a></li>
+      <li><a href="/testimonials">Testimonials</a></li>
+    </ul>
+  </li>
+  <li><a href="/contact">Contact Info</a></li>
+  <li><a href="/register">How To Register</a></li>
+</ul>
+
