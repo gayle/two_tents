@@ -13,7 +13,6 @@ ActionController::Routing::Routes.draw do |map|
   map.password '/password', :controller => 'users', :action => 'reset_login'
   map.resources :files
   map.resource :session
-  map.landing '/', :controller => 'landing', :action => 'index'
   map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
   map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
   map.rooms '/rooms', :controller => 'rooms', :action => 'index', :conditions => {:method => :get}
