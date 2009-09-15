@@ -1,6 +1,10 @@
 <h1>Listing families</h1>
 
-<table border=0>
+<% if @families.blank? %>
+  <p>No families yet. Click the link below to create one.</p>
+
+<% else %>
+<table>
   <tr>
     <th>Family Name</th>
     <th>Contact Person</th>
@@ -10,6 +14,7 @@
     <th>Edit</th>
     <th>Delete</th>
   </tr>
+
 <% @families.each do |family| %>
   <tr>
     <td><%= family.familyname -%></td>
@@ -32,5 +37,5 @@
 </table>
 <%= will_paginate @families -%>
 <br />
-
+<% end %>
 <%= link_to 'New family', new_family_path %>
