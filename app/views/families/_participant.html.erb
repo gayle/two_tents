@@ -1,3 +1,4 @@
+<hr />
 <% fields_for "family[participant_attributes][]", participant do |form| %>
   <fieldset>
     <legend>Basic Info</legend>
@@ -15,9 +16,9 @@
     </div>
   </fieldset>
 
+  <a class="more_info_link" href="#" onclick=jQuery(".more_info").show();jQuery(".more_info_link").hide();jQuery(".less_info_link").show();>More Info</a>
   <div class="more_info">
     <fieldset>
-      <legend>Basic Info</legend>
       <div class="field">
         <%= form.label "Phone" -%>
         <%= form.text_field :phone -%>
@@ -100,4 +101,6 @@
       </div>
     </fieldset>
   </div>
+  <a class="less_info_link" style="display:none;" href="#" onclick=jQuery(".more_info").hide();jQuery(".more_info_link").show();jQuery(".less_info_link").hide();>Less Info</a>
+
 <% end %>
