@@ -16,7 +16,7 @@ class Participant < ActiveRecord::Base
   end
 
   def validate_no_dependents
-    errors.add_to_base "Cannot destroy a participant with a user account" and
+    errors.add_to_base "Cannot delete a participant who is a staff user. If you really wish to delete this participant, delete the staff user first." and
       return false if self.user
   end
 end
