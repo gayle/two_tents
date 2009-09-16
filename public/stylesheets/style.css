@@ -210,3 +210,19 @@ a.delete {
 .more_info {
   display:none;
 }
+
+table {
+    background:#FFFFFF;
+    border:3px solid #8EAFC2;
+    padding:2px;
+}
+
+table tr th {
+    border:3px solid #8EAFC2;
+}
+
+table th, td {
+    border:1px solid #8EAFC2;
+    padding:2px;
+}
+

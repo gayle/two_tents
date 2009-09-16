@@ -4,21 +4,19 @@
 <table>
   <thead>
   <tr>
-		<th>Name</th>
-		<th>Login</th>
-		<th>Email</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    <td></td>
-    <td></td>
-	</tr>
-	</thead>
-	<tbody>
+	<th>Name</th>
+	<th>Login</th>
+	<th>Email</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
 <% @users.each do |user| %>
   <tr>
-		<td><%=h user.participant.fullname%>
-		<td><%=h user.login%></td>
-		<td><%=h user.email%></td>
+	<td><%=h user.participant.fullname%>
+	<td><%=h user.login%></td>
+	<td><%=h user.email%></td>
     <td><%= link_to 'Edit', edit_user_path(user), :class => 'edit' %></td>
     <td><% unless user.administrator? || user == current_user %><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
   </tr>
