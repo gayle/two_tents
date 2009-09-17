@@ -226,3 +226,21 @@ table th, td {
     padding:2px;
 }
 
+img.pictureframe {
+    padding:2px;
+    border-left: 4px solid #FFFFFF;
+    border-top: 4px solid #FFFFFF;
+    border-right: 4px solid #DCDCDC;
+    border-bottom: 4px solid #BEBEBE;
+    background-color:#696969;
+}
+
+img.portrait {
+    width:400px;
+    height:300px;
+}
+
+img.landscape {
+    width:300px;
+    height:400px;
+}
