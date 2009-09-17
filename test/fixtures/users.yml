@@ -1,8 +1,19 @@
+admin:
+  id: 1
+  login: annie
+  email: annie@example.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  # activation_code: adminscode # only if you're activating new signups
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
 
-quentin:
-  id:                        1
-  login:                     quentin
-  email:                     quentin@example.com
+jim:
+  id:                        2
+  login:                     jim
+  email:                     jim@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at:                <%= 5.days.ago.to_s :db  %>
@@ -10,39 +21,69 @@ quentin:
   remember_token:            77de68daecd823babbb58edb1c8e14d7106e83bb
   security_question:         question
   security_answer:           answer
-      
-aaron:
-  id:                        2
-  login:                     aaron
-  email:                     aaron@example.com
-  salt:                      da4b9237bacccdf19c0760cab7aec4a8359010b0 # SHA1('1')
-  crypted_password:          58522aff62ade8140e33ee2517837c0050636923 # 'monkey'
-  created_at:                <%= 1.days.ago.to_s :db %>
-  remember_token_expires_at: 
-  remember_token:            
-  security_question:         question
-  security_answer:           answer
 
-
-old_password_holder:
+carolyn:
   id:                        3
-  login:                     old_password_holder
-  email:                     salty_dog@example.com
-  salt:                      7e3041ebc2fc05a40c60028e2c4901a81035d3cd
-  crypted_password:          00742970dc9e6319f8019fd54864d3ea740f04b1 # test
-  created_at:                <%= 1.days.ago.to_s :db %>
+  login:                     carolyn
+  email:                     carolyn@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
+  created_at:                <%= 5.days.ago.to_s :db  %>
+  remember_token_expires_at: <%= 1.days.from_now.to_s %>
+  remember_token:            77de68daecd823babbb58edb1c8e14d7106e83bb
   security_question:         question
   security_answer:           answer
 
-
-
-admin:
+gayle:
   id: 4
-  login: admin
-  email: admin@example.com
+  login: gayle
+  email: gayle@example.com
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
-  # activation_code: adminscode # only if you're activating new signups
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
+
+sue:
+  id: 5
+  login: sue
+  email: sue@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
+
+gary:
+  id: 6
+  login: gary
+  email: gary@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
+
+michele:
+  id: 7
+  login: michele
+  email: michele@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
+
+jeanine:
+  id: 8
+  login: jeanine
+  email: jeanine@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>
   roles: admin
   security_question:         question

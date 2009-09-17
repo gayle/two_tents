@@ -1,9 +1,24 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+space:
+  id: 1
+  familyname: space
 
-smith:
-        familyname:     smith
-# one:
-#   column: value
-#
-# two:
-#   column: value
+macdonald:
+  id: 2
+  familyname: space
+
+craig:
+  id: 3
+  familyname: craig
+
+cupples:
+  id: 4
+  familyname: cupples
+  
+wortman:
+  id: 5
+  familyname: wortman
+
+lewis_arnold:
+  id: 6
+  familyname: lewis
+  

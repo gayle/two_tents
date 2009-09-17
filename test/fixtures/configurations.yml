@@ -1,7 +1,3 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  year: 1
-
-two:
-  year: 1
+two_thousand_ten:
+  year: 2010
+  dates: July 21st - 25th
