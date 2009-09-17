@@ -1,9 +1,5 @@
 class AuditTrail < ActiveRecord::Base
-  def initialize(m, l)
-    super(:message => m, :link => l)
-  end
-
   def self.audit(message, link = nil)
-    new(message, link).save!
+    AuditTrail.new(:message => message, :link=>link).save!
   end
 end
