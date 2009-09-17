@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.landing '/', :controller => 'content', :action => 'landing'
   map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
   map.resources :families
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
