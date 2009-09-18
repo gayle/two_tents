@@ -13,29 +13,29 @@
   </thead>
   <tbody>
 
-    <%= will_paginate @participants -%><br/>
-    <% @participants.each do |p| %>
-      <tr>
-  	<td><%=h p.id %>
-  	<td><%=h p.fullname %></td>
-        <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
-        <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
-	<td>
+  <%= will_paginate @participants -%><br/>
+  <% @participants.each_with_index do |p, row| %>
+    <tr class="<%= ContentHelper.rowstyle(row) %>">
+      <td><%=h p.id %>
+  	  <td><%=h p.fullname %></td>
+      <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+      <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
+	  <td>
           <% form_for p do |form|%>
             <div id="<%="#{p.class}_#{p.id}_health" -%>">
               <%= render :partial => "flipflop", :locals => {:type => "health", :p => p, :form => form} -%>
           </div>
             <%= form.submit 'Change', :class => :flipflop %>
           <% end %>
-	</td>
-	<td>
+	  </td>
+	  <td>
           <% form_for p do |form|%>
             <div id="<%="#{p.class}_#{p.id}_liability" -%>">
               <%= render :partial => "flipflop", :locals => {:type => "liability",  :p => p, :form => form} -%>
             </div>
             <%= form.submit 'Change', :class => :flipflop %>
           <% end %>
-	</td>
+	  </td>
       </tr>
     <% end %>
   </tbody>

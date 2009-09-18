@@ -15,8 +15,8 @@
     <th>Delete</th>
   </tr>
 
-<% @families.each do |family| %>
-  <tr>
+<% @families.each_with_index do |family, row| %>
+  <tr class="<%= ContentHelper.rowstyle(row) %>">
     <td><%= family.familyname -%></td>
     <td><%= family.principal -%></td>
     <% %w(haswarmfuzzy photolist infosheet).each do |what|-%>

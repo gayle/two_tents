@@ -12,8 +12,8 @@
   </tr>
   </thead>
   <tbody>
-<% @users.each do |user| %>
-  <tr>
+<% @users.each_with_index do |user, row| %>
+  <tr class="<%= ContentHelper.rowstyle(row) %>">
 	<td><%=h user.participant.fullname%>
 	<td><%=h user.login%></td>
 	<td><%=h user.email%></td>
