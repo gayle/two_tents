@@ -2,8 +2,6 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:edit, :update, :destroy, :answer_question, :reset_password]
 
   require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
-#  require_role "admin", :for_all_except => []
-#  require_role "admin", :for => [:new, :create, :destroy]
 #    require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
 
   def new
@@ -27,12 +25,12 @@ class UsersController < ApplicationController
       # protection if visitor resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset session
-      AuditTrail.audit("User #{@user.login} created by #{current_user.login}", user_url(@user))
-      flash[:notice] = "#{@user.participant.fullname} registered as a staff member."
+      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", user_url(@user))
+      flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as a staff member."
       redirect_to :action => 'index'
     else
       flash[:error]  = @user.errors.full_messages
-      AuditTrail.audit("Creation of user #{@user.login} failed, attempted by #{current_user.login}")
+      AuditTrail.audit("Creation of user '#{@user.login}' failed, attempted by user #{current_user.login}")
       @participants = Participant.find_non_staff_participants
       render :action => 'new'
     end
@@ -67,8 +65,8 @@ class UsersController < ApplicationController
         User.transaction do
           @user.update_attributes!(params[:user])
           @user && @user.save!
-          AuditTrail.audit("User #{@user.login} updated by #{current_user.login}", edit_user_url(@user))
-          flash[:notice] = "#{@user.participant.fullname} updated."
+          AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) updated by user #{current_user.login}", edit_user_url(@user))
+          flash[:notice] = "User '#{@user.participant.fullname}' (#{@user.login}) updated."
           redirect_to :action => 'index'
         end
       rescue
@@ -84,8 +82,8 @@ class UsersController < ApplicationController
 
   def destroy
     if (@user.destroy)
-      AuditTrail.audit("Family #{@family.familyname} removed by #{current_user.login}")
-      flash[:notice] = "User #{@user.login} destroyed"
+      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) removed by user #{current_user.login}")
+      flash[:notice] = "User '#{@user.participant.fullname}' (#{@user.login}) destroyed"
     else
       flash[:error] = "Failed to destroy #{@user.login}"
     end
