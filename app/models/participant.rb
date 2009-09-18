@@ -9,6 +9,10 @@ class Participant < ActiveRecord::Base
     "#{firstname} #{lastname}"
   end
 
+  def list_name
+    "#{lastname}, #{firstname}"
+  end
+
   def self.find_non_staff_participants
     Participant.all.reject do |p|
       p.user
