@@ -6,6 +6,7 @@
 <% else %>
 <table>
   <tr>
+    <th></th>
     <th>Family Name</th>
     <th>Contact Person</th>
     <th>Has Warm Fuzzy</th>
@@ -17,6 +18,7 @@
 
 <% @families.each_with_index do |family, row| %>
   <tr class="<%= ContentHelper.rowstyle(row) %>">
+    <td><%= h row+1 -%></td>
     <td><%= family.familyname -%></td>
     <td><%= family.principal -%></td>
     <% %w(haswarmfuzzy photolist infosheet).each do |what|-%>
