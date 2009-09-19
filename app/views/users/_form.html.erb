@@ -1,52 +1,60 @@
+<div class="data-entry">
+  Pick A Person
+    <div class="data-entry-form">
 
-If the new staff member is already a participant, please select them from the list.
-<br/>
-<br/>
-If the new staff member is not already a participant, first create a new participant and then select them from this list.
-<br />
-<br />
-<%= form.select("participant",
-      @participants.collect{ |p| [p.list_name, p.id] }.sort,
-      { :include_blank => "None", :selected => @participant || "" } ) %>
-  <%= link_to "Create New Participant", new_from_user_participants_path %>
-<br />
+    <%= form.select("participant",
+          @participants.collect{ |p| [p.list_name, p.id] }.sort,
+          { :include_blank => "-- Choose from the List --", :selected => @participant || "" } ) %>
+    - OR -
+      <%= link_to "Create a New Participant", new_from_user_participants_path %>
+    <br />
 
-<hr />
-Then enter staff-specific information:
-<% @user.password = @user.password_confirmation = nil %>
+    <% @user.password = @user.password_confirmation = nil %>
+    </div>
+</div>
 
-<p><%= label_tag 'login' %><br/>
-<%= form.text_field :login %></p>
+<div class="data-entry">
+  Login Information:
+    <div class="data-entry-form">
+    <p><%= label_tag 'login' %><br/>
+    <%= form.text_field :login %></p>
+    </div>
 
-<p><%= label_tag 'email' %><br/>
-<%= form.text_field :email %></p>
+    <div class="data-entry-form">
+    <% if show_password %>
+    <p><%= label_tag 'password' %><br/>
+    <%= form.password_field :password %></p>
 
-<p><%= label_tag 'mobilephone' %><br/>
-<%= form.text_field :mobilephone %></p>
+    <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
+    <%= form.password_field :password_confirmation %></p>
+    <% end %>
+    </div>
 
-<p><%= label_tag 'workphone' %><br/>
-<%= form.text_field :workphone %></p>
+    <div class="data-entry-form">
+    <p><%= label_tag 'security_question'%><br/>
+    <%= form.text_field :security_question %></p>
 
-<p><%= label_tag 'position' %><br/>
-<%= form.text_field :position %></p>
+    <p><%= label_tag 'security_answer'%><br/>
+    <%= form.text_field :security_answer %></p>
+  </div>
+</div>
 
-<!--
-<p><%= label_tag 'photourl' %><br/>
-<%= form.text_field :photourl %></p>
 
-<p><%= label_tag 'head shot' -%><br />
-<%= form.file_field :head_shot -%></p>
--->
-<% if show_password %>
-<p><%= label_tag 'password' %><br/>
-<%= form.password_field :password %></p>
+<div class="data-entry">
+  Additional Information:
+  <div class="data-entry-form">
+    <p><%= label_tag 'position(s) on staff' %><br/>
+    <%= form.text_field :position %></p>
 
-<p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
-<%= form.password_field :password_confirmation %></p>
-<% end %>
+    <p><%= label_tag 'email' %><br/>
+    <%= form.text_field :email %></p>
 
-<p><%= label_tag 'security_question'%><br/>
-<%= form.text_field :security_question %></p>
+    <p><%= label_tag 'home phone' %><br/>
+    <%= form.text_field :workphone %></p>
 
-<p><%= label_tag 'security_answer'%><br/>
-<%= form.text_field :security_answer %></p>
+    <p><%= label_tag 'cell phone' %><br/>
+    <%= form.text_field :mobilephone %></p>
+
+  </div>
+</div>
+
