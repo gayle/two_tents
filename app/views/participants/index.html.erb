@@ -14,29 +14,18 @@
 
   <%= will_paginate @participants -%><br/>
   <% @participants.each_with_index do |p, row| %>
+    <% form_for p do |form|%>
     <tr class="<%= ContentHelper.rowstyle(row) %>">
       <td><%=h row+1 %>
   	  <td><%=h p.list_name %></td>
       <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
       <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
-	  <td>
-          <% form_for p do |form|%>
-            <div id="<%="#{p.class}_#{p.id}_health" -%>">
-              <%= render :partial => "flipflop", :locals => {:type => "health", :p => p, :form => form} -%>
-          </div>
-            <%= form.submit 'Change', :class => :flipflop %>
-          <% end %>
-	  </td>
-	  <td>
-          <% form_for p do |form|%>
-            <div id="<%="#{p.class}_#{p.id}_liability" -%>">
-              <%= render :partial => "flipflop", :locals => {:type => "liability",  :p => p, :form => form} -%>
-            </div>
-            <%= form.submit 'Change', :class => :flipflop %>
-          <% end %>
-	  </td>
+	  <!--<td><%= form.submit 'Change', :class => :flipflop %></td>-->
+      <td><%= form.check_box :health -%></td>
+      <td><%= form.check_box :liability -%></td>
       </tr>
     <% end %>
+  <% end %>
   </tbody>
 </table>
 <%= will_paginate @participants -%>
