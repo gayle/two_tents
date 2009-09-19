@@ -273,11 +273,12 @@ tr.odd {
 }
 
 img.pictureframe {
+    margin:11px;
     padding:2px;
     border-left: 4px solid #FFFFFF;
     border-top: 4px solid #FFFFFF;
-    border-right: 4px solid #DCDCDC;
-    border-bottom: 4px solid #BEBEBE;
+    border-right: 5px solid #DCDCDC;
+    border-bottom: 5px solid #BEBEBE;
     background-color:#696969;
 }
 
