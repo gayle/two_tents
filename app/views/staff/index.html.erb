@@ -3,7 +3,7 @@
 <%= will_paginate @audits -%><br/>
 <table>
     <% @audits.each do |a| -%>
-      <tr><td>(<%= h(a.created_at.strftime('%b %d, %Y %I:%M %p')) %>)<%= a.message -%>
+      <tr><td>(<%= h(a.created_at.strftime('%b %d, %Y %I:%M %p')) %>) <%= a.message -%>
           <%= link_to "(details)", a.link unless a.link.nil? -%></td>
       </tr>
     <% end -%>
