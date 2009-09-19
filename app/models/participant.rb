@@ -23,4 +23,8 @@ class Participant < ActiveRecord::Base
     errors.add_to_base "Cannot delete a participant who is a staff user. If you really wish to delete this participant, delete the staff user first." and
       return false if self.user
   end
+
+  def <=>(other_participant)
+    list_name <=> other_participant.list_name
+  end
 end
