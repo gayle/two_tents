@@ -28,7 +28,9 @@
         <p class="date"><%= "#{Configuration.current.dates}, #{Configuration.current.year}" %></p>
         <p class="location"><a href="#" title="Map of Widewater Retreat & Ministry Center">Widewater Retreat & Ministry Center. Liberty Center, OH</a></p>
       </div>
-      <div class="registration_stats">Registrations To Date: <br /> <%= registration_stats %></div>
+      <% if logged_in? %>
+        <div class="registration_stats">Registrations To Date: <br /> <%= registration_stats %></div>
+      <% end %>
     </div>
 
     <div id="content">
