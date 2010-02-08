@@ -41,18 +41,20 @@ class ParticipantsController < ApplicationController
 
   def create_from_user
     @family = Family.find(params[:participant][:family]) rescue nil
-    params[:participant][:family] = @family
-    @participants = Participant.new(params[:participant])
+   # params[:participant][:family] = @family
+    @participant = Participant.new(params[:participant])
 
     respond_to do |format|
-      if @participants.save
-        AuditTrail.audit("Participant #{@participants.fullname} created by #{current_user.login}", participant_url(@participants))
-        flash[:notice] = 'Participants was successfully created.'
-        format.html { redirect_to new_user_path(:participant => @participants) }
-        format.xml  { render :xml => @participants, :status => :created, :location => @participants }
+      if @participant.save
+        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", participant_url(@participant))
+        flash[:notice] = "Participant #{@participant.fullname} was successfully created."
+        format.html { redirect_to new_user_path(:participant => @participant) }
+        puts "DBG redirecting to #{new_user_path(:participant => @participant)}"
+        format.xml  { render :xml => @participant, :status => :created, :location => @participant }
       else
+        puts "DBG new"
         format.html { render :action => "new" }
-        format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
   end

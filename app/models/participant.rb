@@ -14,9 +14,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.find_non_staff_participants
-    Participant.all.reject do |p|
-      p.user
-    end
+    Participant.all.reject { |p| p.user }.sort
   end
 
   def validate_no_dependents
