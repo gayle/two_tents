@@ -18,4 +18,8 @@ class Family < ActiveRecord::Base
   def members
     participants
   end
+
+  def member_count
+    members.size
+  end
 end

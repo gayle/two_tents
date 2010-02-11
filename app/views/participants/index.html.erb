@@ -7,7 +7,7 @@
       <th>Edit</th>
       <th>Delete</th>
       <th>Health Form</th>
-      <th>Liability Form</th>      
+      <th>Liability Form</th>
     </tr>
   </thead>
   <tbody>
@@ -19,7 +19,14 @@
       <td><%=h row+1 %>
   	  <td><%=h p.list_name %></td>
       <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
-      <td><% if p.user.nil? || !p.user.administrator?  %><%= link_to 'Destroy', p, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %><% end %></td>
+      <td><% if p.can_delete?
+                confirm_msg = p.only_member_of_associated_family? ?
+                  "This is the last person in '#{p.family.familyname}' family.
+                   Are you sure you want to delete the participant & the family?" : 'Are you sure?'
+           %>
+            <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+          <% end %>
+      </td>
 	  <!--<td><%= form.submit 'Change', :class => :flipflop %></td>-->
       <td><%= form.check_box :health -%></td>
       <td><%= form.check_box :liability -%></td>
