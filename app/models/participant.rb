@@ -5,6 +5,8 @@ class Participant < ActiveRecord::Base
 
   before_destroy :validate_no_dependents
 
+  validates_presence_of :birthdate
+
   def fullname
     "#{firstname} #{lastname}"
   end
