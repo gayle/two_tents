@@ -15,6 +15,20 @@ class Participant < ActiveRecord::Base
     "#{lastname}, #{firstname}"
   end
 
+  def birthdate_string
+    birthdate.strftime('%m/%d/%Y') if birthdate
+  end
+
+  def birthdate_string=(bd_str)
+    self.birthdate = Date.parse(bd_str)
+  rescue ArgumentError
+    @birthdate_invalid = true
+  end
+
+  def validate
+    errors.add(:birthdate, "is invalid") if @birthdate_invalid
+  end
+  
   def validate_no_dependents
     errors.add_to_base "Cannot delete a participant who is a staff user. If you really wish to delete this participant, delete the staff user first." and
       return false if self.user
