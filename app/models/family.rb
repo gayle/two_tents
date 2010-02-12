@@ -8,9 +8,28 @@ class Family < ActiveRecord::Base
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
 
-  def participant_attributes=(participants_attributes)
-    participants_attributes.each do |attributes|
-      participants << Participant.new(attributes);
+  def new_participant_attributes=(participant_attributes)
+    participant_attributes.each do |attributes|
+      puts "\nare they blank?\nDBG attributes=#{attributes.inspect}"
+      participants.build(attributes) if !attributes_blank?(attributes)
+    end
+  end
+
+  def existing_participant_attributes=(participant_attributes)
+    participants.reject(&:new_record?).each do |participant|
+      attributes = participant_attributes[participant.id.to_s]
+      attributes_blank?(attributes)
+      if attributes
+        participant.attributes = attributes
+      else
+        participant.delete(participant)
+      end
+    end
+  end
+
+  def save_participants
+    participants.each do |p|
+      p.save(false)
     end
   end
 
@@ -22,4 +41,16 @@ class Family < ActiveRecord::Base
   def member_count
     members.size
   end
+
+  private
+
+  def attributes_blank?(attributes)
+    # check a few that should never be blank
+    return (attributes[:firstname].blank? and
+            attributes[:lastname].blank? and
+            attributes[:birthdate].blank?)
+
+    # maybe expand this to check for each attribute, is it blank or 0?
+  end
+
 end

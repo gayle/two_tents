@@ -41,10 +41,10 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    @other_family_members = @family.participants
-    @other_family_members = @other_family_members.sort_by{|a|
-      [a.main_contact.to_s, a.birthdate]}
-    @main_family_contact=@other_family_members.pop
+#    @other_family_members = @family.participants
+#    @other_family_members = @other_family_members.sort_by{|a|
+#      [a.main_contact.to_s, a.birthdate]}
+#    @main_family_contact=@other_family_members.pop
   end
 
   # POST /families
@@ -56,10 +56,12 @@ class FamiliesController < ApplicationController
       if @family.save
         AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
 
-        flash[:notice] = 'Families was successfully created.'
+        flash[:notice] = "Family #{@family.familyname} was successfully created."
         format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
       else
+        logger.error ("Unable to save family #{@family.familyname}")
+        flash[:error] = "Unable to save family #{@family.familyname}"
         format.html { render :action => "new" }
         format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
       end
@@ -69,6 +71,7 @@ class FamiliesController < ApplicationController
   # PUT /families/1
   # PUT /families/1.xml
   def update
+    params[:family][:participants] ||= []
     @family = Family.find(params[:id])
 
     respond_to do |format|
@@ -116,10 +119,11 @@ class FamiliesController < ApplicationController
   # DELETE /families/1.xml
   def destroy
     @family = Family.find(params[:id])
+    family_name = @family.familyname
     @family.destroy
 
-    AuditTrail.audit("Family #{@family.familyname} destroyed by #{current_user.login}")
-    flash[:notice] = "Family #{@family.familyname} destroyed"
+    AuditTrail.audit("Family #{family_name} deleted by #{current_user.login}")
+    flash[:notice] = "Family #{family_name} deleted"
     respond_to do |format|
       format.html { redirect_to(families_url) }
       format.xml  { head :ok }
