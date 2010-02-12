@@ -84,11 +84,13 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    user_full_name = @user.participant.fullname
+    user_login = @user.login
     if (@user.destroy)
-      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) removed by user #{current_user.login}")
-      flash[:notice] = "User '#{@user.participant.fullname}' (#{@user.login}) destroyed"
+      AuditTrail.audit("User '#{user_full_name}' (#{user_login}) removed by user #{current_user.login}")
+      flash[:notice] = "User '#{user_full_name}' (#{user_login}) deleted"
     else
-      flash[:error] = "Failed to destroy #{@user.login}"
+      flash[:error] = "Failed to destroy #{user_login}"
     end
     redirect_to :users
   end
