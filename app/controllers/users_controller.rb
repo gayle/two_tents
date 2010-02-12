@@ -7,7 +7,8 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @participants = Participant.find_non_staff_participants
-    @participant = params[:participant].to_i
+    @participant = Participant.find(params[:participant]) if params[:participant]
+    puts "DBG @participant=#{@participant}"
   end
 
   def create
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
   def edit
     @participant = @user.participant
     @participants = Participant.find_non_staff_participants
-    @participants.unshift(@user.participant)
+    @participants << @participant
   end
 
   def update
