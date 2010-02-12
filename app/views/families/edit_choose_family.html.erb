@@ -1,0 +1,7 @@
+
+
+<% @families.each do |f| %>
+    radio_button("post", "category", "rails")
+    
+    <br /><%= "#{f.familyname}" %>
+<% end %>

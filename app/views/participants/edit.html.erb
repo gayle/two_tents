@@ -1,5 +1,11 @@
 <h1>Editing participants</h1>
 
+<%= link_to 'Add This Person To An Existing Family',
+            url_for(:controller => :families, :action => :edit_choose_family, :participant => @participant) %> |
+
+<%= link_to 'Add This Person To A New Family', @participant %> 
+
+
 <% form_for(@participant) do |f| %>
   <%= render :partial => f%>
   <p>
