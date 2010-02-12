@@ -41,6 +41,10 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
+    @other_family_members = @family.participants
+    @other_family_members = @other_family_members.sort_by{|a|
+      [a.main_contact.to_s, a.birthdate]}
+    @main_family_contact=@other_family_members.pop
   end
 
   # POST /families
