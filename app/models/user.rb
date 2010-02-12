@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   def administrator?
-    login == "administrator"
+    login == "administrator" or login == "admin"
   end
 
   def authorized_for_listing?(param_id)

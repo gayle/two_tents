@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_filter :find_user, :only => [:edit, :update, :destroy, :answer_question, :reset_password]
 
-  require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
+  before_filter :login_required, :except => [:reset_login, :enter_login, :answer_question, :change_password]
+  
+#  require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
 #    require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
 
   def new
@@ -10,7 +12,7 @@ class UsersController < ApplicationController
     @participant = Participant.find(params[:participant]) if params[:participant]
     puts "DBG @participant=#{@participant}"
   end
-
+ 
   def create
     if not params[:user][:participant].blank?
       @participant = Participant.find(params[:user][:participant])
