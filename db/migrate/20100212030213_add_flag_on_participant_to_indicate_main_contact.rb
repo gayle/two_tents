@@ -4,6 +4,6 @@ class AddFlagOnParticipantToIndicateMainContact < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :participants, main_contact
+    remove_column :participants, :main_contact
   end
 end
