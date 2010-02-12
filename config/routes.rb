@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.staff '/staff', :controller => 'staff', :action => 'index'
   map.edit_choose_family '/edit_choose_family', :controller => 'families', :action => 'edit_choose_family'
+  map.edit_choose_family '/update_add_participant', :controller => 'families', :action => 'update_add_participant'
   map.resources :users,
                 :collection => { :enter_login => :post },
                 :member => { :get_question => :get, :answer_question => :post, :show_password => :get, :change_password => :put }

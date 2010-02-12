@@ -108,9 +108,11 @@ class FamiliesController < ApplicationController
   end
 
   def update_add_participant
-    @participant = params[:participant]
-    @family = params[:family]
+    @participant = Participant.find(params[:participant_id])
+    @family = Family.find(params[:family][:id])
     @family.participants ||= []
+    @family.participants << @participant
+    redirect_to participants_url
   end
   
   def family_registration

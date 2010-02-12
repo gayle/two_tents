@@ -1,7 +1,11 @@
+<% form_tag(url_for(:action => :update_add_participant)) do %>
 
-
-<% @families.each do |f| %>
-    radio_button("post", "category", "rails")
-    
-    <br /><%= "#{f.familyname}" %>
+  <%= hidden_field_tag "participant_id", @participant.id %>
+  <% @families.each do |f| %>
+    <br />
+    <%= radio_button("family", "id", "#{f.id}") %>
+    <%= "#{f.familyname}" %>
+  <% end %>
+  <br />
+  <%= submit_tag "OK" %>
 <% end %>
