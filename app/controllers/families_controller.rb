@@ -1,4 +1,6 @@
 class FamiliesController < ApplicationController
+  include FamiliesHelper # I shouldn't have to do this? 
+  
   before_filter :login_required
 
   # GET /families
@@ -27,7 +29,9 @@ class FamiliesController < ApplicationController
   # GET /families/new
   # GET /families/new.xml
   def new
+    main_family_contact = Participant.new(:main_contact => true)
     @family = Family.new
+    @family.participants = [main_family_contact]
     3.times do
       @family.participants << Participant.new
     end
@@ -41,10 +45,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-#    @other_family_members = @family.participants
-#    @other_family_members = @other_family_members.sort_by{|a|
-#      [a.main_contact.to_s, a.birthdate]}
-#    @main_family_contact=@other_family_members.pop
+    participants = @family.participants.sort_by{|a| a.birthdate}
+    @family.participants = move_main_contact_to_front(participants)
+
   end
 
   # POST /families
