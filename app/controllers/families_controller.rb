@@ -77,7 +77,7 @@ class FamiliesController < ApplicationController
         participants = []
         # Doesn't seem like I should have to do this.
         # See http://railscasts.com/episodes/75-complex-forms-part-3
-        params[:family][:existing_participant_attributes] ||= []
+        params[:family][:existing_participant_attributes] ||= {}
         params[:family][:existing_participant_attributes].each_key do |k|
           p = Participant.find(k.to_i)
           participants << p if p
