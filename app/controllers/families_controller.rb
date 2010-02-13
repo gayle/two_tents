@@ -71,18 +71,40 @@ class FamiliesController < ApplicationController
     @family = Family.new(params[:family])
 
     respond_to do |format|
-      if @family.save
-        AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
 
-        flash[:notice] = "Family #{@family.familyname} was successfully created."
-        format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
-        format.xml  { render :xml => @family, :status => :created, :location => @family }
-      else
-        puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
-        logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
-        flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+      Family.transaction do
+# TODO put if's around this
+        participants = []
+        # Doesn't seem like I should have to do this.
+        # See http://railscasts.com/episodes/75-complex-forms-part-3
+        params[:family][:existing_participant_attributes] ||= []
+        params[:family][:existing_participant_attributes].each_key do |k|
+          p = Participant.find(k.to_i)
+          participants << p if p
+        end
+
+        params[:family][:new_participant_attributes] ||= []
+        params[:family][:new_participant_attributes].each do |attributes|
+          if !attributes_blank?(attributes)
+            p = Participant.new(attributes)
+            participants << p
+          end
+        end
+
+        @family.participants = participants
+        if @family.save
+          AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
+
+          flash[:notice] = "Family #{@family.familyname} was successfully created."
+          format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
+          format.xml  { render :xml => @family, :status => :created, :location => @family }
+        else
+          puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
+          logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
+          flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

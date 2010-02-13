@@ -1,4 +1,6 @@
 class Family < ActiveRecord::Base
+  include FamiliesHelper
+  
   has_many :participants
   accepts_nested_attributes_for :participants
 
@@ -12,7 +14,7 @@ class Family < ActiveRecord::Base
   # see http://railscasts.com/episodes/75-complex-forms-part-3
   def new_participant_attributes=(participant_attributes)
     participant_attributes.each do |attributes|
-      puts "\nare they blank?\nDBG attributes=#{attributes.inspect}"
+      #puts "\nare they blank?\nDBG #{attributes_blank?(attributes)} DBG attributes=#{attributes.inspect}"
       participants.build(attributes) if !attributes_blank?(attributes)
     end
   end
@@ -21,8 +23,6 @@ class Family < ActiveRecord::Base
   def existing_participant_attributes=(participant_attributes)
     participants.reject(&:new_record?).each do |participant|
       attributes = participant_attributes[participant.id.to_s]
-      puts "DBG attributes=#{attributes.inspect}"
-      puts "DBG blank=#{attributes_blank?(attributes)}"
       if attributes and not attributes_blank?(attributes)
         participant.attributes = attributes
       else
@@ -47,14 +47,4 @@ class Family < ActiveRecord::Base
   end
 
   private
-
-  def attributes_blank?(attributes)
-    # check a few that should never be blank
-    return (attributes[:firstname].blank? and
-            attributes[:lastname].blank? and
-            attributes[:birthdate].blank?)
-
-    # maybe expand this to check for each attribute, is it blank or 0?
-  end
-
 end

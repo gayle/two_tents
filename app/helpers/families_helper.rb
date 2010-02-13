@@ -11,4 +11,13 @@ module FamiliesHelper
     main_family_contact=participants.pop
     participants.unshift(main_family_contact)
   end
+
+  def attributes_blank?(attributes)
+    # check a few that should never be blank
+    return (attributes[:firstname].blank? and
+            attributes[:lastname].blank? and
+            attributes[:birthdate].blank?)
+
+    # maybe expand this to check for each attribute, is it blank or 0?
+  end
 end
