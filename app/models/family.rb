@@ -3,11 +3,13 @@ class Family < ActiveRecord::Base
   accepts_nested_attributes_for :participants
 
   has_attached_file :photograph
+  validates_associated :participants
 
   def familyname
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
 
+  # see http://railscasts.com/episodes/75-complex-forms-part-3
   def new_participant_attributes=(participant_attributes)
     participant_attributes.each do |attributes|
       puts "\nare they blank?\nDBG attributes=#{attributes.inspect}"
@@ -15,11 +17,13 @@ class Family < ActiveRecord::Base
     end
   end
 
+  # see http://railscasts.com/episodes/75-complex-forms-part-3
   def existing_participant_attributes=(participant_attributes)
     participants.reject(&:new_record?).each do |participant|
       attributes = participant_attributes[participant.id.to_s]
-      attributes_blank?(attributes)
-      if attributes
+      puts "DBG attributes=#{attributes.inspect}"
+      puts "DBG blank=#{attributes_blank?(attributes)}"
+      if attributes and not attributes_blank?(attributes)
         participant.attributes = attributes
       else
         participant.delete(participant)

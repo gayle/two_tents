@@ -29,9 +29,17 @@ class FamiliesController < ApplicationController
   # GET /families/new
   # GET /families/new.xml
   def new
-    main_family_contact = Participant.new(:main_contact => true)
+    if params[:participant]
+      @participant = Participant.find(params[:participant])
+      @participant.main_contact = true
+    else
+      @participant = Participant.new(:main_contact => true)
+    end
+
     @family = Family.new
-    @family.participants = [main_family_contact]
+    @family.participants = [@participant]
+
+    # give some extra blanks
     3.times do
       @family.participants << Participant.new
     end
@@ -70,8 +78,9 @@ class FamiliesController < ApplicationController
         format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
       else
-        logger.error ("Unable to save family #{@family.familyname}")
-        flash[:error] = "Unable to save family #{@family.familyname}"
+        puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
+        logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
+        flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
         format.html { render :action => "new" }
         format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
       end
@@ -81,8 +90,11 @@ class FamiliesController < ApplicationController
   # PUT /families/1
   # PUT /families/1.xml
   def update
-    params[:family][:participants] ||= []
+    params[:family][:existing_participant_attributes] ||= []
     @family = Family.find(params[:id])
+    # !!! I'm not sure why I need to reload here, but if I don't, then the
+    # !!! associated .participants are nil.
+    @family.reload
 
     respond_to do |format|
       if @family.update_attributes(params[:family])
@@ -103,6 +115,10 @@ class FamiliesController < ApplicationController
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+        message = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
+        flash[:error] = message
+        logger.error(message)
+        puts(message)
       end
     end
   end

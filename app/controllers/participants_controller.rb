@@ -64,17 +64,20 @@ class ParticipantsController < ApplicationController
   def create
     @family = Family.find(params[:participant][:family]) rescue nil
     params[:participant][:family] = @family
-    @participants = Participant.new(params[:participant])
+    @participant = Participant.new(params[:participant])
 
     respond_to do |format|
-      if @participants.save
-        AuditTrail.audit("Participant #{@participants.fullname} created by #{current_user.login}", edit_participant_url(@participants))
-        flash[:notice] = 'Participants was successfully created.'
-        format.html { params[:commit] == 'Save' ? redirect_to(participants_path) : redirect_to(new_participant_path) }
-        format.xml  { render :xml => @participants, :status => :created, :location => @participants }
+      if @participant.save
+        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
+        flash[:notice] = "Participant #{@participant.fullname} was successfully created."
+        format.html { redirect_to new_user_path(:participant => @participant) }
       else
+        msg = @participant.errors.join(", ")
+        logger.error msg
+        puts msg
+        flash[:error] = msg
         format.html { render :action => "new" }
-        format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -151,9 +154,4 @@ class ParticipantsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  private
-    
-  
-  
 end

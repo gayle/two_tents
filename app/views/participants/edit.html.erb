@@ -3,7 +3,8 @@
 <%= link_to 'Add This Person To An Existing Family',
             url_for(:controller => :families, :action => :edit_choose_family, :participant => @participant) %> |
 
-<%= link_to 'Add This Person To A New Family', @participant %> 
+<%= link_to 'Add This Person To A New Family',
+            url_for(:controller => :families, :action => :new, :participant => @participant) %>
 
 
 <% form_for(@participant) do |f| %>
