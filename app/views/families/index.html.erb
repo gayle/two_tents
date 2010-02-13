@@ -9,8 +9,6 @@
     <th></th>
     <th>Family Name</th>
     <th>Contact Person</th>
-    <th>Info Sheet</th>
-    <th>Payment</th>
     <th>Edit</th>
     <th>Delete</th>
   </tr>
@@ -21,8 +19,7 @@
     <td><%= h row+1 -%></td>
     <td><%= family.familyname -%></td>
     <td><%= family.principal -%></td>
-    <td><%= form.check_box :infosheet -%></td>
-    <td><%= form.check_box :infosheet -%></td>
+<!--    <td><%= form.check_box :infosheet -%></td> -->
 <!--    <td><%= form.submit 'Update' -%></td> -->
     <!--<td><%= link_to 'Show', family_path(family) -%>-->
     <td><%= link_to 'Edit', edit_family_path(family), :class => 'edit' %></td>
