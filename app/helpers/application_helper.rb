@@ -2,7 +2,10 @@
 module ApplicationHelper
   def registration_stats
     num_families = Family.find(:all).size
-    num_participants = Participant.find(:all).size
+    participants = Participant.find(:all).reject {|p|
+      p.user and p.user.administrator?
+    }
+    num_participants = participants.size
     "#{num_families} families, #{num_participants} participants"
   end
   
