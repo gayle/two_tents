@@ -95,6 +95,12 @@ body.homepage #container {
     color:#2A1A05;
   }
 
+  #header .theme {
+      text-align:right;
+      font-size:1.25em;
+      margin-bottom:0.25em;
+  }
+
   #header .date {
     font-size:0.9em;
     text-align:right;

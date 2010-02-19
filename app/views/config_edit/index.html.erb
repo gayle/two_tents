@@ -2,7 +2,7 @@
 <% form_for :config, @config, :url => {:action => 'update'} do |form| -%>
   <table>
     <tr>
-      <th>Year</th><th>Date Description</th>
+      <th>Year</th><th>Date Description</th><th>Theme</th>
     </tr>
     <tr>
       <td>
@@ -10,6 +10,10 @@
       </td>
       <td>
         <%= form.text_field "dates" -%>
+      </td>
+      <td>
+        <%= form.text_field "theme" -%>
+      </td>
     </tr>
     </table>
   <%= form.submit 'Save' -%>
