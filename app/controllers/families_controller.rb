@@ -55,6 +55,7 @@ class FamiliesController < ApplicationController
     @family = Family.find(params[:id])
     participants = @family.participants.sort_by{|a| a.birthdate}
     @family.participants = move_main_contact_to_front(participants)
+    @family.participants << Participant.new
 
   end
 
