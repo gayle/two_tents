@@ -46,5 +46,12 @@ class Family < ActiveRecord::Base
     members.size
   end
 
+  def main_contact_name
+    contact = participants.select {|p|
+      p.main_contact?
+    }.first
+    contact ? contact.firstname : ""
+  end
+  
   private
 end
