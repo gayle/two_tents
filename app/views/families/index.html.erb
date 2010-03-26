@@ -13,7 +13,7 @@
     <th>Delete</th>
   </tr>
 
-<% @families.each_with_index do |family, row| %>
+<% @families.sort_by {|f| f.familyname}.each_with_index do |family, row| %>
   <% form_for family do |form| -%>
   <tr class="<%= ContentHelper.rowstyle(row) %>">
     <td><%= h row+1 -%></td>
