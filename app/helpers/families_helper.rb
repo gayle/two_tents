@@ -10,6 +10,7 @@ module FamiliesHelper
     participants = participants.sort_by{|a| a.main_contact.to_s}
     main_family_contact=participants.pop
     participants.unshift(main_family_contact)
+    participants
   end
 
   def attributes_blank?(attributes)
