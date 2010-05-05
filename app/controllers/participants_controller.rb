@@ -57,6 +57,10 @@ class ParticipantsController < ApplicationController
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
+  rescue Exception => e
+    logger.error "ERROR creating from user"
+    logger.error e.backtrace.join("\n\t")
+    raise e    
   end
 
   # POST /participants
@@ -80,6 +84,10 @@ class ParticipantsController < ApplicationController
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
+  rescue Exception => e
+    logger.error "ERROR creating family \n#{@family.inspect} \n participant \n #{@participant.inspect}"
+    logger.error e.backtrace.join("\n\t")
+    raise e
   end
 
   # PUT /participants/1
@@ -108,6 +116,10 @@ class ParticipantsController < ApplicationController
         format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
       end
     end
+  rescue Exception => e
+    logger.error "ERROR updating family \n#{@family.inspect} \n participant \n #{@participant.inspect}"
+    logger.error e.backtrace.join("\n\t")
+    raise e
   end
 
   # DELETE /participants/1

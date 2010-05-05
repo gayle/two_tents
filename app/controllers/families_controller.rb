@@ -53,7 +53,7 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    participants = @family.participants.sort_by{|a| a.birthdate}
+    participants = @family.participants.sort_by{|a| a.birthdate || "" }
     @family.participants = move_main_contact_to_front(participants)
     @family.participants << Participant.new
 
@@ -102,12 +102,16 @@ class FamiliesController < ApplicationController
         else
           puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
           logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
-          flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
+          flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(', ')}"
           format.html { render :action => "new" }
-          format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+          # format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
         end
       end
     end
+  rescue Exception => e
+    logger.error "ERROR creating family \n#{@family.inspect}}"
+    logger.error e.backtrace.join("\n\t")
+    raise e
   end
 
   # PUT /families/1
@@ -137,13 +141,17 @@ class FamiliesController < ApplicationController
         end
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+        # format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
         message = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
         flash[:error] = message
         logger.error(message)
         puts(message)
       end
     end
+  rescue Exception => e
+    logger.error "ERROR updating family \n#{@family.inspect}}"
+    logger.error e.backtrace.join("\n\t")
+    raise e
   end
 
   def update_add_participant
@@ -152,6 +160,10 @@ class FamiliesController < ApplicationController
     @family.participants ||= []
     @family.participants << @participant
     redirect_to participants_url
+  rescue Exception => e
+    logger.error "ERROR update_add_participant. family:\n#{@family.inspect}}\nparticipant:\n#{@participant}"
+    logger.error e.backtrace.join("\n\t")
+    raise e
   end
   
   def family_registration
