@@ -94,7 +94,7 @@ class FamiliesController < ApplicationController
 
         @family.participants = participants
         if @family.save
-          AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
+          AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", edit_family_path(@family))
 
           flash[:notice] = "Family #{@family.familyname} was successfully created."
           format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
@@ -121,7 +121,7 @@ class FamiliesController < ApplicationController
 
     respond_to do |format|
       if @family.update_attributes(params[:family])
-        AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", family_url(@family))
+        AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", edit_family_path(@family))
         flash[:notice] = 'Families was successfully updated.'
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
