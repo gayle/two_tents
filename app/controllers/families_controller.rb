@@ -100,7 +100,7 @@ class FamiliesController < ApplicationController
           format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
           format.xml  { render :xml => @family, :status => :created, :location => @family }
         else
-          message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+          message = error_saving(@family)
           flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
           logger.error "ERROR #{message} \n#{@family.inspect}}"
           logger.error e.backtrace.join("\n\t")
@@ -109,7 +109,7 @@ class FamiliesController < ApplicationController
       end
     end
   rescue Exception => e
-    message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+    message = error_saving(@family)
     flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
     logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
@@ -142,7 +142,7 @@ class FamiliesController < ApplicationController
           end
         end
       else
-        message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+        message = error_saving(@family)
         flash[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
         logger.error "ERROR #{message} \n#{@family.inspect}}"
         logger.error e.backtrace.join("\n\t")
@@ -150,7 +150,7 @@ class FamiliesController < ApplicationController
       end
     end
   rescue Exception => e
-    message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+    message = error_saving(@family)
     flash[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
     logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
