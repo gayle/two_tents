@@ -17,7 +17,7 @@
               <%= participant_form.text_field :lastname, :size => 45 -%><br /><%= participant_form.label "Last Name" -%>
             </td>
             <td class="field">
-              <%= participant_form.text_field :birthdate_string, :size => 20 -%><br /><%= participant_form.label "Birthdate (MM/DD/YYYY)" -%>
+              <%= participant_form.text_field :birthdate_string, :size => 20 -%><br /><%= participant_form.label "* Birthdate (MM/DD/YYYY)" -%>
             </td>
             <td class="field">
               <%= participant_form.text_field :gender, :size => 10 -%><br /><%= participant_form.label "Gender (M/F)" -%>
@@ -83,6 +83,7 @@
         <%= participant_form.text_area :trivia, :cols => 105, :rows => 2 -%><br /><%= participant_form.label "2-3 interesting facts about this person" -%>
       </td></tr>
     </table>
+    * indicates required fields
 <!--
     <a class="more_info_link" href="#" onclick=jQuery(".more_info").show();jQuery(".more_info_link").hide();jQuery(".less_info_link").show();>More Info</a>
     <div class="more_info">
