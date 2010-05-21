@@ -100,18 +100,20 @@ class FamiliesController < ApplicationController
           format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
           format.xml  { render :xml => @family, :status => :created, :location => @family }
         else
-          puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
-          logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
-          flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(', ')}"
-          format.html { render :action => "new" }
-          # format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
+          message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+          flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
+          logger.error "ERROR #{message} \n#{@family.inspect}}"
+          logger.error e.backtrace.join("\n\t")
+          render :action => "new"
         end
       end
     end
   rescue Exception => e
-    logger.error "ERROR creating family \n#{@family.inspect}}"
+    message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+    flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
+    logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
-    raise e
+    render :action => "new"
   end
 
   # PUT /families/1
@@ -140,18 +142,17 @@ class FamiliesController < ApplicationController
           end
         end
       else
-        # format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
-        message = "update_attributes failed(): Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
-        flash[:error] = message
-        logger.error(message)
-        puts(message)
-        format.html { render :action => "edit" }
+        message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+        flash[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
+        logger.error "ERROR #{message} \n#{@family.inspect}}"
+        logger.error e.backtrace.join("\n\t")
+        render :action => "edit"
       end
     end
   rescue Exception => e
-    message = "update_attributes failed(): Unable to save family #{@family.familyname}"
-    flash[:error] = "#{message}<br />[DETAILS: #{e.message}]"
-    logger.error "ERROR updating family \n#{@family.inspect}} \n #{message}"
+    message = "Oops! There was a problem saving family '#{@family.familyname}}'"
+    flash[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
+    logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
     render :action => "edit"
   end
