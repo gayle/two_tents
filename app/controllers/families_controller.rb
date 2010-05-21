@@ -149,8 +149,8 @@ class FamiliesController < ApplicationController
       end
     end
   rescue Exception => e
-    message = "update_attributes failed(): Unable to save family #{@family.familyname} [DETAILS: #{@family.errors.to_a.join(',')}, err=#{e.message}]"
-    flash[:error] = message
+    message = "update_attributes failed(): Unable to save family #{@family.familyname}"
+    flash[:error] = "#{message}<br />[DETAILS: #{e.message}]"
     logger.error "ERROR updating family \n#{@family.inspect}} \n #{message}"
     logger.error e.backtrace.join("\n\t")
     render :action => "edit"
