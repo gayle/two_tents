@@ -147,13 +147,13 @@ class FamiliesController < ApplicationController
         puts(message)
         format.html { render :action => "edit" }
       end
+    rescue Exception => e
+      message = "update_attributes failed(): Unable to save family #{@family.familyname} [DETAILS: #{@family.errors.to_a.join(',')}, err=#{e.message}]"
+      flash[:error] = message
+      logger.error "ERROR updating family \n#{@family.inspect}} \n #{message}"
+      logger.error e.backtrace.join("\n\t")
+      format.html { render :action => "edit" }
     end
-  rescue Exception => e
-    message = "update_attributes failed(): Unable to save family #{@family.familyname} [DETAILS: #{@family.errors.to_a.join(',')}, err=#{e.message}]"
-    flash[:error] = message
-    logger.error "ERROR updating family \n#{@family.inspect}} \n #{message}"
-    logger.error e.backtrace.join("\n\t")
-    format.html { render :action => "edit" }
   end
 
   def update_add_participant
