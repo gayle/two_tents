@@ -140,18 +140,20 @@ class FamiliesController < ApplicationController
           end
         end
       else
-        format.html { render :action => "edit" }
         # format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
-        message = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
+        message = "update_attributes failed(): Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
         flash[:error] = message
         logger.error(message)
         puts(message)
+        format.html { render :action => "edit" }
       end
     end
   rescue Exception => e
-    logger.error "ERROR updating family \n#{@family.inspect}}"
+    message = "update_attributes failed(): Unable to save family #{@family.familyname} [DETAILS: #{@family.errors.to_a.join(',')}, err=#{e.message}]"
+    flash[:error] = message
+    logger.error "ERROR updating family \n#{@family.inspect}} \n #{message}"
     logger.error e.backtrace.join("\n\t")
-    raise e
+    format.html { render :action => "edit" }
   end
 
   def update_add_participant
