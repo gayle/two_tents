@@ -1,7 +1,7 @@
 class Participant < ActiveRecord::Base
   belongs_to :family
   belongs_to :user
-  has_many :registrations
+#  has_many :registrations
 
   before_destroy :validate_no_dependents
 
@@ -23,6 +23,30 @@ class Participant < ActiveRecord::Base
     self.birthdate = Date.parse(bd_str)
   rescue ArgumentError
     @birthdate_invalid = true
+  end
+
+  def age
+    # TODO Need to change configuration page to have a configured start date for billing, not hard coded like this
+    start_of_camp = Date.parse("July 21, 2010")
+    ((start_of_camp - birthdate.to_date)/365.25).floor #365.25 accounts for leap years
+
+    # Is this better?
+    #    def age_at(date, dob)
+    #       day_diff = date.day - dob.day
+    #       month_diff = date.month - dob.month - (day_diff < 0 ? 1 : 0)
+    #       date.year - dob.year - (month_diff < 0 ? 1 : 0)
+    #    end
+
+    # What about this?
+    # def age
+    #   age = Date.today.year - read_attribute(:birthdate).year
+    #   if Date.today.month < read_attribute(:birthdate).month ||
+    #   (Date.today.month == read_attribute(:birthdate).month && read_attribute(:birthdate).day >= Date.today.day)
+    #     age = age - 1
+    #   end
+    #   return age
+    # end
+
   end
 
   def validate
