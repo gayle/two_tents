@@ -75,4 +75,17 @@ class Participant < ActiveRecord::Base
     Participant.all.reject { |p| p.user }.sort
   end
 
+  def self.group_by_age
+    participants = Participant.all
+    young_children = participants.select { |p| p.age <= 5 }
+    children = participants.select       { |p| p.age >= 6  and p.age <= 11 }
+    youth = participants.select          { |p| p.age >= 12 and p.age <= 17 }
+    adults = participants.select         { |p| p.age >= 18 }
+
+    { "age 5 and under" => young_children,
+      "age 6 to 11" => children,
+      "age 12 to 17" => youth,
+      "age 18 and over" => adults }
+  end
+
 end

@@ -1,0 +1,15 @@
+<h1>Registered Participants, broken down by age</h1>
+
+<%= will_paginate @participants_by_age -%>
+<table>
+  <tr>
+  </tr>
+
+<% @participants_by_age.each do |registered_person| %>
+  <tr>
+    <td><%= registered_person %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @participants_by_age -%>
+
