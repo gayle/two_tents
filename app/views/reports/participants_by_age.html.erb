@@ -1,15 +1,11 @@
-<h1>Registered Participants, broken down by age</h1>
-
-<%= will_paginate @participants_by_age -%>
+<h1>Registrations by Age</h1>
 <table>
-  <tr>
-  </tr>
-
-<% @participants_by_age.each do |registered_person| %>
-  <tr>
-    <td><%= registered_person %></td>
-  </tr>
-<% end %>
+  <% @participants_by_age.keys.sort.each do |key| %>
+    <tr><th class="wide"><%= key %></th></tr>
+    <% @participants_by_age[key].each_with_index do |participant, i| %>
+      <tr>
+        <td><%= "#{i+1}. #{participant.fullname}" %></td>
+      </tr>
+    <% end %>
+  <% end %>
 </table>
-<%= will_paginate @participants_by_age -%>
-

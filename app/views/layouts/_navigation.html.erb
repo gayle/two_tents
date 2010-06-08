@@ -8,7 +8,12 @@
         <li><%= link_to 'Participants', participants_url, :controller => :participants -%></li>
         <li><%= link_to 'Staff', users_url, :controller => :users -%></li>
         <li><%= link_to 'Configuration', config_edit_url, :controller => :config_edit -%></li>
-        <li><%= link_to 'Registrations by Age', registrations_url, :controller => :registrations -%></li> 
+      </ul>
+    </li>
+    <li>
+      <a href="#" class="pulldown">Reports</a>
+      <ul class="pulldown">
+        <li><%= link_to 'Registrations by Age', url_for(:controller => :reports, :action => :participants_by_age) -%></li>
       </ul>
     </li>
     <li>

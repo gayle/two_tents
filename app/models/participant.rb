@@ -82,10 +82,11 @@ class Participant < ActiveRecord::Base
     youth = participants.select          { |p| p.age >= 12 and p.age <= 17 }
     adults = participants.select         { |p| p.age >= 18 }
 
-    { "age 5 and under" => young_children,
-      "age 6 to 11" => children,
-      "age 12 to 17" => youth,
-      "age 18 and over" => adults }
+    # Use 2-digit numbers so it sorts groups by age
+    { "Age 05 and under" => young_children,
+      "Age 06 to 11" => children,
+      "Age 12 to 17" => youth,
+      "Age 18 and over" => adults }
   end
 
 end
