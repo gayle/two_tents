@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  before_filter :login_required
+
   # GET /reports
   def participants_by_age
     @participants_by_age = Participant.group_by_age
