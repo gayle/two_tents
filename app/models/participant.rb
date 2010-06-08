@@ -75,8 +75,14 @@ class Participant < ActiveRecord::Base
     Participant.all.reject { |p| p.user }.sort
   end
 
+  # This includes all participants but excludes the "admin" participant who is not a "real" user.
+  # Eventually this will also include participants who are active for current year
+  def self.find_active
+    Participant.all.reject { |p| p.user and p.user.administrator? }.sort
+  end
+
   def self.group_by_age
-    participants = Participant.all
+    participants = Participant.find_active
     young_children = participants.select { |p| p.age <= 5 }
     children = participants.select       { |p| p.age >= 6  and p.age <= 11 }
     youth = participants.select          { |p| p.age >= 12 and p.age <= 17 }
