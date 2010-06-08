@@ -9,7 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.staff '/staff', :controller => 'staff', :action => 'index'
   map.edit_choose_family '/edit_choose_family', :controller => 'families', :action => 'edit_choose_family'
-  map.edit_choose_family '/update_add_participant', :controller => 'families', :action => 'update_add_participant'
+  map.update_add_participant '/update_add_participant', :controller => 'families', :action => 'update_add_participant'
+  map.participants_by_age '/participants_by_age', :controller => 'reports', :action => 'participants_by_age'
   map.resources :users,
                 :collection => { :enter_login => :post },
                 :member => { :get_question => :get, :answer_question => :post, :show_password => :get, :change_password => :put }
@@ -18,8 +19,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
   map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
-  map.rooms '/rooms', :controller => 'rooms', :action => 'index', :conditions => {:method => :get}
-  map.rooms '/rooms', :controller => 'rooms', :action => 'update', :conditions => {:method => :post}
 
   map.connect ':action', :controller => 'content'
   #map.connect ':controller/:action/:id'
