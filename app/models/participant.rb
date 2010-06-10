@@ -124,7 +124,7 @@ class Participant < ActiveRecord::Base
 
   def self.sort_group(participants_in_group)
     participants_in_group.sort_by do |p|
-      [p.lastname, p.firstname, p.age]
+      [-p.age, p.lastname, p.firstname]
     end
   end
 end
