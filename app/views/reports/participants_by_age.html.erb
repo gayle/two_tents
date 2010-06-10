@@ -4,7 +4,10 @@
     <tr><th class="wide"><%= key %></th></tr>
     <% @participants_by_age[key].each_with_index do |participant, i| %>
       <tr>
-        <td><%= "#{i+1}. #{participant.fullname}" %></td>
+        <td>
+          <%= "#{i+1}. #{participant.fullname}" %>
+          <% unless participant.hide_age? %><%= "(#{participant.age})" %><% end %>
+        </td>
       </tr>
     <% end %>
   <% end %>

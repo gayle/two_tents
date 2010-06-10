@@ -71,6 +71,10 @@ class Participant < ActiveRecord::Base
     family && family.member_count == 1
   end
 
+  def hide_age?
+    age >= 18  
+  end
+
   def self.find_non_staff_participants
     Participant.all.reject { |p| p.user }.sort
   end
