@@ -25,6 +25,7 @@ class Participant < ActiveRecord::Base
     @birthdate_invalid = true
   end
 
+  # Must return a numeric age
   def age
     # TODO Need to change configuration page to have a configured start date for billing, not hard coded like this
     start_of_camp = Date.parse("July 21, 2010")
@@ -40,15 +41,6 @@ class Participant < ActiveRecord::Base
     month_diff = start_of_camp.month - dob.month - (day_diff < 0 ? 1 : 0)
     calculated_age = start_of_camp.year - dob.year - (month_diff < 0 ? 1 : 0)
 
-    if calculated_age < 1
-      # TODO improve this to get a specific number of months if less than 2 years
-      # This doesn't work. For example, someone 11 months and 29 days, shows up as 0
-      # >> age_in_months = start_of_camp.month - birthdate.month  => 0
-      # age_in_months = start_of_camp.month - birthdate.month
-      # return "#{calculated_age} #{pluralize(age_in_months, "month")}"
-
-      return "less than 1 year"
-    end
     return calculated_age
 
 
@@ -62,6 +54,20 @@ class Participant < ActiveRecord::Base
     #   return age
     # end
 
+  end
+
+  def display_age
+    calculated_age = age
+    if calculated_age < 1
+      # TODO improve this to get a specific number of months if less than 2 years
+      # This doesn't work. For example, someone 11 months and 29 days, shows up as 0
+      # >> age_in_months = start_of_camp.month - birthdate.month  => 0
+      # age_in_months = start_of_camp.month - birthdate.month
+      # return "#{calculated_age} #{pluralize(age_in_months, "month")}"
+
+      return "less than 1 year"
+    end
+    return calculated_age
   end
 
   def validate

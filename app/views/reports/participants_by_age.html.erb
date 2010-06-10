@@ -6,7 +6,7 @@
       <tr>
         <td>
           <%= "#{i+1}. #{participant.fullname}" %>
-          <% unless participant.hide_age? %><%= "(#{participant.age})" %><% end %>
+          <% unless participant.hide_age? %><%= "(#{participant.display_age})" %><% end %>
         </td>
       </tr>
     <% end %>
