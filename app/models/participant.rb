@@ -28,16 +28,31 @@ class Participant < ActiveRecord::Base
   def age
     # TODO Need to change configuration page to have a configured start date for billing, not hard coded like this
     start_of_camp = Date.parse("July 21, 2010")
-    ((start_of_camp - birthdate.to_date)/365.25).floor #365.25 accounts for leap years
+
+    # calculated_age = ((start_of_camp - birthdate.to_date)/365.25).floor #365.25 accounts for leap years
+    # This formula above doesn't work if the person's birthday is EXACTLY the first day of camp.
+    # Because of the floor.  If birthdate is June 21, 2008.  And start_of_camp is June 21, 2010, then
+    #((start_of_camp - birthdate.to_date)/365.25)  => 1.99863107460643
 
     # Is this better?
-    #    def age_at(date, dob)
-    #       day_diff = date.day - dob.day
-    #       month_diff = date.month - dob.month - (day_diff < 0 ? 1 : 0)
-    #       date.year - dob.year - (month_diff < 0 ? 1 : 0)
-    #    end
+    dob = birthdate.to_date
+    day_diff = start_of_camp.day - dob.day
+    month_diff = start_of_camp.month - dob.month - (day_diff < 0 ? 1 : 0)
+    calculated_age = start_of_camp.year - dob.year - (month_diff < 0 ? 1 : 0)
 
-    # What about this?
+    if calculated_age < 1
+      # TODO improve this to get a specific number of months if less than 2 years
+      # This doesn't work. For example, someone 11 months and 29 days, shows up as 0
+      # >> age_in_months = start_of_camp.month - birthdate.month  => 0
+      # age_in_months = start_of_camp.month - birthdate.month
+      # return "#{calculated_age} #{pluralize(age_in_months, "month")}"
+
+      return "less than 1 year"
+    end
+    return calculated_age
+
+
+    # What about this? is it even better?
     # def age
     #   age = Date.today.year - read_attribute(:birthdate).year
     #   if Date.today.month < read_attribute(:birthdate).month ||
