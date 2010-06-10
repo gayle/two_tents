@@ -114,10 +114,17 @@ class Participant < ActiveRecord::Base
     adults = participants.select         { |p| p.age >= 18 }
 
     # Use 2-digit numbers so it sorts groups by age
-    { "Age 05 and under" => young_children,
-      "Age 06 to 11" => children,
-      "Age 12 to 17" => youth,
-      "Age 18 and over" => adults }
+    { "Age 05 and under" => sort_group(young_children),
+      "Age 06 to 11" => sort_group(children),
+      "Age 12 to 17" => sort_group(youth),
+      "Age 18 and over" => sort_group(adults) }
   end
 
+  private
+
+  def self.sort_group(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.lastname, p.firstname, p.age]
+    end
+  end
 end
