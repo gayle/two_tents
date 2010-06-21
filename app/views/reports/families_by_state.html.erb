@@ -1,12 +1,16 @@
 <h1>Families by State</h1>
-<strong>Count Summary:</strong>
+<strong>COUNT SUMMARY </strong>
+(note, if these numbers differ from the headings below,
+  it's because these numbers include families from multiple states in the
+  count. The headings below do not.)
+<br/>-
 <% @distinct_state_count.keys.sort.each do |key| %>
-  <%= " - #{key}(#{@distinct_state_count[key]}) - " %>
-<% end %>
+  <%= " - #{key} (#{@distinct_state_count[key]}) - " %>
+<% end %> -
 <p />
 <table>
   <% @families_by_state.keys.sort.each do |key| %>
-    <tr><th class="wide"><%= "#{key} (#{@distinct_state_count[key]  })" %></th></tr>
+    <tr><th class="wide"><%= "#{key} (#{@families_by_state[key].size})" %></th></tr>
     <% @families_by_state[key].each_with_index do |family, i| %>
       <tr>
         <td>
