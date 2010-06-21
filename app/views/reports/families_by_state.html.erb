@@ -11,7 +11,7 @@
       <tr>
         <td>
           <%= "#{i+1}. #{family.familyname} (#{family.main_contact_name})" %>
-          <% if family.states.size>1%><%= "(this family is from multiple states: #{family.states})" %><%end%>
+          <% if family.states.size>1%><%= "(this family is from multiple states: #{family.states.join(",")})" %><%end%>
         </td>
       </tr>
     <% end %>

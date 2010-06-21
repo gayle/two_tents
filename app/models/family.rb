@@ -11,6 +11,26 @@ class Family < ActiveRecord::Base
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
 
+  def family_address1
+    main_contact ? main_contact.address1 : ""  
+  end
+
+  def family_address2
+    main_contact ? main_contact.address2 : ""  
+  end
+
+  def family_city
+    main_contact ? main_contact.city : ""
+  end
+
+  def family_state
+    main_contact ? main_contact.state : ""
+  end
+
+  def family_zip
+    main_contact ? main_contact.zip : ""  
+  end
+
   # see http://railscasts.com/episodes/75-complex-forms-part-3
   def new_participant_attributes=(participant_attributes)
     participant_attributes.each do |attributes|
@@ -57,7 +77,7 @@ class Family < ActiveRecord::Base
   end
 
   def states
-    participants.collect { |p|  p.state.upcase  }.uniq
+    participants.collect { |p|  p.participant_state.upcase  }.uniq
   end
 
   def self.all_states

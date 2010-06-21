@@ -7,6 +7,26 @@ class Participant < ActiveRecord::Base
 
   validates_presence_of :birthdate
 
+  def participant_address1
+    address1.present? ? address1 : family.family_address1
+  end
+
+  def participant_address2
+    address2.present? ? address2 : family.family_address2
+  end
+
+  def participant_city
+    city.present? ? city : family.family_city
+  end
+
+  def participant_state
+    state.present? ? state : family.family_state
+  end
+
+  def participant_zip
+    zip.present? ? zip : family.family_zip
+  end
+
   def fullname
     "#{firstname} #{lastname}"
   end
