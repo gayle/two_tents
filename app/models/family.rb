@@ -102,7 +102,7 @@ class Family < ActiveRecord::Base
     main_contacts = Family.all.collect { |f| f.main_contact }.compact
     all_states.uniq.each do |state|
       state_group[state] = main_contacts.collect { |p|
-        p.family if (p.state.upcase == state.upcase)
+        p.family if (p.participant_state.upcase == state.upcase)
       }.compact
     end
     state_group
