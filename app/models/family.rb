@@ -46,11 +46,44 @@ class Family < ActiveRecord::Base
     members.size
   end
 
-  def main_contact_name
+  def main_contact
     contact = participants.select {|p|
       p.main_contact?
     }.first
-    contact ? contact.firstname : ""
+  end
+
+  def main_contact_name
+    main_contact ? main_contact.firstname : "unknown"
+  end
+
+  def states
+    participants.collect { |p|  p.state  }.uniq
+  end
+
+  def self.all_states
+    Family.all.collect { |f| f.states }.flatten.compact
+  end
+
+  # Usually a single family will be from only one state.  Occasionally that is
+  # not the case.  We need to count them all.
+  # A family with 1 member from Ohio, 2 members from Illinois, will add +1 to the count for
+  # Illinois, and +1 to the count for Ohio. 
+  def self.count_by_state
+    counts = {}
+    states = all_states()
+    states.uniq.each do |state|
+      counts[state] = states.select { |s| s == state }.size
+    end
+    counts
+  end
+
+  def self.group_by_state
+    state_group = {}
+    main_contacts = Family.all.collect { |f| f.main_contact }.compact
+    all_states.uniq.each do |state|
+      state_group[state] = main_contacts.collect { |p| p.family if p.state == state }
+    end
+    state_group
   end
   
   private

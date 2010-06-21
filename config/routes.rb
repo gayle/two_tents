@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.edit_choose_family '/edit_choose_family', :controller => 'families', :action => 'edit_choose_family'
   map.update_add_participant '/update_add_participant', :controller => 'families', :action => 'update_add_participant'
   map.participants_by_age '/participants_by_age', :controller => 'reports', :action => 'participants_by_age'
+  map.participants_by_age '/families_by_state', :controller => 'reports', :action => 'families_by_state'
   map.resources :users,
                 :collection => { :enter_login => :post },
                 :member => { :get_question => :get, :answer_question => :post, :show_password => :get, :change_password => :put }

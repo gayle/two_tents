@@ -9,4 +9,8 @@ class ReportsController < ApplicationController
     end
   end
 
+  def families_by_state
+    @distinct_state_count = Family.count_by_state
+    @families_by_state = Family.group_by_state
+  end
 end

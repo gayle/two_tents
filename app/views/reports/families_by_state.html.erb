@@ -1,0 +1,19 @@
+<h1>Families by State</h1>
+<strong>Counts:</strong>
+<% @distinct_state_count.keys.sort.each do |key| %>
+  <br /><%= "#{key} - #{@distinct_state_count[key]}" %>
+<% end %>
+<p />
+<table>
+  <% @families_by_state.keys.sort.each do |key| %>
+    <tr><th class="wide"><%= key %></th></tr>
+    <% @families_by_state[key].each_with_index do |family, i| %>
+      <tr>
+        <td>
+          <%= "#{i+1}. #{family.familyname} (#{family.main_contact_name})" %>
+          <% if family.states.size>1%><%= "(this family is from multiple states: #{family.states})" %><%end%>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

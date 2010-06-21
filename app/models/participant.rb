@@ -106,6 +106,10 @@ class Participant < ActiveRecord::Base
     Participant.all.reject { |p| p.user and p.user.administrator? }.sort
   end
 
+#  def self.find_main_contacts
+#    Participant.all.select { |p| p.main_contact? }
+#  end
+#
   def self.group_by_age
     participants = Participant.find_active
     young_children = participants.select { |p| p.age <= 5 }
@@ -114,23 +118,29 @@ class Participant < ActiveRecord::Base
     adults = participants.select         { |p| p.age >= 18 }
 
     # Use 2-digit numbers so it sorts groups by age
-    { "Age 05 and under" => sort_group_by_age(young_children),
-      "Age 06 to 11" => sort_group_by_age(children),
-      "Age 12 to 17" => sort_group_by_age(youth),
-      "Age 18 and over" => sort_group_by_name(adults) }
+    { "Age 05 and under" => sort_by_age(young_children),
+      "Age 06 to 11" => sort_by_age(children),
+      "Age 12 to 17" => sort_by_age(youth),
+      "Age 18 and over" => sort_by_name(adults) }
   end
 
   private
 
-  def self.sort_group_by_age(participants_in_group)
+  def self.sort_by_age(participants_in_group)
     participants_in_group.sort_by do |p|
       [-p.age, p.lastname, p.firstname]
     end
   end
 
-  def self.sort_group_by_name(participants_in_group)
+  def self.sort_by_name(participants_in_group)
     participants_in_group.sort_by do |p|
       [p.lastname, p.firstname]
+    end
+  end
+
+  def self.sort_by_state(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.state, p.lastname, p.firstname]
     end
   end
 
