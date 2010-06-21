@@ -1,12 +1,12 @@
 <h1>Families by State</h1>
-<strong>Counts:</strong>
+<strong>Count Summary:</strong>
 <% @distinct_state_count.keys.sort.each do |key| %>
-  <br /><%= "#{key} - #{@distinct_state_count[key]}" %>
+  <%= " - #{key}(#{@distinct_state_count[key]}) - " %>
 <% end %>
 <p />
 <table>
   <% @families_by_state.keys.sort.each do |key| %>
-    <tr><th class="wide"><%= key %></th></tr>
+    <tr><th class="wide"><%= "#{key} (#{@distinct_state_count[key]  })" %></th></tr>
     <% @families_by_state[key].each_with_index do |family, i| %>
       <tr>
         <td>
