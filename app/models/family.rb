@@ -12,23 +12,23 @@ class Family < ActiveRecord::Base
   end
 
   def family_address1
-    main_contact ? main_contact.address1 : ""  
+    main_contact ? main_contact.address1 : "unknown"
   end
 
   def family_address2
-    main_contact ? main_contact.address2 : ""  
+    main_contact ? main_contact.address2 : "unknown"
   end
 
   def family_city
-    main_contact ? main_contact.city : ""
+    main_contact ? main_contact.city : "unknown"
   end
 
   def family_state
-    main_contact ? main_contact.state : ""
+    main_contact ? main_contact.state : "unknown"
   end
 
   def family_zip
-    main_contact ? main_contact.zip : ""  
+    main_contact ? main_contact.zip : "unknown"
   end
 
   # see http://railscasts.com/episodes/75-complex-forms-part-3
@@ -77,7 +77,7 @@ class Family < ActiveRecord::Base
   end
 
   def states
-    participants.collect { |p|  p.participant_state.upcase  }.uniq
+    participants.collect { |p|  p.participant_state.upcase.strip }.uniq
   end
 
   def self.all_states
