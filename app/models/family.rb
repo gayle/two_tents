@@ -57,11 +57,11 @@ class Family < ActiveRecord::Base
   end
 
   def states
-    participants.collect { |p|  p.state  }.uniq
+    participants.collect { |p|  p.state.upcase  }.uniq
   end
 
   def self.all_states
-    Family.all.collect { |f| f.states }.flatten.compact
+    states = Family.all.collect { |f| f.states }.flatten.compact
   end
 
   # Usually a single family will be from only one state.  Occasionally that is
@@ -70,9 +70,9 @@ class Family < ActiveRecord::Base
   # Illinois, and +1 to the count for Ohio. 
   def self.count_by_state
     counts = {}
-    states = all_states()
-    states.uniq.each do |state|
-      counts[state] = states.select { |s| s == state }.size
+    all = all_states()
+    all.uniq.each do |state|
+      counts[state] = all.select { |s| s.upcase == state.upcase }.size
     end
     counts
   end
@@ -82,7 +82,7 @@ class Family < ActiveRecord::Base
     main_contacts = Family.all.collect { |f| f.main_contact }.compact
     all_states.uniq.each do |state|
       state_group[state] = main_contacts.collect { |p|
-        p.family if (p.state == state)
+        p.family if (p.state.upcase == state.upcase)
       }.compact
     end
     state_group
