@@ -24,7 +24,7 @@ class Family < ActiveRecord::Base
   end
 
   def family_state
-    main_contact ? main_contact.state : "unknown"
+    (main_contact and main_contact.state.present?) ? main_contact.state : "unknown"
   end
 
   def family_zip
