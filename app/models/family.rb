@@ -81,7 +81,9 @@ class Family < ActiveRecord::Base
     state_group = {}
     main_contacts = Family.all.collect { |f| f.main_contact }.compact
     all_states.uniq.each do |state|
-      state_group[state] = main_contacts.collect { |p| p.family if p.state == state }
+      state_group[state] = main_contacts.collect { |p|
+        p.family if (p.family and p.state == state) 
+      }
     end
     state_group
   end
