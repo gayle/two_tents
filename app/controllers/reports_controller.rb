@@ -13,4 +13,8 @@ class ReportsController < ApplicationController
     @distinct_state_count = Family.count_by_state
     @families_by_state = Family.group_by_state
   end
+
+  def birthdays_by_month
+    @participants_by_birth_month = Participant.group_by_birth_month
+  end
 end

@@ -144,6 +144,23 @@ class Participant < ActiveRecord::Base
       "Age 18 and over" => sort_by_name(adults) }
   end
 
+  def self.group_by_birth_month
+    participants = Participant.find_active
+    # Use 2-digit month so it sorts chronologically by month
+    { "01 January"   => sort_by_birthday(participants.select { |p| p.birthdate.month == 1 }),
+      "02 February"  => sort_by_birthday(participants.select { |p| p.birthdate.month == 2 }),
+      "03 March"     => sort_by_birthday(participants.select { |p| p.birthdate.month == 3 }),
+      "04 April"     => sort_by_birthday(participants.select { |p| p.birthdate.month == 4 }),
+      "05 May"       => sort_by_birthday(participants.select { |p| p.birthdate.month == 5 }),
+      "06 June"      => sort_by_birthday(participants.select { |p| p.birthdate.month == 6 }),
+      "07 July"      => sort_by_birthday(participants.select { |p| p.birthdate.month == 7 }),
+      "08 August"    => sort_by_birthday(participants.select { |p| p.birthdate.month == 8 }),
+      "09 September" => sort_by_birthday(participants.select { |p| p.birthdate.month == 9 }),
+      "10 October"   => sort_by_birthday(participants.select { |p| p.birthdate.month == 10 }),
+      "11 November"  => sort_by_birthday(participants.select { |p| p.birthdate.month == 11 }),
+      "12 December"  => sort_by_birthday(participants.select { |p| p.birthdate.month == 12 })
+    }
+  end
   private
 
   def self.sort_by_age(participants_in_group)
@@ -164,4 +181,9 @@ class Participant < ActiveRecord::Base
     end
   end
 
+  def self.sort_by_birthday(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.birthdate.day, p.lastname, p.firstname]
+    end
+  end
 end

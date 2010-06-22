@@ -1,0 +1,13 @@
+<h1>Birthdays</h1>
+<table>
+  <% @participants_by_birth_month.keys.sort.each do |month| %>
+    <tr><th class="wide"><%= month %></th></tr>
+    <% @participants_by_birth_month[month].each do |participant| %>
+      <tr>
+        <td>
+          <%= "#{participant.birthdate.day} #{participant.fullname}" %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
