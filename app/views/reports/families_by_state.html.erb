@@ -9,19 +9,19 @@
 <% end %> -
 <p />
 <table>
-  <% @families_by_state.keys.sort.each do |key| %>
-    <tr><th class="wide" colspan="2"><%= "#{key} (#{@families_by_state[key].size})" %></th></tr>
-    <% @families_by_state[key].each_with_index do |family, i| %>
-      <tr>
+  <% @families_by_state.keys.sort.each_with_index do |state, i| %>
+    <tr><th class="wide" colspan="2"><%= "#{state} (#{@families_by_state[state].size})" %></th></tr>
+    <% @families_by_state[state].each_with_index do |family, j| %>
+      <tr class="<%= ContentHelper.rowstyle(i+j) %>">
         <td>
-          <%= "#{i+1}" %>
+          <%= "#{j+1}" %>
         </td>
         <td>
           <strong><%= "#{family.familyname} (#{family.main_contact_name})" %></strong>
           <% if (family.states.size > 1) %><i><%= "(this family is from multiple states: #{family.states.join(",")})" %></i><%end%>
         </td>
       </tr>
-      <tr>
+      <tr class="<%= ContentHelper.rowstyle(i+j) %>">
         <td></td>
         <td>
           <%= (family.states.size > 1) ? "City".pluralize : "City" %>:
