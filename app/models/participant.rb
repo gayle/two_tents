@@ -116,14 +116,29 @@ class Participant < ActiveRecord::Base
     age >= 18  
   end
 
+  # TODO This is a total hack for 2010, the first year. Eventually we need to
+  # create a cross-ref association between participant and year.  For now
+  # just get this done by hardcoding false for staff members who are in
+  # the system, but are not attending in 2010
+  def registered_for_year?(year)
+    return false if
+            firstname=="Jim" and lastname=="Lawrence"
+    return true
+  end
+
+  def registered_for_current_year?
+    registered_for_year?(Configuration.current.year)
+  end
+
   def self.find_non_staff_participants
-    Participant.all.reject { |p| p.user }.sort
+    Participant.all.reject { |p| p.user or not p.registered_for_current_year? }.sort
   end
 
   # This includes all participants but excludes the "admin" participant who is not a "real" user.
   # Eventually this will also include participants who are active for current year
   def self.find_active
-    Participant.all.reject { |p| p.user and p.user.administrator? }.sort
+    Participant.all.reject { |p| (p.user and p.user.administrator?) or
+            not p.registered_for_current_year? }.sort
   end
 
 #  def self.find_main_contacts
