@@ -76,6 +76,11 @@ class Family < ActiveRecord::Base
     main_contact ? main_contact.firstname : "unknown"
   end
 
+  def cities
+    participants.collect { |p|
+      "#{p.participant_city.strip}, #{p.participant_state.strip}" }.uniq
+  end
+
   def states
     participants.collect { |p|  p.participant_state.upcase.strip }.uniq
   end

@@ -10,12 +10,22 @@
 <p />
 <table>
   <% @families_by_state.keys.sort.each do |key| %>
-    <tr><th class="wide"><%= "#{key} (#{@families_by_state[key].size})" %></th></tr>
+    <tr><th class="wide" colspan="2"><%= "#{key} (#{@families_by_state[key].size})" %></th></tr>
     <% @families_by_state[key].each_with_index do |family, i| %>
       <tr>
         <td>
-          <%= "#{i+1}. #{family.familyname} (#{family.main_contact_name})" %>
-          <% if family.states.size>1%><%= "(this family is from multiple states: #{family.states.join(",")})" %><%end%>
+          <%= "#{i+1}" %>
+        </td>
+        <td>
+          <strong><%= "#{family.familyname} (#{family.main_contact_name})" %></strong>
+          <% if (family.states.size > 1) %><i><%= "(this family is from multiple states: #{family.states.join(",")})" %></i><%end%>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <%= (family.states.size > 1) ? "City".pluralize : "City" %>:
+          [<%= "#{family.cities.join(" - ")}" %>]
         </td>
       </tr>
     <% end %>
