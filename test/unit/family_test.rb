@@ -8,7 +8,7 @@ class FamilyTest < ActiveSupport::TestCase
     john = Participant.create(:firstname => "John", :lastname => "Smith")
     fam.participants << mary
     fam.participants << john
-    fam.save
+    assert fam.save
     fam.reload
 
     assert_equal 2, fam.participants.size

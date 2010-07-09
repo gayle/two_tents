@@ -8,7 +8,7 @@ aaron:
   state:                     ok
   zip:                       55555
   family_id:                 1
-  birthdate:                 <%= "1965-01-01" :db %>
+  birthdate:                 1965-01-01
 
 old_macdonald:
   id:                        2
@@ -195,5 +195,17 @@ joannearnold:
   city:                      Logan
   state:                     OH
   zip:                       43138
+  family_id:                 6
+  birthdate:                 1945-01-01
+
+quentin:
+  id:                        17
+  lastname:                  User
+  firstname:                 Quentin
+  address1:                  an address1
+  address2:                  an address2
+  city:                      oz
+  state:                     ok
+  zip:                       55555
   family_id:                 6
   birthdate:                 1945-01-01
