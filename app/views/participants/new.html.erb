@@ -1,7 +1,7 @@
 <h1>New participants</h1>
 
 <% form_for(@participant) do |f| %>
-  <%= render :partial => f%>
+  <%= render :partial => f, :locals => {:participant_form => f} %>
   <p>
     <%= f.submit 'Save' %>
     <%= f.submit 'Save and create another' %>
