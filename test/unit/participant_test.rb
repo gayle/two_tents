@@ -2,8 +2,6 @@ require 'test_helper'
 
 class ParticipantTest < ActiveSupport::TestCase
 
-fixtures :participants
-
     def test_there_18_users_created_by_fixtures
       assert_equal 18, Participant.all.size
     end
