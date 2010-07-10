@@ -3,3 +3,7 @@
 log/
 .DS_Store
 .idea/
+backups
+db/backups
+.heroku
+id_rsa*

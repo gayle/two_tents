@@ -40,7 +40,7 @@ class ParticipantsControllerTest < ActionController::TestCase
 
   test "should update participant" do
     put :update, :id => participants(:quentin).to_param, :participants => { }
-    assert assigns(:participants)
+    assert assigns(:participant)
     assert_redirected_to participants_path
   end
 
@@ -51,6 +51,7 @@ class ParticipantsControllerTest < ActionController::TestCase
 
     assert_redirected_to participants_path
   end
+
   test "should destroy participants without a user" do
     assert_difference('Participant.count', -1) do
       delete :destroy, :id => participants(:joannearnold).to_param

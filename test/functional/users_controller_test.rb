@@ -60,7 +60,7 @@ class UsersControllerTest < ActionController::TestCase
 
   def test_should_update_user
     user = User.find(:first)
-    participant = Participant.find(:first)
+    participant = user.participant
     put :update, {:id => user.id, :user => { :participant_id_attr => participant.id, :login => "changedlogin" }}
     assert_response :redirect
     user.reload
