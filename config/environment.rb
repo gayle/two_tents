@@ -45,7 +45,7 @@ Rails::Initializer.run do |config|
 
 end
 
-ExceptionNotifier.exception_recipients = %w(gayle@craigworld.com)
-ExceptionNotifier.sender_address =  %("Application Error" <gayle@craiworld.com>)
-ExceptionNotifier.email_prefix = "[familycamp ERROR] "
+# ExceptionNotifier.exception_recipients = %w(gayle@craigworld.com)
+# ExceptionNotifier.sender_address =  %("Application Error" <gayle@craiworld.com>)
+# ExceptionNotifier.email_prefix = "[familycamp ERROR] "
 
