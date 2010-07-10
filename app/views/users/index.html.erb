@@ -4,6 +4,7 @@
 <table>
   <thead>
   <tr>
+        <th></th>
 	<th>Name</th>
 	<th>Login</th>
 	<th>Email</th>
@@ -14,7 +15,8 @@
   <tbody>
 <% @users.each_with_index do |user, row| %>
   <tr class="<%= ContentHelper.rowstyle(row) %>">
-	<td><%=h user.participant.fullname%>
+        <td><%=h( row+1 + @users.offset ) -%></td>
+	<td><%=h user.participant.fullname%></td>
 	<td><%=h user.login%></td>
 	<td><%=h user.email%></td>
     <td><%= link_to 'Edit', edit_user_path(user), :class => 'edit' %></td>
