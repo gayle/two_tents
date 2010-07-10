@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'content', :action => 'landing'
   map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
   map.resources :families
-  map.resources :contacts
+  map.resources :contacts, :only => [:new, :create]
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.family_registration '/family_registration', :controller => 'families', :action => 'family_registration'
