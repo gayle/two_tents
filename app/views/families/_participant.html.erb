@@ -35,7 +35,7 @@
               <%= participant_form.text_field :city, :size => 20 -%><br /><%= participant_form.label "City" -%>
             </td>
             <td class="field">
-              <%= participant_form.text_field :state, :size => 5 -%><br /><%= participant_form.label "State" -%>
+              <%= participant_form.select :state, States::NAMES.collect{|key, value| [value, value]}, :include_blank => true -%><br /><%= participant_form.label "State" -%>
             </td>
             <td class="field">
               <%= participant_form.text_field :zip, :size => 10 -%><br /><%= participant_form.label "Zip" -%>
