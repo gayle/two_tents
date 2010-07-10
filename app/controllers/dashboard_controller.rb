@@ -1,5 +1,5 @@
-# This controller handles the login/logout function of the site.  
-class StaffController < ApplicationController
+# This controller handles the login/logout function of the site.
+class DashboardController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
 

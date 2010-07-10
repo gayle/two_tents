@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
                            :show_password => :get,
                            :change_password => :put }
 
-    admin.dashboard '/dashboard', :controller => 'staff', :action => 'index'
+    admin.dashboard '/dashboard', :controller => 'dashboard', :action => 'index'
   end
 
   map.with_options :controller => 'sessions' do |session|

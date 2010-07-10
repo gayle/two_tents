@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:edit, :update, :destroy, :answer_question, :reset_password]
 
   before_filter :login_required, :except => [:reset_login, :enter_login, :answer_question, :change_password]
-  
+
 #  require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
 #    require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
 
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new
     @participants = Participant.find_non_staff_participants
   end
- 
+
   def create
     @user = User.new(params[:user])
     if @user.save
@@ -97,7 +97,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Your password has been reset!"
       if current_user
-        redirect_to staff_path
+        redirect_to dashboard_path
       else
         redirect_to login_path
       end
