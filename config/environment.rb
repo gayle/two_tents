@@ -42,8 +42,6 @@ Rails::Initializer.run do |config|
   # Use will_paginate
   config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate', 
     :source => 'http://gems.github.com'
-  config.gem 'ruport'
-  config.gem 'paperclip'
 
 end
 

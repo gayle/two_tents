@@ -4,7 +4,6 @@ class Family < ActiveRecord::Base
   has_many :participants
   accepts_nested_attributes_for :participants
 
-  has_attached_file :photograph
   validates_associated :participants
 
   def familyname
