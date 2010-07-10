@@ -84,12 +84,19 @@ class User < ActiveRecord::Base
     self.participant = Participant.find(v)
   end
 
+  def quit_staff_and_remain_participant
+    self.participant.update_attributes(:user_id => nil)
+    self.delete
+  end
+
   # define readable methods for role access
   Role.all.each do |role|
     define_method "is_#{role.name}?" do
       has_role?(role.name)
     end
   end
+
+
 
   protected
 

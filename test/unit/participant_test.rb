@@ -17,6 +17,16 @@ class ParticipantTest < ActiveSupport::TestCase
       assert_equal(10, non_staff.size)
     end
 
+    def test_should_be_able_to_decide_not_to_be_staff
+      @user = Factory(:user)
+      @participant = @user.participant
+      assert_equal Participant.find_by_user_id(@user.id), @participant
+      @user.quit_staff_and_remain_participant
+      assert_equal [], User.all(:conditions => {:id => @user.id})
+      debugger
+      assert_nil @participant.user_id
+    end
+
 #    def test_should_not_find_existing_users
 #      Factory(:user)
 #      non_staff = Participant.find_non_staff_participants
