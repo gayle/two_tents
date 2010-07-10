@@ -5,6 +5,7 @@ require 'test_help'
 class ActiveSupport::TestCase
 
   include AuthenticatedTestHelper
+  require 'factory_girl'
 
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
