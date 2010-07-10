@@ -4,7 +4,8 @@ class Participant < ActiveRecord::Base
 
   before_destroy :validate_no_dependents
 
-  validates_presence_of :birthdate
+  # at least validate presence fields used directly or indirectlyr for sorting
+  validates_presence_of :lastname, :firstname, :birthdate, :state
 
   def participant_address
     address.present? ? address : family.family_address
