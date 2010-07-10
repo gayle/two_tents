@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+
+  layout :choose_layout
+  def choose_layout
+    request.path =~ /^\/admin\// ? "application" : "homepage"
+  end
 end

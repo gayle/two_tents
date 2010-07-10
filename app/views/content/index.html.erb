@@ -1,0 +1,5 @@
+<% %w[how_to_register about mission philosophy facilities testimonials].each do |section| %>
+  <div id="<%= section %>" class="span-24 section">
+    <%= render :partial => "content/#{section}" %>
+  </div>
+<% end %>
