@@ -43,6 +43,7 @@ Rails::Initializer.run do |config|
   config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate', 
     :source => 'http://gems.github.com'
 
+  config.gem 'hoptoad_notifier'
 end
 
 # ExceptionNotifier.exception_recipients = %w(gayle@craigworld.com)
