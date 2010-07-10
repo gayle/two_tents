@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one :participant
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
 #  delegate :fullname, :to => :participant  # Why isn't delegate working????
+  accepts_nested_attributes_for :participant
 
   # has_role? simply needs to return true or false whether a user has a role or not.
   # It may be a good idea to have "admin" roles return true always
@@ -45,7 +46,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible(:login, :email, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :cell_phone, :participant_id_attr,
+                  :security_answer, :cell_phone, :participant_attributes,
                   :home_phone, :position)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
@@ -76,17 +77,9 @@ class User < ActiveRecord::Base
     id == param_id.to_i
   end
 
-  def participant_id_attr
-    participant.id if participant
-  end
-
-  def participant_id_attr=(v)
-    self.participant = Participant.find(v)
-  end
-
   def quit_staff_and_remain_participant
     self.participant.update_attributes(:user_id => nil)
-    self.delete
+    self.destroy
   end
 
   # define readable methods for role access

@@ -1,14 +1,7 @@
 <div class="data-entry">
-  Pick A Person
-    <div class="data-entry-form">
-    <%= select("user", "participant_id_attr", @participants.collect{ |p| [p.list_name, p.id] },
-               :include_blank => "-- Choose from the List --", :selected => @user.participant_id_attr ) %>
-    - OR -
-      <%= link_to "Create a New Participant", new_from_user_participants_path %>
-    <br />
-
-    <% @user.password = @user.password_confirmation = nil %>
-    </div>
+  <% form.fields_for :participant do |pfields| -%>
+    <%= render :partial => 'participants/form', :locals => {:participant_form => pfields} %>
+  <% end -%>
 </div>
 
 <div class="data-entry">
