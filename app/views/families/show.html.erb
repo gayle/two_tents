@@ -21,7 +21,6 @@ Participants of this family:
 <p>
   <%= @family.note -%>
 <p/>
-<%= image_tag @family.photograph.url -%>
 <% form_tag family_registration_path do -%>
   <%= hidden_field :family, :id -%>
   <table>

@@ -8,8 +8,7 @@ class User < ActiveRecord::Base
 
   has_one :participant
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
-
-  has_attached_file :head_shot
+#  delegate :fullname, :to => :participant  # Why isn't delegate working????
 
   # has_role? simply needs to return true or false whether a user has a role or not.
   # It may be a good idea to have "admin" roles return true always
@@ -46,7 +45,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible(:login, :email, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :mobilephone, :participant,
+                  :security_answer, :mobilephone, :participant_id_attr,
                   :photourl, :workphone, :position,
                   :head_shot_file_name, :head_shot_content_type,
                   :head_shot_file_size, :head_shot)
@@ -77,6 +76,14 @@ class User < ActiveRecord::Base
 
   def authorized_for_listing?(param_id)
     id == param_id.to_i
+  end
+
+  def participant_id_attr
+    participant.id if participant
+  end
+
+  def participant_id_attr=(v)
+    self.participant = Participant.find(v)
   end
 
   # define readable methods for role access

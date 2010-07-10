@@ -4,8 +4,8 @@ class FamilyTest < ActiveSupport::TestCase
 
   def test_should_get_multiple_family_members 
     fam = Family.new(:familyname => 'xyzzy')
-    mary = Participant.create(:firstname => "Mary", :lastname => "Smith")
-    john = Participant.create(:firstname => "John", :lastname => "Smith")
+    mary = Participant.create(:firstname => "Mary", :lastname => "Smith", :birthdate => '1/1/1990')
+    john = Participant.create(:firstname => "John", :lastname => "Smith", :birthdate => '1/1/1990')
     fam.participants << mary
     fam.participants << john
     assert fam.save
