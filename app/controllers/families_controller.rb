@@ -43,6 +43,8 @@ class FamiliesController < ApplicationController
     3.times do
       @family.participants << Participant.new
     end
+    
+    @participants = @family.participants
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,10 +55,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    participants = @family.participants.sort_by{|a| a.birthdate || "" }
-    @family.participants = move_main_contact_to_front(participants)
-    @family.participants << Participant.new
-
+    @participants = @family.participants.sort_by{|a| a.birthdate || "" }
+    @participants = move_main_contact_to_front(@participants)
+    @participants << Participant.new
   end
 
   def edit_choose_family
