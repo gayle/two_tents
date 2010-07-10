@@ -1,7 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.landing '/', :controller => 'content', :action => 'landing'
+  map.root :controller => 'content', :action => 'landing'
   map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
   map.resources :families
+  map.resources :contacts
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.family_registration '/family_registration', :controller => 'families', :action => 'family_registration'
@@ -23,6 +24,4 @@ ActionController::Routing::Routes.draw do |map|
   map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
 
   map.connect ':action', :controller => 'content'
-  #map.connect ':controller/:action/:id'
-  #map.connect ':controller/:action/:id.:format'
 end
