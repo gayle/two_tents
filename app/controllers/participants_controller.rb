@@ -137,7 +137,7 @@ class ParticipantsController < ApplicationController
         family_deleted = nil
         if participant_deleted
           AuditTrail.audit("Participant #{@participant_to_delete.fullname} removed by #{current_user.login}")
-          flash[:success] = "Participant #{@participant_to_delete.fullname} deleted"
+          flash[:notice] = "Participant #{@participant_to_delete.fullname} deleted"
           if @family_to_delete
             family_name = @family_to_delete.familyname
             family_deleted = @family_to_delete.destroy
