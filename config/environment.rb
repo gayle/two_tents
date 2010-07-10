@@ -44,6 +44,8 @@ Rails::Initializer.run do |config|
     :source => 'http://gems.github.com'
 
   config.gem 'hoptoad_notifier'
+  
+  config.gem "factory_girl", :lib => false
 end
 
 # ExceptionNotifier.exception_recipients = %w(gayle@craigworld.com)
