@@ -1,4 +1,7 @@
 class Participant < ActiveRecord::Base
+
+  include ActionView::Helpers::TextHelper
+
   belongs_to :family
   belongs_to :user
 
@@ -41,49 +44,37 @@ class Participant < ActiveRecord::Base
     @birthdate_invalid = true
   end
 
+  def age_parts
+    start_of_camp = Date.new(2010, 7, 21)
+    dob = birthdate.to_date
+    d_year = start_of_camp.year - dob.year
+    d_month = start_of_camp.month - dob.month
+    d_days = start_of_camp.day - dob.day
+    if d_days < 0
+      d_days = d_days + Time.days_in_month(dob.month, dob.year)
+      d_month = d_month - 1
+    end
+    if d_month < 0
+      d_month = d_month + 12
+      d_year = d_year - 1
+    end
+    [d_year, d_month, d_days]
+  end
+    
   # Must return a numeric age
   def age
-    # TODO Need to change configuration page to have a configured start date for billing, not hard coded like this
-    start_of_camp = Date.parse("July 21, 2010")
-
-    # calculated_age = ((start_of_camp - birthdate.to_date)/365.25).floor #365.25 accounts for leap years
-    # This formula above doesn't work if the person's birthday is EXACTLY the first day of camp.
-    # Because of the floor.  If birthdate is June 21, 2008.  And start_of_camp is June 21, 2010, then
-    #((start_of_camp - birthdate.to_date)/365.25)  => 1.99863107460643
-
-    # Is this better?
-    dob = birthdate.to_date
-    day_diff = start_of_camp.day - dob.day
-    month_diff = start_of_camp.month - dob.month - (day_diff < 0 ? 1 : 0)
-    calculated_age = start_of_camp.year - dob.year - (month_diff < 0 ? 1 : 0)
-
-    return calculated_age
-
-
-    # What about this? is it even better?
-    # def age
-    #   age = Date.today.year - read_attribute(:birthdate).year
-    #   if Date.today.month < read_attribute(:birthdate).month ||
-    #   (Date.today.month == read_attribute(:birthdate).month && read_attribute(:birthdate).day >= Date.today.day)
-    #     age = age - 1
-    #   end
-    #   return age
-    # end
-
+    age_parts[0]
   end
 
   def display_age
-    calculated_age = age
-    if calculated_age < 1
-      # TODO improve this to get a specific number of months if less than 2 years
-      # This doesn't work. For example, someone 11 months and 29 days, shows up as 0
-      # >> age_in_months = start_of_camp.month - birthdate.month  => 0
-      # age_in_months = start_of_camp.month - birthdate.month
-      # return "#{calculated_age} #{pluralize(age_in_months, "month")}"
-
-      return "less than 1 year"
+    a = age_parts
+    if a[0] >= 2
+      a[0].to_s
+    elsif a[1] > 0
+      "#{pluralize(a[1] + 12*a[0], "month")}"
+    else
+      "#{pluralize(a[2], "day")}"
     end
-    return calculated_age
   end
 
   def validate
