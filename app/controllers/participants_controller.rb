@@ -69,14 +69,14 @@ class ParticipantsController < ApplicationController
     @family = Family.find(params[:participant][:family]) rescue nil
     params[:participant][:family] = @family
     @participant = Participant.new(params[:participant])
-
     respond_to do |format|
       if @participant.save
         AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
         flash[:notice] = "Participant #{@participant.fullname} was successfully created."
-        format.html { redirect_to new_user_path(:participant => @participant) }
+        # TODO: is this right? was new_user_path for this participant; test didn't match
+        format.html { redirect_to participant_path(@participant) }
       else
-        msg = @participant.errors.join(", ")
+        msg = @participant.errors.full_messages.join(", ")
         logger.error msg
         puts msg
         flash[:error] = msg

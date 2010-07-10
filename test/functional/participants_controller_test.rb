@@ -22,10 +22,10 @@ class ParticipantsControllerTest < ActionController::TestCase
 
   test "should create participants" do
     assert_difference('Participant.count') do
-      post :create, :commit => 'Save', :participant => { :family => Family.find(:first) }
+      post :create, :commit => 'Save', :participant => { :family => Family.find(:first), :birthdate => '1/1/2000' }
     end
 
-    assert_redirected_to participant_path(assigns(:participants))
+    assert_redirected_to participant_path(assigns(:participant))
   end
 
   test "should show participants" do
@@ -41,7 +41,7 @@ class ParticipantsControllerTest < ActionController::TestCase
   test "should update participant" do
     put :update, :id => participants(:quentin).to_param, :participants => { }
     assert assigns(:participants)
-    assert_redirected_to participant_path(assigns(:participants))
+    assert_redirected_to participants_path
   end
 
   test "should not destroy participants with a user" do
@@ -53,7 +53,7 @@ class ParticipantsControllerTest < ActionController::TestCase
   end
   test "should destroy participants without a user" do
     assert_difference('Participant.count', -1) do
-      delete :destroy, :id => participants(:non_user).to_param
+      delete :destroy, :id => participants(:joannearnold).to_param
     end
 
     assert_redirected_to participants_path

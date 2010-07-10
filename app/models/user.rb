@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible(:login, :email, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :mobilephone, :participant,
+                  :security_answer, :mobilephone, :participant_id_attr,
                   :photourl, :workphone, :position,
                   :head_shot_file_name, :head_shot_content_type,
                   :head_shot_file_size, :head_shot)
@@ -77,6 +77,14 @@ class User < ActiveRecord::Base
 
   def authorized_for_listing?(param_id)
     id == param_id.to_i
+  end
+
+  def participant_id_attr
+    participant.id if participant
+  end
+
+  def participant_id_attr=(v)
+    self.participant = Participant.find(v)
   end
 
   # define readable methods for role access
