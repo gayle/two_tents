@@ -21,8 +21,11 @@ class ParticipantsControllerTest < ActionController::TestCase
   end
 
   test "should create participants" do
-    assert_difference('Participant.count') do
-      post :create, :commit => 'Save', :participant => { :family => Family.find(:first), :birthdate => '1/1/2000' }
+    assert_difference('Participant.count', 1) do
+      post :create, :commit => 'Save',
+           :participant => {
+                   :family => Family.find(:first),
+                   :lastname => "Smith", :firstname => "Joe", :birthdate => '1/1/2000', :state => "OH" }
     end
 
     assert_redirected_to participant_path(assigns(:participant))
