@@ -1,4 +1,4 @@
-<!-- Oh yes, I do hate all these tables. --> 
+<!-- Oh yes, I do hate all these tables. -->
 <table>
   <tr>
     <td class="field">
@@ -8,7 +8,7 @@
       <%= participant_form.text_field :lastname, :size => 45 -%><br /><%= participant_form.label "Last Name" -%>
     </td>
     <td class="field">
-      <%= participant_form.text_field :birthdate_string, :size => 20 -%><br /><%= participant_form.label "* Birthdate (MM/DD/YYYY)" -%>
+      <%= participant_form.text_field :birthdate_string, :size => 20, :class => 'ui-date' -%><br /><%= participant_form.label "* Birthdate (MM/DD/YYYY)" -%>
     </td>
     <td class="field">
       <%= participant_form.text_field :gender, :size => 10 -%><br /><%= participant_form.label "Gender (M/F)" -%>
@@ -70,7 +70,7 @@
   <tr><td>
     <%= participant_form.text_area :trivia, :cols => 105, :rows => 2 -%><br /><%= participant_form.label "2-3 interesting facts about this person" -%>
   </td></tr>
-</table>    
+</table>
   * indicates required fields
 
 <!--
