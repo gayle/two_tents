@@ -2,8 +2,7 @@ aaron:
   id:                        1
   lastname:                  Space
   firstname:                 Aaron
-  address1:                  an address1
-  address2:                  an address2
+  address:                   an address
   city:                      oz
   state:                     ok
   zip:                       55555
@@ -14,8 +13,7 @@ old_macdonald:
   id:                        2
   lastname:                  MacDonald
   firstname:                 Old
-  address1:                  an address1
-  address2:                  an address2
+  address:                  an address
   city:                      oz
   state:                     ok
   zip:                       55555
@@ -26,8 +24,7 @@ annie:
   id:                        3
   lastname:                  MacDonald
   firstname:                 Annie
-  address1:                  an address1
-  address2:                  an address2
+  address:                  an address
   city:                      oz
   state:                     ok
   zip:                       55555
@@ -39,8 +36,7 @@ jimcraig:
   id:                        4
   lastname:                  Craig
   firstname:                 Jim
-  address1:                  123 Some St.
-  address2:
+  address:                  123 Some St.
   city:                      Charleston
   state:                     IL
   zip:                       61920
@@ -52,8 +48,7 @@ carolyncraig:
   id:                        5
   lastname:                  Craig
   firstname:                 Carolyn
-  address1:                  123 Some St.
-  address2:
+  address:                  123 Some St.
   city:                      Charleston
   state:                     IL
   zip:                       61920
@@ -65,8 +60,7 @@ gaylecraig:
   id:                        6
   lastname:                  Craig
   firstname:                 Gayle
-  address1:                  123 Another St.
-  address2:
+  address:                  123 Another St.
   city:                      Dublin
   state:                     OH
   zip:                       43016
@@ -78,8 +72,7 @@ dancraig:
   id:                        7
   lastname:                  Craig
   firstname:                 Dan
-  address1:                  999 Whatever St.
-  address2:
+  address:                  999 Whatever St.
   city:                      Kettering
   state:                     OH
   zip:                       45433
@@ -90,8 +83,7 @@ suecupples:
   id:                        8
   lastname:                  Cupples
   firstname:                 Sue
-  address1:                  456 Hello St.
-  address2:
+  address:                  456 Hello St.
   city:                      Findlay
   state:                     OH
   zip:                       45840
@@ -103,8 +95,7 @@ jackcupples:
   id:                        9
   lastname:                  Cupples
   firstname:                 Jack
-  address1:                  456 Hello St.
-  address2:
+  address:                  456 Hello St.
   city:                      Findlay
   state:                     OH
   zip:                       45840
@@ -115,8 +106,7 @@ garywortman:
   id:                        10
   lastname:                  Wortman
   firstname:                 Gary
-  address1:                  678 Spring St.
-  address2:
+  address:                  678 Spring St.
   city:                      Orrville
   state:                     OH
   zip:                       44667
@@ -128,8 +118,7 @@ michelewortman:
   id:                        11
   lastname:                  Wortman
   firstname:                 Michele
-  address1:                  678 Spring St.
-  address2:
+  address:                  678 Spring St.
   city:                      Orrville
   state:                     OH
   zip:                       44667
@@ -141,8 +130,7 @@ tylerwortman:
   id:                        12
   lastname:                  Wortman
   firstname:                 Tyler
-  address1:                  678 Spring St.
-  address2:
+  address:                  678 Spring St.
   city:                      Orrville
   state:                     OH
   zip:                       44667
@@ -153,8 +141,7 @@ kaitlinwortman:
   id:                        13
   lastname:                  Wortman
   firstname:                 Kaitlin
-  address1:                  678 Spring St.
-  address2:
+  address:                  678 Spring St.
   city:                      Orrville
   state:                     OH
   zip:                       44667
@@ -165,8 +152,7 @@ jeaninelewis:
   id:                        14
   lastname:                  Lewis
   firstname:                 Jeanine
-  address1:                  196 Reading Rd.
-  address2:
+  address:                  196 Reading Rd.
   city:                      Cridersville
   state:                     OH
   zip:                       445806
@@ -178,8 +164,7 @@ dylanlewis:
   id:                        15
   lastname:                  Lewis
   firstname:                 Dylan
-  address1:                  196 Reading Rd.
-  address2:
+  address:                  196 Reading Rd.
   city:                      Cridersville
   state:                     OH
   zip:                       445806
@@ -190,8 +175,7 @@ joannearnold:
   id:                        16
   lastname:                  Arnold
   firstname:                 Joanne
-  address1:                  934 West Ave.
-  address2:
+  address:                  934 West Ave.
   city:                      Logan
   state:                     OH
   zip:                       43138
@@ -202,8 +186,7 @@ quentin:
   id:                        17
   lastname:                  User
   firstname:                 Quentin
-  address1:                  an address1
-  address2:                  an address2
+  address:                  an address
   city:                      oz
   state:                     ok
   zip:                       55555
@@ -215,8 +198,7 @@ gary:
   id:                        18
   lastname:                  Craig
   firstname:                 Gary
-  address1:                  456 Hello St.
-  address2:
+  address:                  456 Hello St.
   city:                      Findlay
   state:                     OH
   zip:                       45840
