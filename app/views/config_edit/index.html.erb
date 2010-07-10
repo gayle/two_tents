@@ -2,14 +2,17 @@
 <% form_for :config, @config, :url => {:action => 'update'} do |form| -%>
   <table>
     <tr>
-      <th>Year</th><th>Date Description</th><th>Theme</th>
+      <th>Year</th><th>Start Date</th><th>End Date</th><th>Theme</th>
     </tr>
     <tr>
       <td>
         <%= form.text_field "year" -%>
       </td>
       <td>
-        <%= form.text_field "dates" -%>
+        <%= form.text_field "starts_on", :class => 'ui-date', :value => @config.starts_on.to_s -%>
+      </td>
+      <td>
+        <%= form.text_field "ends_on", :class => 'ui-date', :value => @config.ends_on.to_s -%>
       </td>
       <td>
         <%= form.text_field "theme" -%>

@@ -45,7 +45,7 @@ class Participant < ActiveRecord::Base
   end
 
   def age_parts
-    start_of_camp = Date.new(2010, 7, 21)
+    start_of_camp = Configuration.current.starts_on
     dob = birthdate.to_date
     d_year = start_of_camp.year - dob.year
     d_month = start_of_camp.month - dob.month
