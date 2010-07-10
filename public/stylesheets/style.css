@@ -16,10 +16,12 @@ tr.overload {
     margin-bottom:1em;
   }
 
-  #messages.error {
+  #error_messages.error {
+    padding: 20px;
     color:red;
     background:pink;
     border:2px solid red;
+    margin-bottom: 20px;
   }
 
   #messages.success, #messages.notice {
@@ -39,6 +41,7 @@ tr.overload {
     color:red;
     background:pink;
     border:2px solid red;
+    padding: 20px
 }
 
 #flash{

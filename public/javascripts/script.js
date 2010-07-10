@@ -15,7 +15,7 @@ $(document).ready(function() {
     $("#messages").slideDown(function() {
       setTimeout(function() {
         $("#messages").slideUp();
-      }, 5000);
+      }, 2000);
     });
   }, 750);
 

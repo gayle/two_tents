@@ -18,7 +18,11 @@ module ApplicationHelper
   end
 
   def create_message_tag(type)
-    content_tag(:div, flash[type], { :id => "messages", :class => type })
+    if type == :error
+      content_tag(:div, flash[type], { :id => "error_messages", :class => type })
+    else
+      content_tag(:div, flash[type], { :id => "messages", :class => type })
+    end
   end
 
   def greeting
