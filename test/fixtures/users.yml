@@ -90,3 +90,14 @@ jeanine:
   roles: admin
   security_question:         question
   security_answer:           answer
+
+quentin:
+  id: 9
+  login: quentin
+  email: quentin@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
+  created_at: <%= 1.days.ago.to_s :db %>
+  roles: admin
+  security_question:         question
+  security_answer:           answer
