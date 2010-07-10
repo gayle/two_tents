@@ -10,12 +10,8 @@ class Family < ActiveRecord::Base
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
 
-  def family_address1
-    main_contact ? main_contact.address1 : "unknown"
-  end
-
-  def family_address2
-    main_contact ? main_contact.address2 : "unknown"
+  def family_address
+    main_contact ? main_contact.address : "unknown"
   end
 
   def family_city

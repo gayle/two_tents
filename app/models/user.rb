@@ -45,10 +45,8 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible(:login, :email, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :mobilephone, :participant_id_attr,
-                  :photourl, :workphone, :position,
-                  :head_shot_file_name, :head_shot_content_type,
-                  :head_shot_file_size, :head_shot)
+                  :security_answer, :cell_phone, :participant_id_attr,
+                  :home_phone, :position)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #

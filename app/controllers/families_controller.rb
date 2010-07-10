@@ -43,6 +43,8 @@ class FamiliesController < ApplicationController
     3.times do
       @family.participants << Participant.new
     end
+    
+    @participants = @family.participants
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,10 +55,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    participants = @family.participants.sort_by{|a| a.birthdate || "" }
-    @family.participants = move_main_contact_to_front(participants)
-    @family.participants << Participant.new
-
+    @participants = @family.participants.sort_by{|a| a.birthdate || "" }
+    @participants = move_main_contact_to_front(@participants)
+    @participants << Participant.new
   end
 
   def edit_choose_family
@@ -128,7 +129,7 @@ class FamiliesController < ApplicationController
     respond_to do |format|
       if @family.update_attributes(params[:family])
         AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", edit_family_path(@family))
-        flash[:notice] = 'Families was successfully updated.'
+        flash[:notice] = "Family #{@family.familyname} was successfully updated."
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
         format.js do
@@ -169,24 +170,6 @@ class FamiliesController < ApplicationController
     raise e
   end
   
-  def family_registration
-    params[:participant].each_pair do |k,v|
-      p = Participant.find(k)
-      year = Configuration.current.year
-      reg = p.registrations.find(:first, :conditions => ["year = ?", year] )
-      room = Room.find(v)
-      if reg.nil?
-        reg = Registration.create(:year => year)
-        reg.room = room
-        p.registrations << reg
-      else
-        reg.room = Room.find(v.to_i)
-        reg.save
-      end
-    end
-    redirect_to family_url(params[:family][:id])
-  end
-
   # DELETE /families/1
   # DELETE /families/1.xml
   def destroy

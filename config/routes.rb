@@ -1,27 +1,49 @@
 ActionController::Routing::Routes.draw do |map|
-  map.root :controller => 'content', :action => 'landing'
-  map.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
-  map.resources :families
-  map.resources :contacts
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.login '/login', :controller => 'sessions', :action => 'new'
-  map.family_registration '/family_registration', :controller => 'families', :action => 'family_registration'
-  map.register '/register', :controller => 'users', :action => 'create'
-  map.signup '/signup', :controller => 'users', :action => 'new'
-  map.staff '/staff', :controller => 'staff', :action => 'index'
-  map.edit_choose_family '/edit_choose_family', :controller => 'families', :action => 'edit_choose_family'
-  map.update_add_participant '/update_add_participant', :controller => 'families', :action => 'update_add_participant'
-  map.participants_by_age '/participants_by_age', :controller => 'reports', :action => 'participants_by_age'
-  map.families_by_state '/families_by_state', :controller => 'reports', :action => 'families_by_state'
-  map.birthdays_by_month '/birthdays_by_month', :controller => 'reports', :action => 'birthdays_by_month'
-  map.resources :users,
-                :collection => { :enter_login => :post },
-                :member => { :get_question => :get, :answer_question => :post, :show_password => :get, :change_password => :put }
-  map.password '/password', :controller => 'users', :action => 'reset_login'
-  map.resources :files
-  map.resource :session
-  map.config_edit '/config', :controller => 'config_edit', :action => 'index', :conditions => {:method => :get}
-  map.config_edit '/config', :controller => 'config_edit', :action => 'update', :conditions => {:method => :post}
+  map.with_options :path_prefix => 'admin' do |admin|
+    admin.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
 
+    admin.resources :contacts, :only => [:new, :create]
+
+    admin.resources :families
+    admin.with_options :controller => 'families' do |family|
+      family.edit_choose_family '/edit_choose_family', :action => 'edit_choose_family'
+      family.update_add_participant '/update_add_participant', :action => 'update_add_participant'
+    end
+
+    admin.with_options :controller => 'reports' do |report|
+      report.participants_by_age '/participants_by_age', :action => 'participants_by_age'
+      report.families_by_state '/families_by_state', :action => 'families_by_state'
+      report.birthdays_by_month '/birthdays_by_month', :action => 'birthdays_by_month'
+    end
+
+    admin.with_options :controller => 'config_edit' do |config|
+      config.config_edit '/config', :action => 'index', :conditions => {:method => :get}
+      config.config_edit '/config', :action => 'update', :conditions => {:method => :post}
+    end
+
+    admin.resources :users,
+              :collection => { :enter_login => :post },
+              :member => { :get_question => :get,
+                           :answer_question => :post,
+                           :show_password => :get,
+                           :change_password => :put }
+
+    admin.dashboard '/dashboard', :controller => 'dashboard', :action => 'index'
+  end
+
+  map.with_options :controller => 'sessions' do |session|
+    session.logout '/logout', :controller => 'sessions', :action => 'destroy'
+    session.login '/login', :controller => 'sessions', :action => 'new'
+  end
+
+  map.with_options :controller => 'users' do |user|
+    user.register '/register', :action => 'create'
+    user.signup '/signup', :action => 'new'
+    user.password '/password', :action => 'reset_login'
+  end
+
+  map.resource :session
+
+  map.root :controller => 'content', :action => 'landing'
   map.connect ':action', :controller => 'content'
 end

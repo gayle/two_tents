@@ -1,18 +1,13 @@
 class Participant < ActiveRecord::Base
   belongs_to :family
   belongs_to :user
-#  has_many :registrations
 
   before_destroy :validate_no_dependents
 
   validates_presence_of :birthdate
 
-  def participant_address1
-    address1.present? ? address1 : family.family_address1
-  end
-
-  def participant_address2
-    address2.present? ? address2 : family.family_address2
+  def participant_address
+    address.present? ? address : family.family_address
   end
 
   def participant_city
