@@ -6,6 +6,9 @@ class Family < ActiveRecord::Base
 
   validates_associated :participants
 
+  validates_presence_of :familyname, :message =>"Family Name Can't be blank"
+  validates_presence_of :participants, :message =>"Participants were not added"
+
   def familyname
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
@@ -32,7 +35,7 @@ class Family < ActiveRecord::Base
       #puts "\nare they blank?\nDBG #{attributes_blank?(attributes)} DBG attributes=#{attributes.inspect}"
       participants.build(attributes) if !attributes_blank?(attributes)
     end
-  end
+  end           
 
   # see http://railscasts.com/episodes/75-complex-forms-part-3
   def existing_participant_attributes=(participant_attributes)
