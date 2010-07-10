@@ -1,8 +1,0 @@
-<h1>Upload File</h1>
-<% form_for Files.new, :html => {:multipart => true} do |form| -%>
-  <%= form.label "Description" -%>
-  <%= form.text_field :description -%><br />
-  <%= form.label "File to upload" -%>
-  <%= form.file_field :att -%>
-  <%= form.submit 'Upload and store' -%>
-<% end -%>
