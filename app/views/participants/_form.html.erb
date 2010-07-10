@@ -11,7 +11,7 @@
       <%= participant_form.text_field :birthdate_string, :size => 20, :class => 'ui-date' -%><br /><%= participant_form.label "* Birthdate (MM/DD/YYYY)" -%>
     </td>
     <td class="field">
-      <%= participant_form.text_field :gender, :size => 10 -%><br /><%= participant_form.label "Gender (M/F)" -%>
+      <%= participant_form.select :gender, [['',''],['Male','M'],['Female','F']] -%><br /><%= participant_form.label "Gender" -%>
     </td>
   </tr>
 </table>
