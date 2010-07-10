@@ -1,3 +1,3 @@
 
-Factory.define :family_seq do |f|
+Factory.define :family do |f|
 end
