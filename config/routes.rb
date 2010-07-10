@@ -42,7 +42,6 @@ ActionController::Routing::Routes.draw do |map|
     user.password '/password', :action => 'reset_login'
   end
 
-  map.resources :files
   map.resource :session
 
   map.root :controller => 'content', :action => 'landing'
