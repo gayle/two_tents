@@ -8,7 +8,7 @@ class Participant < ActiveRecord::Base
   before_destroy :validate_no_dependents
 
   # at least validate presence fields used directly or indirectlyr for sorting
-  validates_presence_of :lastname, :firstname, :birthdate, :state
+  validates_presence_of :lastname, :firstname, :birthdate
 
   def participant_address
     address.present? ? address : family.family_address
@@ -179,7 +179,7 @@ class Participant < ActiveRecord::Base
 
   def self.sort_by_state(participants_in_group)
     participants_in_group.sort_by do |p|
-      [p.state, p.lastname, p.firstname]
+      [p.participant_state, p.lastname, p.firstname]
     end
   end
 

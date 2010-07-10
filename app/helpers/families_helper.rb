@@ -22,7 +22,4 @@ module FamiliesHelper
     # maybe expand this to check for each attribute, is it blank or 0?
   end
 
-  def error_saving(family)
-    "Oops! There was a problem saving family '#{family.familyname}'"    
-  end
 end
