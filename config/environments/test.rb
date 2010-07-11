@@ -28,3 +28,6 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 CONTACT_EMAIL = "test@test.com"
+
+# Gems
+config.gem "factory_girl", :lib => false
