@@ -14,10 +14,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new
     @user.build_participant
+    #HACK - change habtm to has_many :through => :rich_join_model
+    @user.roles << Role.find_or_create_by_name(:name => "staff")
+    @user.roles << Role.find_or_create_by_name(:name => "admin") if params[:user][:admin_role] == '1'
     @user.attributes = params[:user]
     if @user.save
       AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", user_url(@user))
-      flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as a staff member."
+      flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as #{@user.roles.collect { |x| x.name }.join(', ')}"
       redirect_to :action => 'index'
     else
       flash[:error]  = @user.errors.full_messages
@@ -111,4 +114,5 @@ class UsersController < ApplicationController
   def find_user
     @user = User.find(params[:id])
   end
+
 end
