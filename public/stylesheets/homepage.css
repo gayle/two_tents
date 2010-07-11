@@ -214,6 +214,20 @@ textarea {
   color:#8ECBDE;
 }
 
-.secondary {
-  padding:21px 0;
+#login_form button {
+  float:none;
+  display:inline;
+}
+
+form .secondary,
+form .secondary:link,
+form .secondary:visited {
+  color:#CCC;
+}
+
+form .secondary:hover,
+form .secondary:focus,
+form .secondary:active {
+  outline:0;
+  color:#666;
 }
