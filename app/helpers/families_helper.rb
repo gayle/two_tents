@@ -6,13 +6,6 @@ module FamiliesHelper
     fields_for("family[#{prefix}_participant_attributes][]", participant, &block)
   end
 
-  def move_main_contact_to_front(participants)
-    participants = participants.sort_by{|a| a.main_contact.to_s}
-    main_family_contact=participants.pop
-    participants.unshift(main_family_contact)
-    participants
-  end
-
   def attributes_blank?(attributes)
     # check a few that should never be blank
     return (attributes[:firstname].blank? and
@@ -24,5 +17,16 @@ module FamiliesHelper
 
   def error_saving(family)
     "Oops! There was a problem saving family '#{family.familyname}'"    
+  end
+
+  def main_contact?(participant)
+    participant.family.main_contact == participant
+  end
+
+  # Return list of participants sorted by birthdate w/main_contact first
+  def sorted_participants
+    participants = @family.participants.sort_by{|a| a.birthdate || "" }
+    participants.delete(@family.main_contact)
+    participants.unshift(@family.main_contact)
   end
 end

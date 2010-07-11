@@ -3,8 +3,11 @@
     <table>
       <tr>
         <td>
-          <%= participant_form.radio_button :main_contact, 'true' %>
-          <%= participant_form.label "Click if this person is the main contact for this family." -%>
+          <% if not new_form -%>
+          <%= family_form.radio_button :main_contact_id, participant.id, 
+                :checked => main_contact?(participant) %>
+          <%= family_form.label "Click if this person is the main contact for this family." -%>
+          <% end -%>
         </td>
       </tr>
     </table>

@@ -1,11 +1,12 @@
 <h1>Family Detail</h1>
 
-<% form_for @family, :html => {:multipart => true} do |f| %>
-  <%= f.error_messages %>
+<% form_for @family, :html => {:multipart => true} do |form| %>
+  <%= form.error_messages %>
 
-  <%= render :partial => f -%>
+  <%= render :partial => "form", 
+             :locals => { :family_form => form, :new_form => false } -%>
   <p>
-    <%= f.submit 'Update' %>
+    <%= form.submit 'Update' %>
   </p>
 <% end %>
 

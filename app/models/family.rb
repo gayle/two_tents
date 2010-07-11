@@ -65,9 +65,7 @@ class Family < ActiveRecord::Base
   end
 
   def main_contact
-    contact = participants.select {|p|
-      p.main_contact?
-    }.first
+    participants.find(main_contact_id)
   end
 
   def main_contact_name
@@ -110,6 +108,6 @@ class Family < ActiveRecord::Base
     end
     state_group
   end
-  
+
   private
 end

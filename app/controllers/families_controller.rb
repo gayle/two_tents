@@ -29,23 +29,22 @@ class FamiliesController < ApplicationController
   # GET /families/new
   # GET /families/new.xml
   def new
+    @family = Family.new
+    
     if params[:participant]
       @participant = Participant.find(params[:participant])
-      @participant.main_contact = true
+      @family.participants << @participant
     else
-      @participant = Participant.new(:main_contact => true)
+      @participant = @family.participants.build
     end
-
-    @family = Family.new
-    @family.participants = [@participant]
 
     # give some extra blanks
     3.times do
-      @family.participants << Participant.new
+      @family.participants.build
     end
     
     @participants = @family.participants
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @family }
@@ -55,9 +54,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    @participants = @family.participants.sort_by{|a| a.birthdate || "" }
-    @participants = move_main_contact_to_front(@participants)
-    @participants << Participant.new
+    @participants = sorted_participants
+    # This should go away replaced w/Ajax call to create new participant
+    @participants << @family.participants.build
   end
 
   def edit_choose_family
@@ -94,7 +93,13 @@ class FamiliesController < ApplicationController
         end
 
         @family.participants = participants
-        if @family.save
+        ret = @family.save
+        ret2 = nil
+        if ret
+          @family.main_contact_id = @family.participants[0].id
+          ret2 = @family.save
+        end
+        if ret && ret2
           AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", edit_family_path(@family))
 
           flash[:notice] = "Family #{@family.familyname} was successfully created."
@@ -144,7 +149,7 @@ class FamiliesController < ApplicationController
         end
       else
         message = error_saving(@family)
-        flash[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
+        flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
         logger.error "ERROR #{message} \n#{@family.inspect}}"
         logger.error e.backtrace.join("\n\t")
         render :action => "edit"
@@ -152,7 +157,7 @@ class FamiliesController < ApplicationController
     end
   rescue Exception => e
     message = error_saving(@family)
-    flash[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
+    flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
     logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
     render :action => "edit"

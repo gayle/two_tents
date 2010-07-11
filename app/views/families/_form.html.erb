@@ -1,3 +1,4 @@
 <h2>Family Members</h2>
 
-<%= render :partial => 'participant', :collection => @participants %>
+<%= render :partial => 'participant', :collection => @participants,
+           :locals => { :family_form => family_form, :new_form => new_form } %>
