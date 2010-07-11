@@ -51,4 +51,10 @@ class FamiliesControllerTest < ActionController::TestCase
 
     assert_redirected_to families_path
   end
+  
+  test "should not destroy main_contact" do
+    put :update, :id => families(:space).to_param, :family => { :participants_attributes => { '12345' => { :main_contact => "1" }}}
+    assert families(:space).main_contact
+  end
+  
 end
