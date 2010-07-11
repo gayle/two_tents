@@ -8,11 +8,13 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @participants = Participant.find_non_staff_participants
+    @user.build_participant
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new
+    @user.build_participant
+    @user.attributes = params[:user]
     if @user.save
       AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", user_url(@user))
       flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as a staff member."

@@ -70,29 +70,27 @@ class FamiliesController < ApplicationController
   # POST /families.xml
   def create
     @family = Family.new(params[:family])
+    @participants = []
 
     respond_to do |format|
-
       Family.transaction do
-# TODO put if's around this
-        participants = []
         # Doesn't seem like I should have to do this.
         # See http://railscasts.com/episodes/75-complex-forms-part-3
         params[:family][:existing_participant_attributes] ||= {}
         params[:family][:existing_participant_attributes].each_key do |k|
           p = Participant.find(k.to_i)
-          participants << p if p
+          @participants << p if p
         end
 
         params[:family][:new_participant_attributes] ||= []
         params[:family][:new_participant_attributes].each do |attributes|
           if !attributes_blank?(attributes)
             p = Participant.new(attributes)
-            participants << p
+            @participants << p
           end
         end
 
-        @family.participants = participants
+        @family.participants = @participants
         ret = @family.save
         ret2 = nil
         if ret
@@ -106,20 +104,12 @@ class FamiliesController < ApplicationController
           format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
           format.xml  { render :xml => @family, :status => :created, :location => @family }
         else
-          message = error_saving(@family)
-          flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
-          logger.error "ERROR #{message} \n#{@family.inspect}}"
-          logger.error e.backtrace.join("\n\t")
-          render :action => "new"
-        end
+          format.html { render_showing_errors(:action => :new) }
+        end          
       end
     end
   rescue Exception => e
-    message = error_saving(@family)
-    flash[:error] = "#{message}<br />[TECHNICAL DETAILS: create(): #{@family.errors.to_a.join(',')}]"
-    logger.error "ERROR #{message} \n#{@family.inspect}}"
-    logger.error e.backtrace.join("\n\t")
-    render :action => "new"
+    render_showing_errors(:action => :new)
   end
 
   # PUT /families/1
@@ -130,37 +120,36 @@ class FamiliesController < ApplicationController
     # !!! I'm not sure why I need to reload here, but if I don't, then the
     # !!! associated .participants are nil.
     @family.reload
-
+    @participants = @family.participants
+    
     respond_to do |format|
       if @family.update_attributes(params[:family])
         AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", edit_family_path(@family))
         flash[:notice] = "Family #{@family.familyname} was successfully updated."
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
-        format.js do
-          flash.discard
-          render(:update) do |page|
-            element = "#{@family.class}_#{@family.id}_#{params[:family].keys[0]}"
-            page.replace_html(element,
-                              :partial => 'flipflop',
-                              :locals => {:family => @family,
-                                :type => params[:family].keys[0] } )
-          end
-        end
       else
+<<<<<<< HEAD:app/controllers/families_controller.rb
         message = error_saving(@family)
         flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
         logger.error "ERROR #{message} \n#{@family.inspect}}"
         logger.error e.backtrace.join("\n\t")
         render :action => "edit"
+=======
+        format.html { render_showing_errors(:action => :edit) }
+>>>>>>> 1f2a8db8976f983557b59b5cbdda6bda9e0cd8f3:app/controllers/families_controller.rb
       end
     end
   rescue Exception => e
+<<<<<<< HEAD:app/controllers/families_controller.rb
     message = error_saving(@family)
     flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
     logger.error "ERROR #{message} \n#{@family.inspect}}"
     logger.error e.backtrace.join("\n\t")
     render :action => "edit"
+=======
+    render_showing_errors :action => "edit", :exception => e
+>>>>>>> 1f2a8db8976f983557b59b5cbdda6bda9e0cd8f3:app/controllers/families_controller.rb
   end
 
   def update_add_participant
@@ -170,9 +159,7 @@ class FamiliesController < ApplicationController
     @family.participants << @participant
     redirect_to participants_url
   rescue Exception => e
-    logger.error "ERROR update_add_participant. family:\n#{@family.inspect}}\nparticipant:\n#{@participant}"
-    logger.error e.backtrace.join("\n\t")
-    raise e
+    render_showing_errors(:action => :edit_choose_family, :exception => e)
   end
   
   # DELETE /families/1
@@ -188,5 +175,52 @@ class FamiliesController < ApplicationController
       format.html { redirect_to(families_url) }
       format.xml  { head :ok }
     end
+  end
+
+  private
+
+  def render_showing_errors(params)
+    general_message   = error_saving(@family)
+    exception_message = got_exception(params[:exception])
+    validation_errors = error_list_for(@family)
+
+    flash[:error] = flash_message_for(general_message, exception_message, validation_errors)
+    logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
+    logger.error "EXCEPTION: #{exception_message}\n BACTRACE: #{params[:exception].backtrace.join("\n\t")}" if params[:exception]
+
+    render :action => params[:action]
+  end
+
+  def error_saving(family)
+    "There was a problem saving the family '#{family.familyname}'"
+  end
+  
+  def got_exception(exception)
+    msg = ""
+    if exception
+      msg << "<br />#{exception.class} Exception: #{exception.message}"
+      msg << "<br />#{exception.backtrace[0]}"
+      msg << "<br />#{exception.backtrace[1]}"
+# TODO maybe keep printing stack until we know it's a line number for app code, not just rails code
+#      msg << "<br />#{exception.backtrace[2]}"
+#      msg << "<br />#{exception.backtrace[3]}"
+#      msg << "<br />#{exception.backtrace[4]}"
+#      msg << "<br />#{exception.backtrace[5]}"
+#      msg << "<br />#{exception.backtrace[6]}"
+    end
+    msg
+  end
+
+  def error_list_for(family)
+    family.errors ? family.errors.to_a.join(', ') : ""
+  end
+
+  def flash_message_for(general_message, exception_message, validation_errors)
+    msg = "#{general_message}"
+    # if validation error, let the validation stuff do it's thing. If not, put more info into the flash.
+    if validation_errors.empty?
+     msg << "<br />[TECHNICAL DETAILS: #{exception_message} <br />#{validation_errors}]"
+    end
+    msg
   end
 end

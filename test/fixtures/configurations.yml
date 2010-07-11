@@ -1,3 +1,4 @@
 two_thousand_ten:
   year: 2010
-  dates: July 21st - 25th
+  starts_on: 7/21/2010
+  ends_on: 7/25/2010

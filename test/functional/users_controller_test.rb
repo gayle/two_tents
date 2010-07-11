@@ -61,10 +61,10 @@ class UsersControllerTest < ActionController::TestCase
   def test_should_update_user
     user = User.find(:first)
     participant = user.participant
-    put :update, {:id => user.id, :user => { :participant_id_attr => participant.id, :login => "changedlogin" }}
+    put :update, {:id => user.id, :user => { :participant_attributes => { :id => participant.id, :firstname => 'FOO' }, :login => "changedlogin" }}
     assert_response :redirect
     user.reload
-    assert_equal participant, user.participant
+    assert_equal 'FOO', user.participant(true).firstname
     assert_equal 'changedlogin', user.login
   end
 
@@ -72,8 +72,10 @@ class UsersControllerTest < ActionController::TestCase
   protected
     def create_user(options = {})
       post :create, :user => { :login => 'quire', :email => 'quire@example.com',
-        :password => 'quire69', :password_confirmation => 'quire69', :participant_id_attr => Participant.find(:first),
-        :security_question => 'question', :security_answer => 'answer'
+        :password => 'quire69', :password_confirmation => 'quire69',
+        :security_question => 'question', :security_answer => 'answer',
+        :participant_attributes => { :firstname => 'Quire', :lastname => 'Quire', :birthdate => 18.years.ago.to_date.to_s,
+                                     :state => 'OH' }
       }.merge(options)
     end
 end

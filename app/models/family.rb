@@ -35,7 +35,7 @@ class Family < ActiveRecord::Base
       #puts "\nare they blank?\nDBG #{attributes_blank?(attributes)} DBG attributes=#{attributes.inspect}"
       participants.build(attributes) if !attributes_blank?(attributes)
     end
-  end
+  end           
 
   # see http://railscasts.com/episodes/75-complex-forms-part-3
   def existing_participant_attributes=(participant_attributes)
