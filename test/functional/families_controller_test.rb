@@ -68,16 +68,23 @@ class FamiliesControllerTest < ActionController::TestCase
     assert_redirected_to families_path
   end
   
-  test "should not destroy main_contact" do
-    p = Factory(:participant, :main_contact => true)
-    f = Factory(:family)
-    put :update, :id => f.to_param, :family => { :participant_attributes => [p] }
-    #assert f.main_contact
-    modified_family = Family.find_by_id(f.id)
-    assert modified_family.main_contact
+  # This test works but I'm not sure why.
+  # When you remove && (attributes['main_contact'] != "1") from models/family.rb
+  # the test should fail but it still passes.  Why?
+  test "should not set main_contact to nil" do
+    p = Factory(:participant, :main_contact => true) 
+    f = Factory(:family, :participants => [p])
+    assert f.main_contact  # verify we have main_contact set
 
-    #put :update, :id => families(:space).to_param, :family => { :participants_attributes => { '12345' => { :main_contact => "1" }}}
-    #assert families(:space).main_contact
+    # Test 1: simulate main_contact checked on blank entry
+    put :update, :id => f.to_param,
+      :family => { :participant_attributes => { 
+                   '12345' => { :main_contact => "1" },
+                   '12346' => { :main_contact => "0", :id => p.id } }}
+    assert f.main_contact
+
+    # Test 2: verify db didn't get changed
+    assert Family.find_by_id(f.id).main_contact
   end
   
 end
