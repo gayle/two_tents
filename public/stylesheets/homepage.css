@@ -118,7 +118,7 @@ h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
 }
 
 #navigation {
-  margin-top:42px;
+  margin-top:5px;
 }
 
 #navigation ul {
@@ -201,7 +201,19 @@ input[type="text"], input[type="password"] {
   font-size:1em;
 }
 
+textarea {
+  height:200px;
+}
+
 .fieldWithErrors label {color:#8a1f11;border-color:#FBC2C4;}
 
 .fieldWithErrors input,
 .fieldWithErrors textarea {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+
+#navigation li a.admin_access_link {
+  color:#8ECBDE;
+}
+
+.secondary {
+  padding:21px 0;
+}
