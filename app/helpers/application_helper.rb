@@ -38,4 +38,5 @@ module ApplicationHelper
   def body_class
     "homepage" if controller.controller_name == 'landing' && controller.action_name == 'index'
   end
+
 end

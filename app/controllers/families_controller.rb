@@ -39,7 +39,7 @@ class FamiliesController < ApplicationController
     end
 
     # give some extra blanks
-    3.times do
+    2.times do
       @family.participants.build
     end
 
@@ -52,7 +52,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    3.times { @family.participants.build }
+    (@family.participants.size - 3).times do
+      @family.participants.build
+    end
   end
 
   def edit_choose_family
@@ -76,7 +78,7 @@ class FamiliesController < ApplicationController
         format.xml  { render :xml => @family, :status => :created, :location => @family }
       else
         # give some extra blanks
-        3.times do
+        (@family.participants.size - 3).times do
           @family.participants.build
         end
         @family.participants.first.main_contact = true unless @family.participants.detect { |p| p.main_contact }
@@ -98,6 +100,9 @@ class FamiliesController < ApplicationController
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
       else
+        (@family.participants.size - 3).times do
+          @family.participants.build
+        end
         format.html { render_showing_errors(:action => :edit) }
       end
     end

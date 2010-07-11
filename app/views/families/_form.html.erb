@@ -1,20 +1,6 @@
 <h2>Family Members</h2>
 
 <% form.fields_for :participants do |pfields| %>
-  <hr />
-  <table>
-    <tr>
-      <td>
-        <%= pfields.check_box :main_contact, :class => 'main-contact-select' %>
-        <%= pfields.label "Click if this person is the main contact for this family." -%>
-      </td>
-    </tr>
-  </table>
-  <table>
-    <tr>
-      <td>
-        <%= render :partial => "participants/form", :locals => {:participant_form => pfields} -%>
-      </td>
-    </tr>
-  </table>
+  <%= render :partial => 'participant_fields', :locals => { :pfields => pfields } %>
 <% end -%>
+<%= link_to_add_participant_fields "Add Another", form %>
