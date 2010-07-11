@@ -5,7 +5,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family:"ChunkFive", serif;
+  font-family:"ChunkFiveRegular", serif;
 }
 
 #messages {
@@ -39,16 +39,17 @@ h1, h2, h3, h4 {
   } */
 
 #errorExplanation {
-    color:red;
-    background:pink;
-    border:2px solid red;
-    padding: 20px
+  color:red;
+  background:pink;
+  border:2px solid red;
+  padding: 20px
 }
 
 #flash{
-font-size:12px;
-text-align:center;
+  font-size:12px;
+  text-align:center;
 }
+
 .flash_html {
   display: block;
   text-align:center;
@@ -79,8 +80,12 @@ padding:4px;
   top:0;
   left:0;
   width:100%;
-  height:154px;
-  background:url(../images/homepage/head-bg-tile-shadow.png) repeat-x left top;
+  height:130px;
+  border-bottom:10px solid rgba(4, 3, 2, 0.7);
+  background:#040302;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
 }
 
 #header {
@@ -107,6 +112,7 @@ padding:4px;
 }
 
 h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
+  color:rgb(70, 67, 59);
   color:rgba(224, 214, 191, 0.3);
   text-decoration:none;
 }
@@ -126,12 +132,13 @@ h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
 }
 
 #navigation li a {
-  font-family:"ChunkFive", serif;
+  font-family:"ChunkFiveRegular", serif;
   font-size:1em;
   text-decoration:none;
   color:#e0d6bf;
   display:block;
   float:left;
+  background:rgb(70, 67, 59);
   background:rgba(224, 214, 191, 0.3);
   padding:0.35em 0.5em 0.25em;
   margin-top:0.5em;
@@ -154,6 +161,7 @@ div.row {
 }
 
 .quote {
+  background:rgb(219, 201, 159);
   background:rgba(255, 255, 255, 0.25);
   margin-bottom:40px;
   float:left;
@@ -169,7 +177,8 @@ div.row {
   color:#6F5737;
 }
 
-#philosophy ol li {
+#philosophy li,
+#mission li {
   margin-bottom:1.5em;
 }
 
