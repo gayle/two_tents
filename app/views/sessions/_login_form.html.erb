@@ -10,5 +10,5 @@
 <%= check_box_tag 'remember_me', '1', @remember_me %></p>
 -->
 
-<p><%= submit_tag 'Log in' %> <%= link_to 'I forgot my password.', password_path %></p>
+<p><button>Log me in!</button> <%= link_to 'I forgot my password.', password_path, :class => "secondary" %></p>
 <% end -%>
