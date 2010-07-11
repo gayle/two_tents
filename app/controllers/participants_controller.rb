@@ -132,11 +132,4 @@ class ParticipantsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-  protected
-  def render_save_failure(msg)
-    # TODO: Should be handled by the models Validate function, but although it works
-    # it factory girl keeps triggering the duplicate test.
-    # I'm sure we can do much, much better, but this at leas
-  end
 end
