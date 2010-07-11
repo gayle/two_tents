@@ -3,7 +3,7 @@
   <% @participants_by_birth_month.keys.sort.each do |month| %>
     <tr><th class="wide"><%= month %></th></tr>
     <% @participants_by_birth_month[month].each_with_index do |participant, i| %>
-      <tr class="<%= ContentHelper.rowstyle(i) %>">
+      <tr class="<%= ContentHelper.rowstyle(i) %><%= participant.birthday_during_camp? ? ' birthday-in-camp' : '' %>">
         <td>
           <%= "#{participant.birthdate.day} #{participant.fullname}" %>
         </td>

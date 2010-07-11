@@ -3,7 +3,7 @@
   <% @participants_by_age.keys.sort.each do |key| %>
     <tr><th class="wide"><%= key %></th></tr>
     <% @participants_by_age[key].each_with_index do |participant, i| %>
-      <tr class="<%= ContentHelper.rowstyle(i) %>">
+      <tr class="<%= ContentHelper.rowstyle(i) %><%= participant.birthday_during_camp? ? ' birthday-in-camp' : '' %>">
         <td>
           <%= "#{i+1}. #{participant.fullname}" %>
           <% unless participant.hide_age? %><%= "(#{participant.display_age})" %><% end %>

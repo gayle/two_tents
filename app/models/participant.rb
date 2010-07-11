@@ -79,6 +79,13 @@ class Participant < ActiveRecord::Base
     end
   end
 
+  def birthday_during_camp?
+    return false if birthdate.blank?
+    conf = Configuration.current
+    current_year_birthday = Date.new(conf.starts_on.year, birthdate.month, birthdate.day)
+    conf.starts_on <= current_year_birthday && current_year_birthday <= conf.ends_on
+  end
+
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
     #errors.add(:participant, "is already in the system") if duplicate?
