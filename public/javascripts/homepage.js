@@ -16,4 +16,14 @@ jQuery(function($) {
       $(this).prepend(els).removeAttr("start");
     });    
   }
+  
+  $(".login_link").fancybox({
+      'width' : '75%',
+      'height' : '75%',
+      'padding': 20,
+      'transitionIn' : 'elastic',
+      'transitionOut' : 'elastic',
+      'autoScale' : false,
+      'type' : 'ajax'
+    });;
 });

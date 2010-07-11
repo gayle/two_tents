@@ -6,14 +6,14 @@
 
 <script type="text/javascript" charset="utf-8">
   jQuery(function($) {
-    $("a[rel=about_group]").fancybox({'titlePosition' : 'over'});
+    $("#about .images a").attr("rel", "about_group").fancybox({'titlePosition' : 'over'});
     $("#navigation a[href*=contacts]").fancybox({
       'width' : '75%',
       'height' : '75%',
       'padding': 20,
+      'transitionIn' : 'elastic',
+      'transitionOut' : 'elastic',
       'autoScale' : false,
-      'transitionIn' : 'none',
-      'transitionOut' : 'none',
       'type' : 'ajax'
     });
   });
