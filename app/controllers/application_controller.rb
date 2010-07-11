@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
       false
     else
       logger.info request.path
-      request.path =~ /^\/admin\// ? "application" : "homepage"
+      request.path =~ /^\/admin\// ? "/layouts/application" : "/layouts/homepage"
     end
   end
 end
