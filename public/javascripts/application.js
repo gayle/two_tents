@@ -29,12 +29,21 @@ jQuery(function($){
                 "script");
     event.preventDefault();
   });     
-  $(".ui-date").datepicker({
-    changeMonth: true,
-    changeYear: true,
-    yearRange: '1900:' + ((new Date()).getYear() + 1900)
+  // $(".ui-date").datepicker({
+  //   changeMonth: true,
+  //   changeYear: true,
+  //   yearRange: '1900:' + ((new Date()).getYear() + 1900)
+  // });
+  $('.ui-date').live('click', function() {
+    $(this).datepicker({
+      showOn:'focus',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1900:' + ((new Date()).getYear() + 1900)
+    }).focus();
   });
-  $('input.main-contact-select').change(function() {
+  
+  $('input.main-contact-select').live('change', function() {
     var selected = $(this);
     var other_selected = $('input.main-contact-select:checked').not(selected);
     if (selected.attr('checked')) {
