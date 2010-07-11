@@ -44,6 +44,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
 
-  map.root :controller => 'content', :action => 'landing'
+  map.root :controller => 'content', :action => 'index'
   map.connect ':action', :controller => 'content'
 end

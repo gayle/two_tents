@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= yield :title %> - Northwest Plains District Family Camp</title>
+
+  <%= stylesheet_link_tag 'blueprint/screen', 'chunkfive/stylesheet', 'homepage', :cache => true %>
+  <%= stylesheet_link_tag 'http://jquery-ui.googlecode.com/svn/tags/1.8/themes/cupertino/jquery.ui.all.css' %>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+  <%= javascript_include_tag 'vendor/jquery.scrollTo-1.4.2-min', 'vendor/jquery.localscroll-1.2.7-min', 'homepage', :cache => true %>
+
+  <%= yield :head %>
+</head>
+<body class="<%= body_class %>">
+  <div id="sticky_header">
+    <div class="container">
+      <div id="header" class="vevent span-24">
+        <!-- need to fill the href with the full domain for vEvent -->
+        <div class="span-10 pull-4 title">
+          <h1>
+            <a href="/" class="url summary">
+              Northwest Plains District
+              <span class="faux-justify">Family Camp <%= "#{Configuration.current.year}" %></span></a>
+          </h1>
+          <div class="meta">
+            <h2 class="theme"><%= "#{Configuration.current.theme}" %></h2>
+            <!-- <p class="date"><%= "#{Configuration.current.date_range}" %></p>
+            <p class="location"><a href="#" title="Map of Widewater Retreat & Ministry Center">Widewater Retreat & Ministry Center. Liberty Center, OH</a></p> -->
+          </div>
+        </div>
+        <div id="navigation" class="span-14 push-2 last">
+          <ul>
+            <li><a href="#about" >About Camp</a></li>
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#philosophy">Our Philosophy</a></li>
+            <li><a href="#facilities">Facilities</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="container" class="container">
+    <div id="content">
+      <div id="about_camp">
+        <%= render :contoller => "content", :action => "landing" %>
+      </div>
+      <%= get_messages %>
+      <%= yield %>
+    </div>
+    <div id="footer">
+      <%= yield :footer %>
+    </div>
+  </div>
+</body>
+</html>
