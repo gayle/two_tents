@@ -129,27 +129,11 @@ class FamiliesController < ApplicationController
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
       else
-<<<<<<< HEAD:app/controllers/families_controller.rb
-        message = error_saving(@family)
-        flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: update(), update_attributes failed(): #{@family.errors.to_a.join(',')}]"
-        logger.error "ERROR #{message} \n#{@family.inspect}}"
-        logger.error e.backtrace.join("\n\t")
-        render :action => "edit"
-=======
         format.html { render_showing_errors(:action => :edit) }
->>>>>>> 1f2a8db8976f983557b59b5cbdda6bda9e0cd8f3:app/controllers/families_controller.rb
       end
     end
   rescue Exception => e
-<<<<<<< HEAD:app/controllers/families_controller.rb
-    message = error_saving(@family)
-    flash.now[:error] = "#{message}<br />[TECHNICAL DETAILS: #{e.message}]"
-    logger.error "ERROR #{message} \n#{@family.inspect}}"
-    logger.error e.backtrace.join("\n\t")
-    render :action => "edit"
-=======
     render_showing_errors :action => "edit", :exception => e
->>>>>>> 1f2a8db8976f983557b59b5cbdda6bda9e0cd8f3:app/controllers/families_controller.rb
   end
 
   def update_add_participant
