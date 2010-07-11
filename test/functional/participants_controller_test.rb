@@ -28,7 +28,7 @@ class ParticipantsControllerTest < ActionController::TestCase
                    :lastname => "Smith", :firstname => "Joe", :birthdate => '1/1/2000', :state => "OH" }
     end
 
-    assert_redirected_to participant_path(assigns(:participant))
+    assert_redirected_to participants_path
   end
 
   test "should show participants" do
