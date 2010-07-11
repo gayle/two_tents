@@ -37,27 +37,20 @@ class ParticipantsController < ApplicationController
   # POST /participants
   # POST /participants.xml
   def create
-    @family = Family.find(params[:participant][:family]) rescue nil
     @participant = Participant.new(params[:participant])
+
     respond_to do |format|
       if @participant.save
         AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
         flash[:notice] = "Participant #{@participant.fullname} was successfully created."
         # TODO: is this right? was new_user_path for this participant; test didn't match
-        format.html { redirect_to participant_path(@participant) }
+        format.html { redirect_to participants_path }
       else
-        msg = @participant.errors.full_messages.join(", ")
-        logger.error msg
-        puts msg
-        flash[:error] = msg
+        flash[:error] = @participant.errors.full_messages.join(", ")
         format.html { render :action => "new" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
-  rescue Exception => e
-    logger.error "ERROR creating family \n#{@family.inspect} \n participant \n #{@participant.inspect}"
-    logger.error e.backtrace.join("\n\t")
-    raise e
   end
 
   # PUT /participants/1
