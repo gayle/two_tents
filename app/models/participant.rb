@@ -79,11 +79,18 @@ class Participant < ActiveRecord::Base
 
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
+    #errors.add(:participant, "is already in the system") if duplicate?
   end
   
   def validate_no_dependents
     errors.add_to_base "Cannot delete a participant who is a staff user. If you really wish to delete this participant, delete the staff user first." and
       return false if self.user
+  end
+
+  def duplicate?
+    return true if Participant.find(:first, :conditions => ["lastname = ? AND firstname = ?",
+                                                            lastname, firstname])
+    return false
   end
 
   def <=>(other_participant)

@@ -39,6 +39,7 @@ class ParticipantsController < ApplicationController
   def create
     @family = Family.find(params[:participant][:family]) rescue nil
     @participant = Participant.new(params[:participant])
+
     respond_to do |format|
       if @participant.save
         AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
@@ -138,5 +139,12 @@ class ParticipantsController < ApplicationController
       format.html { redirect_to(participants_url) }
       format.xml  { head :ok }
     end
+  end
+
+  protected
+  def render_save_failure(msg)
+    # TODO: Should be handled by the models Validate function, but although it works
+    # it factory girl keeps triggering the duplicate test.
+    # I'm sure we can do much, much better, but this at leas
   end
 end
