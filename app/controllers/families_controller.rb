@@ -29,22 +29,19 @@ class FamiliesController < ApplicationController
   # GET /families/new
   # GET /families/new.xml
   def new
+    @family = Family.new
     if params[:participant]
       @participant = Participant.find(params[:participant])
       @participant.main_contact = true
+      @family.participants << @participant
     else
-      @participant = Participant.new(:main_contact => true)
+      @participant = @family.participants.build(:main_contact => true)
     end
-
-    @family = Family.new
-    @family.participants = [@participant]
 
     # give some extra blanks
     3.times do
-      @family.participants << Participant.new
+      @family.participants.build
     end
-    
-    @participants = @family.participants
 
     respond_to do |format|
       format.html # new.html.erb
@@ -55,9 +52,7 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    @participants = @family.participants.sort_by{|a| a.birthdate || "" }
-    @participants = move_main_contact_to_front(@participants)
-    @participants << Participant.new
+    3.times { @family.participants.build }
   end
 
   def edit_choose_family
@@ -71,36 +66,21 @@ class FamiliesController < ApplicationController
   # POST /families.xml
   def create
     @family = Family.new(params[:family])
-    @participants = []
 
     respond_to do |format|
-      Family.transaction do
-        # Doesn't seem like I should have to do this.
-        # See http://railscasts.com/episodes/75-complex-forms-part-3
-        params[:family][:existing_participant_attributes] ||= {}
-        params[:family][:existing_participant_attributes].each_key do |k|
-          p = Participant.find(k.to_i)
-          @participants << p if p
+      if @family.save
+        AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", edit_family_path(@family))
+
+        flash[:notice] = "Family #{@family.familyname} was successfully created."
+        format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
+        format.xml  { render :xml => @family, :status => :created, :location => @family }
+      else
+        # give some extra blanks
+        3.times do
+          @family.participants.build
         end
-
-        params[:family][:new_participant_attributes] ||= []
-        params[:family][:new_participant_attributes].each do |attributes|
-          if !attributes_blank?(attributes)
-            p = Participant.new(attributes)
-            @participants << p
-          end
-        end
-
-        @family.participants = @participants
-        if @family.save
-          AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", edit_family_path(@family))
-
-          flash[:notice] = "Family #{@family.familyname} was successfully created."
-          format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
-          format.xml  { render :xml => @family, :status => :created, :location => @family }
-        else
-          format.html { render_showing_errors(:action => :new) }
-        end          
+        @family.participants.first.main_contact = true unless @family.participants.detect { |p| p.main_contact }
+        format.html { render_showing_errors(:action => :new) }
       end
     end
   rescue Exception => e
@@ -110,13 +90,7 @@ class FamiliesController < ApplicationController
   # PUT /families/1
   # PUT /families/1.xml
   def update
-    params[:family][:existing_participant_attributes] ||= []
     @family = Family.find(params[:id])
-    # !!! I'm not sure why I need to reload here, but if I don't, then the
-    # !!! associated .participants are nil.
-    @family.reload
-    @participants = @family.participants
-    
     respond_to do |format|
       if @family.update_attributes(params[:family])
         AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", edit_family_path(@family))

@@ -1,9 +1,8 @@
 <ul>
-  <% if logged_in? %>
+    <li><%= link_to 'Dashboard', dashboard_url -%></li>
     <li>
       <a href="#" class="pulldown">Manage</a>
       <ul class="pulldown">
-        <li><%= link_to 'Dashboard', dashboard_url -%></li>
         <li><%= link_to 'Families', families_url -%></li>
         <li><%= link_to 'Participants', participants_url -%></li>
         <li><%= link_to 'Staff', users_url -%></li>
@@ -18,32 +17,16 @@
         <li><%= link_to 'Birthdays by Month', url_for(:controller => :reports, :action => :birthdays_by_month) -%></li>
       </ul>
     </li>
-    <li>
-      <a href="#" class="pulldown">Profile</a>
-      <ul class="pulldown">
-        <li><%= link_to 'My Profile', edit_user_path(current_user) %></li>
-        <li><%= link_to 'Change Password', show_password_user_path(current_user) %></li>
-      </ul>
-    </li>
-      <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
-  <% else %>
-    <div id="login-form">
-      <%= render :partial => 'sessions/login_form' %>
-    </div>
-    <li><a class="login" href="/login" target="#login-form">Staff Login</a></li>
-  <% end %>
-
-  <li>
-    <a href="#" class="pulldown">About</a>
-    <ul class="pulldown">
-      <li><a href="/landing" >About Camp</a></li>
-      <li><a href="/mission">Our Mission</a></li>
-      <li><a href="/philosophy">Our Philosophy</a></li>
-      <li><a href="/facilities">Facilities</a></li>
-      <li><a href="/testimonials">Testimonials</a></li>
-    </ul>
-  </li>
-  <li><%= link_to "Contact", new_contact_path %></li>
-  <li><a href="/how_to_register">How To Register</a></li>
+    <% if current_user %>
+      <li>
+        <a href="#" class="pulldown">Profile</a>
+        <ul class="pulldown">
+          <li><%= link_to 'My Profile', edit_user_path(current_user) %></li>
+          <li><%= link_to 'Change Password', show_password_user_path(current_user) %></li>
+        </ul>
+      </li>
+    <% end -%>
+    <li><%= link_to 'View Site', root_url %></li>
+    <li><%= link_to 'Logout', logout_url, :controller => :sessions, :action => :destroy -%></li>
 </ul>
 

@@ -4,10 +4,11 @@ aaron:
   firstname:                 Aaron
   address:                   an address
   city:                      oz
-  state:                     ok
+  state:                     OK
   zip:                       55555
   family_id:                 1
   birthdate:                 1965-01-01
+  main_contact:              1
 
 old_macdonald:
   id:                        2

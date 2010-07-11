@@ -21,20 +21,17 @@ class FamiliesControllerTest < ActionController::TestCase
   end
 
   test "should create families" do
-    assert true
-    # TODO: fix this when we make participants accepts_nested_attributes
-    # assert_difference('Family.count') do
-    #   post :create, :commit => 'Save', :families => { }
-    # end
-    # 
-    # assert_redirected_to families_path(assigns(:families))
+    assert_difference('Family.count') do
+      post :create, :commit => 'Save', :family => {:participants_attributes => {
+                                                     '0' => { :firstname => 'Foo', :lastname => 'Foo', :birthdate => 10.years.ago.to_date, :state => 'OH', :main_contact => '1'},
+                                                     '1' => { :firstname => 'Bar', :lastname => 'Bar', :birthdate => 10.years.ago.to_date, :state => 'OH', :main_contact => '0'}
+                                                  }}
+      assert_redirected_to families_path
+    end
+    p = Participant.find_by_firstname_and_lastname('Foo','Foo')
+    assert_equal p, p.family.main_contact
+    assert_equal 2, p.family.participants.size
   end
-
-# Don't think show is used
-#  test "should show families" do
-#    get :show, :id => families(:space).to_param
-#    assert_response :success
-#  end
 
   test "should get edit" do
     get :edit, :id => families(:space).to_param
@@ -42,10 +39,9 @@ class FamiliesControllerTest < ActionController::TestCase
   end
 
   test "should update families" do
-    assert true
-    # TODO: fix this when we make participants accepts_nested_attributes
-    # put :update, :id => families(:space).to_param, :families => { }
-    # assert_redirected_to families_path(assigns(:families))
+    put :update, :id => families(:space).to_param, :family => { :participants_attributes => { '12345' => { :firstname => 'Blah', :id => 1 }}}
+    assert families(:space).participants(true).find_by_firstname('Blah')
+    assert_redirected_to families_path
   end
 
   test "should destroy families" do

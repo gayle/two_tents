@@ -274,7 +274,7 @@ table tr td {
 }
 
 th.wide {
-    width:400px;    
+    width:400px;
 }
 
 tr.even {
@@ -304,3 +304,17 @@ img.landscape {
     width:300px;
     height:400px;
 }
+
+/* Audit Styles */
+
+div.audit {
+  background-color: #D1E4EF;
+  padding: 5px 10px;
+  margin: 0 0 10px 0;
+}
+
+div.audit p {
+  padding: 0;
+}
+
+

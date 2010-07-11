@@ -1,11 +1,16 @@
+<%= title "Dashboard" %>
 <h2>Hello, <%= current_user.participant.firstname %>!</h2>
 <p>Here's what the family camp staff has been up to on the website lately:</p>
 <%= will_paginate @audits -%><br/>
-<table>
+<div id="audits">
     <% @audits.each do |a| -%>
-      <tr><td>(<%= h(a.created_at.strftime('%b %d, %Y %I:%M %p')) %>) <%= a.message -%>
-          <%= link_to "(details)", a.link unless a.link.nil? -%></td>
-      </tr>
+      <div class="audit">
+        <h3><%= h(a.created_at.strftime('%b %d, %Y %I:%M %p')) %></h3>
+        <p>
+          <%= a.message -%>
+          <%= link_to "(details)", a.link unless a.link.nil? -%>
+        </p>
+      </div>
     <% end -%>
-</table>
+</div>
 <%= will_paginate @audits -%>

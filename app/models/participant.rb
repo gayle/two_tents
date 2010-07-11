@@ -10,6 +10,8 @@ class Participant < ActiveRecord::Base
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
+  named_scope :main_contact, :conditions => { :main_contact => true }
+
   def participant_address
     address.present? ? address : family.family_address
   end
