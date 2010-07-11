@@ -1,8 +1,10 @@
 class Family < ActiveRecord::Base
   include FamiliesHelper
   
-  has_many :participants
-  accepts_nested_attributes_for :participants
+  has_many :participants, :order => 'main_contact DESC, birthdate ASC'
+  accepts_nested_attributes_for :participants, :reject_if => proc { |attributes| attributes['firstname'].blank? || attributes['lastname'].blank? }
+
+  has_one :main_contact, :class_name => 'Participant', :conditions => { :main_contact => true }
 
   validates_associated :participants
 
@@ -29,32 +31,6 @@ class Family < ActiveRecord::Base
     main_contact ? main_contact.zip : "unknown"
   end
 
-  # see http://railscasts.com/episodes/75-complex-forms-part-3
-  def new_participant_attributes=(participant_attributes)
-    participant_attributes.each do |attributes|
-      #puts "\nare they blank?\nDBG #{attributes_blank?(attributes)} DBG attributes=#{attributes.inspect}"
-      participants.build(attributes) if !attributes_blank?(attributes)
-    end
-  end           
-
-  # see http://railscasts.com/episodes/75-complex-forms-part-3
-  def existing_participant_attributes=(participant_attributes)
-    participants.reject(&:new_record?).each do |participant|
-      attributes = participant_attributes[participant.id.to_s]
-      if attributes and not attributes_blank?(attributes)
-        participant.attributes = attributes
-      else
-        participant.delete(participant)
-      end
-    end
-  end
-
-  def save_participants
-    participants.each do |p|
-      p.save(false)
-    end
-  end
-
   # Alias method 'members' to 'participants'.  Use either one.
   def members
     participants
@@ -64,14 +40,8 @@ class Family < ActiveRecord::Base
     members.size
   end
 
-  def main_contact
-    contact = participants.select {|p|
-      p.main_contact?
-    }.first
-  end
-
   def main_contact_name
-    main_contact ? main_contact.firstname : "unknown"
+    main_contact.firstname rescue "unknown"
   end
 
   def cities
