@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   # You may wish to modify it to suit your need
   has_and_belongs_to_many :roles
 
+  attr_accessor :admin_role
+
   has_one :participant
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
 #  delegate :fullname, :to => :participant  # Why isn't delegate working????

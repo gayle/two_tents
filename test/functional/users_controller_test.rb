@@ -71,6 +71,15 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 'changedlogin', user.login
   end
 
+  def test_new_user_should_have_staff_role
+    create_user
+    assert assigns(:user).has_role?("staff")
+  end
+
+  def test_new_user_should_have_admin_role_if_desired
+    create_user(:admin_role => '1')
+    assert assigns(:user).has_role?("admin")
+  end
 
   protected
     def create_user(options = {})
@@ -82,3 +91,4 @@ class UsersControllerTest < ActionController::TestCase
       }.merge(options)
     end
 end
+

@@ -316,3 +316,7 @@ div.audit {
 div.audit p {
   padding: 0;
 }
+
+tr.birthday-in-camp {
+  font-weight: bold;
+}

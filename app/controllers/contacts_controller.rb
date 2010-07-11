@@ -13,11 +13,11 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         ContactMailer.deliver_contact_email(@contact)
-        flash[:notice] = "Thank you for you're interest, we'll get back to you asap!"
         format.html {
           if request.xhr?
             render "create.xhr"
           else
+            flash[:notice] = "Thank you for you're interest, we'll get back to you asap!"
             redirect_to root_path
           end
         }
