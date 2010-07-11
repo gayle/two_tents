@@ -34,4 +34,17 @@ jQuery(function($){
     changeYear: true,
     yearRange: '1900:' + ((new Date()).getYear() + 1900)
   });
+  $('input.main-contact-select').change(function() {
+    var selected = $(this);
+    var other_selected = $('input.main-contact-select:checked').not(selected);
+    if (selected.attr('checked')) {
+      if (other_selected.length > 0) {
+        other_selected.attr('checked', false);
+      }
+    } else {
+      if (other_selected.length == 0) {
+        $(this).attr('checked', true);
+      }
+    }
+  });
 });

@@ -29,10 +29,6 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new 
   end
 
-  def new_from_user
-    @participant = Participant.new
-  end
-
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
@@ -47,6 +43,7 @@ class ParticipantsController < ApplicationController
       if @participant.save
         AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
         flash[:notice] = "Participant #{@participant.fullname} was successfully created."
+        # TODO: is this right? was new_user_path for this participant; test didn't match
         format.html { redirect_to participants_path }
       else
         flash[:error] = @participant.errors.full_messages.join(", ")

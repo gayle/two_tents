@@ -1,13 +1,10 @@
 <hr />
-<% fields_for_participant(participant) do |participant_form| %>
+<% form.fields_for participant do |participant_form| %>
     <table>
       <tr>
         <td>
-          <% if not new_form -%>
-          <%= family_form.radio_button :main_contact_id, participant.id, 
-                :checked => main_contact?(participant) %>
-          <%= family_form.label "Click if this person is the main contact for this family." -%>
-          <% end -%>
+          <%= participant_form.radio_button :main_contact, 'true' %>
+          <%= participant_form.label "Click if this person is the main contact for this family." -%>
         </td>
       </tr>
     </table>
