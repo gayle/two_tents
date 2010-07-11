@@ -29,12 +29,21 @@ jQuery(function($){
                 "script");
     event.preventDefault();
   });     
-  $(".ui-date").datepicker({
-    changeMonth: true,
-    changeYear: true,
-    yearRange: '1900:' + ((new Date()).getYear() + 1900)
+  // $(".ui-date").datepicker({
+  //   changeMonth: true,
+  //   changeYear: true,
+  //   yearRange: '1900:' + ((new Date()).getYear() + 1900)
+  // });
+  $('.ui-date').live('click', function() {
+    $(this).datepicker({
+      showOn:'focus',
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1900:' + ((new Date()).getYear() + 1900)
+    }).focus();
   });
-  $('input.main-contact-select').change(function() {
+  
+  $('input.main-contact-select').live('change', function() {
     var selected = $(this);
     var other_selected = $('input.main-contact-select:checked').not(selected);
     if (selected.attr('checked')) {
@@ -48,3 +57,14 @@ jQuery(function($){
     }
   });
 });
+
+function remove_fields(link) {  
+    $(link).prev("input[type=hidden]").val("1");  
+    $(link).closest(".fields").hide();  
+}  
+  
+function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).before(content.replace(regexp, new_id));  
+}
