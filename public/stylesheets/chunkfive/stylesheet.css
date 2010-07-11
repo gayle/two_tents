@@ -4,8 +4,8 @@
 
 @font-face {
 	font-family: 'ChunkFiveRegular';
-	src: url('Chunkfive-webfont.eot');
-	src: local('☺'), url('Chunkfive-webfont.ttf') format('truetype'), url('Chunkfive-webfont.svg#webfontb5K2fJwj') format('svg');
+	src: url('/stylesheets/chunkfive/Chunkfive-webfont.eot');
+	src: local('☺'), url('/stylesheets/chunkfive/Chunkfive-webfont.ttf') format('truetype'), url('/stylesheets/chunkfive/Chunkfive-webfont.svg#webfontb5K2fJwj') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
