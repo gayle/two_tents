@@ -1,7 +1,11 @@
 body {
   background:url(/images/homepage/graphpaper.jpg) #cab27b;
-  color:#2A1A05;
-  font:0.95em/1.2 "ChunkFive", Arial, sans-serif;
+  color:#040302;
+  font:1.05em/1.2 Georgia, serif;
+}
+
+h1, h2, h3, h4 {
+  font-family:"ChunkFive", serif;
 }
 
 #messages {
@@ -69,6 +73,7 @@ padding:4px;
 }
 
 #sticky_header {
+  z-index:1000;
   color:#e0d6bf;
   position:absolute;
   top:0;
@@ -76,6 +81,10 @@ padding:4px;
   width:100%;
   height:154px;
   background:url(../images/homepage/head-bg-tile-shadow.png) repeat-x left top;
+}
+
+#header {
+  font-size:0.9047619em;
 }
 
 #header .title {
@@ -88,31 +97,22 @@ padding:4px;
 }
 
 #header h1, #header h2 {
-  color:#e0d6bf;
+  color:rgb(224, 214, 191);
   font-size:2em;
   margin-bottom:0;
 }
 
-#header h1 {
-  text-align:justify;
-}
-
-#header h1 .faux-justify {
-  word-spacing:1em;
-  letter-spacing:0.11em;
-}
-
 #header h2 {
-  font-size:2.75em;
+  font-size:2.65em;
 }
 
 h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
-  color:#4F361D;
+  color:rgba(224, 214, 191, 0.3);
   text-decoration:none;
 }
 
 #navigation {
-  margin-top:90px;
+  margin-top:42px;
 }
 
 #navigation ul {
@@ -122,17 +122,19 @@ h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
 }
 
 #navigation li {
-  float:left;
+  float:right;
 }
 
 #navigation li a {
-  font-size:0.9em;
+  font-family:"ChunkFive", serif;
+  font-size:1em;
   text-decoration:none;
   color:#e0d6bf;
   display:block;
   float:left;
-  background:#4F361D;
-  padding:0.25em 0.5em;
+  background:rgba(224, 214, 191, 0.3);
+  padding:0.35em 0.5em 0.25em;
+  margin-top:0.5em;
   margin-left:10px;
 }
 
@@ -143,10 +145,54 @@ div.images img {
 }
 
 div.section {
-  margin-bottom:40px;
+  margin-bottom:80px;
   clear:both;
 }
 
 div.row {
   margin-bottom:40px;
 }
+
+.quote {
+  background:rgba(255, 255, 255, 0.25);
+  margin-bottom:40px;
+  float:left;
+}
+
+.quote blockquote {
+  color:#2A1A05;
+}
+
+.quote p.cite {
+  text-align:right;
+  margin:1.5em;
+  color:#6F5737;
+}
+
+#philosophy ol li {
+  margin-bottom:1.5em;
+}
+
+#facilities {
+  position:relative;
+}
+
+#facilities h3 {
+  position:absolute;
+  top:295px;
+  padding:20px 20px 20px 120px;
+  width:850px;
+  margin-left:-20px;
+  color:#E0D6BF;
+  background:rgba(4, 3, 2, 0.5);
+}
+
+input[type="text"], input[type="password"] {
+  padding:0.5em;
+  font-size:1em;
+}
+
+.fieldWithErrors label {color:#8a1f11;border-color:#FBC2C4;}
+
+.fieldWithErrors input,
+.fieldWithErrors textarea {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}

@@ -1,8 +1,6 @@
-<h1>Contact</h1>
+<h1>Contact Us</h1>
 
 <% form_for(@contact) do |f| %>
-  <%= f.error_messages %>
-
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
@@ -20,8 +18,18 @@
     <%= f.text_area :comment %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <button class="positive">Send</button>
   </p>
 <% end %>
 
-<%= link_to 'Back', contacts_path %>
+<script type="text/javascript" charset="utf-8">
+  jQuery(function() {
+    $("form#new_contact").ajaxForm({
+      target: '#fancybox-inner',
+      success: function() {
+          $('#fancybox-inner').show();
+          $.fancybox.resize();
+      }
+    });
+  });
+</script>

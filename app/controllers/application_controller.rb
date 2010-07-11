@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
 
   layout :choose_layout
   def choose_layout
-    request.path =~ /^\/admin\// ? "application" : "homepage"
+    if request.xhr?
+      false
+    else
+      request.path =~ /^\/admin\// ? "application" : "homepage"
+    end
   end
 end

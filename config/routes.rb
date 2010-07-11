@@ -2,8 +2,6 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
     admin.resources :participants
 
-    admin.resources :contacts, :only => [:new, :create]
-
     admin.resources :families
     admin.with_options :controller => 'families' do |family|
       family.edit_choose_family '/edit_choose_family', :action => 'edit_choose_family'
@@ -31,6 +29,9 @@ ActionController::Routing::Routes.draw do |map|
     admin.dashboard '/dashboard', :controller => 'dashboard', :action => 'index'
   end
 
+  map.resources :contacts, :only => [:new, :create]
+
+  map.resource :session
   map.with_options :controller => 'sessions' do |session|
     session.logout '/logout', :controller => 'sessions', :action => 'destroy'
     session.login '/login', :controller => 'sessions', :action => 'new'
@@ -41,8 +42,6 @@ ActionController::Routing::Routes.draw do |map|
     user.signup '/signup', :action => 'new'
     user.password '/password', :action => 'reset_login'
   end
-
-  map.resource :session
 
   map.root :controller => 'content', :action => 'index'
   map.connect ':action', :controller => 'content'

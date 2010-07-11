@@ -14,7 +14,13 @@ class ContactsController < ApplicationController
       if @contact.save
         ContactMailer.deliver_contact_email(@contact)
         flash[:notice] = "Thank you for you're interest, we'll get back to you asap!"
-        format.html { redirect_to root_path }
+        format.html {
+          if request.xhr?
+            render "create.xhr"
+          else
+            redirect_to root_path
+          end
+        }
       else
         format.html { render :action => "new" }
       end

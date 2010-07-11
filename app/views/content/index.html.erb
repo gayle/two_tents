@@ -1,5 +1,20 @@
-<% %w[how_to_register about mission philosophy facilities testimonials].each do |section| %>
+<% %w[about mission philosophy facilities how_to_register testimonials].each do |section| %>
   <div id="<%= section %>" class="span-24 section">
     <%= render :partial => "content/#{section}" %>
   </div>
 <% end %>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery(function($) {
+    $("a[rel=about_group]").fancybox({'titlePosition' : 'over'});
+    $("#navigation a[href*=contacts]").fancybox({
+      'width' : '75%',
+      'height' : '75%',
+      'padding': 20,
+      'autoScale' : false,
+      'transitionIn' : 'none',
+      'transitionOut' : 'none',
+      'type' : 'ajax'
+    });
+  });
+</script>
