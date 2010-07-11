@@ -117,9 +117,9 @@ body.homepage #container {
 #header .registration_stats {
     position:relative;
     float:right;
-    width:250px;
+    width:275px;
     height:45px;
-    z-index:2;
+    z-index:1;
     border:3px solid #B0BFC7;
     margin: 30px 30px 0px 0px;
     background:#DDEEFF;
@@ -316,5 +316,3 @@ div.audit {
 div.audit p {
   padding: 0;
 }
-
-
