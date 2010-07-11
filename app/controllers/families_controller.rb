@@ -75,6 +75,11 @@ class FamiliesController < ApplicationController
         format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
         format.xml  { render :xml => @family, :status => :created, :location => @family }
       else
+        # give some extra blanks
+        3.times do
+          @family.participants.build
+        end
+        @family.participants.first.main_contact = true unless @family.participants.detect { |p| p.main_contact }
         format.html { render_showing_errors(:action => :new) }
       end
     end
