@@ -59,10 +59,13 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   def test_should_update_user
-    user = User.find(:first)
+    user = Factory(:user)
     participant = user.participant
-    put :update, {:id => user.id, :user => { :participant_attributes => { :id => participant.id, :firstname => 'FOO' }, :login => "changedlogin" }}
+    put :update, {:id => user.id, :user => { :participant_attributes => 
+      { :id => participant.id, :firstname => 'FOO' }, :login => "changedlogin" }}
+
     assert_response :redirect
+
     user.reload
     assert_equal 'FOO', user.participant(true).firstname
     assert_equal 'changedlogin', user.login

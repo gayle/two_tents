@@ -53,8 +53,15 @@ class FamiliesControllerTest < ActionController::TestCase
   end
   
   test "should not destroy main_contact" do
-    put :update, :id => families(:space).to_param, :family => { :participants_attributes => { '12345' => { :main_contact => "1" }}}
-    assert families(:space).main_contact
+    p = Factory(:participant, :main_contact => true)
+    f = Factory(:family)
+    put :update, :id => f.to_param, :family => { :participant_attributes => [p] }
+    #assert f.main_contact
+    modified_family = Family.find_by_id(f.id)
+    assert modified_family.main_contact
+
+    #put :update, :id => families(:space).to_param, :family => { :participants_attributes => { '12345' => { :main_contact => "1" }}}
+    #assert families(:space).main_contact
   end
   
 end

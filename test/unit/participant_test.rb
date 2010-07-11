@@ -3,6 +3,8 @@ require 'test_helper'
 class ParticipantTest < ActiveSupport::TestCase
   def setup
     @camp_start = Date.new(2010,7,21)
+    9.times { Factory(:user) }
+    9.times { Factory(:participant) }
   end
 
   def test_should_be_able_to_decide_not_to_be_staff

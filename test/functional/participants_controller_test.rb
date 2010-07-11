@@ -32,24 +32,28 @@ class ParticipantsControllerTest < ActionController::TestCase
   end
 
   test "should show participants" do
-    get :show, :id => participants(:quentin).to_param
+    p = Factory(:participant)
+    get :show, :id => p.to_param
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, :id => participants(:quentin).to_param
+    p = Factory(:participant)
+    get :edit, :id => p.to_param
     assert_response :success
   end
 
   test "should update participant" do
-    put :update, :id => participants(:quentin).to_param, :participants => { }
+    p = Factory(:participant)
+    put :update, :id => p.to_param, :participants => { }
     assert assigns(:participant)
     assert_redirected_to participants_path
   end
 
   test "should not destroy participants with a user" do
     assert_difference('Participant.count', 0) do
-      delete :destroy, :id => participants(:quentin).to_param
+      p = Factory(:participant)
+      delete :destroy, :id => p.to_param
     end
 
     assert_redirected_to participants_path
@@ -57,7 +61,8 @@ class ParticipantsControllerTest < ActionController::TestCase
 
   test "should destroy participants without a user" do
     assert_difference('Participant.count', -1) do
-      delete :destroy, :id => participants(:joannearnold).to_param
+      p = Factory(:participant)
+      delete :destroy, :id => p.to_param
     end
 
     assert_redirected_to participants_path
