@@ -5,7 +5,11 @@ class Configuration < ActiveRecord::Base
   end
 
   def date_range
-    "#{starts_on.strftime('%B')} #{ActiveSupport::Inflector.ordinalize(starts_on.day)} - #{ActiveSupport::Inflector.ordinalize(ends_on.day)}, #{starts_on.year}"
+    if starts_on.present? and ends_on.present?
+      "#{starts_on.strftime('%B')} #{ActiveSupport::Inflector.ordinalize(starts_on.day)} - #{ActiveSupport::Inflector.ordinalize(ends_on.day)}, #{starts_on.year}"
+    else
+      ""
+    end
   end
 
 end
