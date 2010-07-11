@@ -6,8 +6,9 @@
   <title><%= yield :title %> - Northwest Plains District Family Camp</title>
 
   <%= stylesheet_link_tag 'blueprint/screen', 'blueprint/plugins/buttons/screen', 'blueprint/plugins/fancy-type/screen',
-                          'chunkfive/stylesheet', 'homepage', '/javascripts/vendor/fancybox/jquery.fancybox-1.3.1.css', :cache => true %>
-  <%= stylesheet_link_tag 'http://jquery-ui.googlecode.com/svn/tags/1.8/themes/cupertino/jquery.ui.all.css' %>
+                          '/javascripts/vendor/fancybox/jquery.fancybox-1.3.1.css', 'homepage', :cache => 'homepage' %>
+  <%= stylesheet_link_tag 'http://jquery-ui.googlecode.com/svn/tags/1.8/themes/cupertino/jquery.ui.all.css', 'chunkfive/stylesheet' %>
+
   <!--[if IE]>
     <%= stylesheet_link_tag 'blueprint/ie' %>
   <![endif]-->
