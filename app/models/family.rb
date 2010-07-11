@@ -2,7 +2,10 @@ class Family < ActiveRecord::Base
   include FamiliesHelper
   
   has_many :participants, :order => 'main_contact DESC, birthdate ASC'
-  accepts_nested_attributes_for :participants, :allow_destroy => true, :reject_if => proc { |attributes| attributes['firstname'].blank? || attributes['lastname'].blank? }
+
+  accepts_nested_attributes_for :participants, :allow_destroy => true, :reject_if => proc { 
+    |attributes| (attributes['firstname'].blank? || attributes['lastname'].blank?) && (attributes['main_contact'] != "1")
+  }
 
   has_one :main_contact, :class_name => 'Participant', :conditions => { :main_contact => true }
 

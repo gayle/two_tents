@@ -7,8 +7,8 @@ aaron:
   state:                     OK
   zip:                       55555
   family_id:                 1
-  birthdate:                 1965-01-01
-  main_contact:              1
+  birthdate:                 1975-01-01
+  main_contact:              true
 
 old_macdonald:
   id:                        2
@@ -31,7 +31,7 @@ annie:
   zip:                       55555
   user_id:                   1
   family_id:                 2
-  birthdate:                 1965-01-02
+  birthdate:                 1971-01-02
 
 jimcraig:
   id:                        4
