@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
-    admin.resources :participants, :collection => {:new_from_user => :get, :create_from_user => :post}
+    admin.resources :participants
 
     admin.resources :contacts, :only => [:new, :create]
 

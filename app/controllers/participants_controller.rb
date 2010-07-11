@@ -29,43 +29,15 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new 
   end
 
-  def new_from_user
-    @participant = Participant.new
-    
-  end
-
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
-  end
-
-  def create_from_user
-    @family = Family.find(params[:participant][:family]) rescue nil
-   # params[:participant][:family] = @family
-    @participant = Participant.new(params[:participant])
-
-    respond_to do |format|
-      if @participant.save
-        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", participant_url(@participant))
-        flash[:notice] = "Participant #{@participant.fullname} was successfully created."
-        format.html { redirect_to new_user_path(:participant => @participant) }
-        format.xml  { render :xml => @participant, :status => :created, :location => @participant }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
-      end
-    end
-  rescue Exception => e
-    logger.error "ERROR creating from user"
-    logger.error e.backtrace.join("\n\t")
-    raise e    
   end
 
   # POST /participants
   # POST /participants.xml
   def create
     @family = Family.find(params[:participant][:family]) rescue nil
-    params[:participant][:family] = @family
     @participant = Participant.new(params[:participant])
     respond_to do |format|
       if @participant.save

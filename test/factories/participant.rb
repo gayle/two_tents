@@ -5,7 +5,6 @@ Factory.define :participant do |p|
   p.sequence(:lastname) { |n| "Smith #{n}" }
   p.sequence(:firstname) { |n| "Argent #{n}" }
   p.sequence(:address) { |n| "42 Matix Blvd #{n}" }
-  p.sequence(:state) { |n| "OH#{n}" }
   p.sequence(:city) { |n| "Hd no #{n}" }
   p.sequence(:homechurch) { |n| "Church of Smith #{n}" }
   p.sequence(:pastor) { |n| "Agent Jones #{n}" }
