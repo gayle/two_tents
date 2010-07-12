@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
     if request.xhr?
       false
     else
-      logger.info request.path
       request.path =~ /^\/admin\// ? "application" : "homepage"
     end
   end
