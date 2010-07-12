@@ -8,3 +8,4 @@ backups
 db/backups
 .heroku
 id_rsa*
+.rvmrc
