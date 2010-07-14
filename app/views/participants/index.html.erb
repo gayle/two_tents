@@ -6,8 +6,10 @@
       <th>Name</th>
       <th>Edit or View</th>
       <th>Delete</th>
+      <!--
       <th>Health Form</th>
       <th>Liability Form</th>
+      -->
     </tr>
   </thead>
   <tbody>
@@ -27,9 +29,10 @@
             <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
           <% end %>
       </td>
-	  <!--<td><%= form.submit 'Change', :class => :flipflop %></td>-->
+	  <!--
       <td><%= form.check_box :health -%></td>
       <td><%= form.check_box :liability -%></td>
+      -->
       </tr>
     <% end %>
   <% end %>
