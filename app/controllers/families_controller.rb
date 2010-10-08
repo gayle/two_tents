@@ -29,19 +29,18 @@ class FamiliesController < ApplicationController
   # GET /families/new
   # GET /families/new.xml
   def new
+    @family = Family.new
     if params[:participant]
       @participant = Participant.find(params[:participant])
       @participant.main_contact = true
+      @family.participants << @participant
     else
-      @participant = Participant.new(:main_contact => true)
+      @participant = @family.participants.build(:main_contact => true)
     end
 
-    @family = Family.new
-    @family.participants = [@participant]
-
     # give some extra blanks
-    3.times do
-      @family.participants << Participant.new
+    2.times do
+      @family.participants.build
     end
 
     respond_to do |format|
@@ -53,10 +52,9 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    participants = @family.participants.sort_by{|a| a.birthdate}
-    @family.participants = move_main_contact_to_front(participants)
-    @family.participants << Participant.new
-
+    (@family.participants.size - 3).times do
+      @family.participants.build
+    end
   end
 
   def edit_choose_family
@@ -72,78 +70,44 @@ class FamiliesController < ApplicationController
     @family = Family.new(params[:family])
 
     respond_to do |format|
+      if @family.save
+        AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", edit_family_path(@family))
 
-      Family.transaction do
-# TODO put if's around this
-        participants = []
-        # Doesn't seem like I should have to do this.
-        # See http://railscasts.com/episodes/75-complex-forms-part-3
-        params[:family][:existing_participant_attributes] ||= {}
-        params[:family][:existing_participant_attributes].each_key do |k|
-          p = Participant.find(k.to_i)
-          participants << p if p
+        flash[:notice] = "Family #{@family.familyname} was successfully created."
+        format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
+        format.xml  { render :xml => @family, :status => :created, :location => @family }
+      else
+        # give some extra blanks
+        (@family.participants.size - 3).times do
+          @family.participants.build
         end
-
-        params[:family][:new_participant_attributes] ||= []
-        params[:family][:new_participant_attributes].each do |attributes|
-          if !attributes_blank?(attributes)
-            p = Participant.new(attributes)
-            participants << p
-          end
-        end
-
-        @family.participants = participants
-        if @family.save
-          AuditTrail.audit("Family #{@family.familyname} created by #{current_user.login}", family_url(@family))
-
-          flash[:notice] = "Family #{@family.familyname} was successfully created."
-          format.html { params[:commit] == 'Save' ? redirect_to(families_path) : redirect_to(new_family_path) }
-          format.xml  { render :xml => @family, :status => :created, :location => @family }
-        else
-          puts "UNABLE TO SAVE, #{@family.errors.to_a.join(',')}"
-          logger.error ("Unable to save family #{@family.familyname}: #{@family.errors.inspect}")
-          flash[:error] = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
-        end
+        @family.participants.first.main_contact = true unless @family.participants.detect { |p| p.main_contact }
+        format.html { render_showing_errors(:action => :new) }
       end
     end
+  rescue Exception => e
+    render_showing_errors(:action => :new)
   end
 
   # PUT /families/1
   # PUT /families/1.xml
   def update
-    params[:family][:existing_participant_attributes] ||= []
     @family = Family.find(params[:id])
-    # !!! I'm not sure why I need to reload here, but if I don't, then the
-    # !!! associated .participants are nil.
-    @family.reload
-
     respond_to do |format|
       if @family.update_attributes(params[:family])
-        AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", family_url(@family))
-        flash[:notice] = 'Families was successfully updated.'
+        AuditTrail.audit("Family #{@family.familyname} updated by #{current_user.login}", edit_family_path(@family))
+        flash[:notice] = "Family #{@family.familyname} was successfully updated."
         format.html { redirect_to(families_path) }
         format.xml  { head :ok }
-        format.js do
-          flash.discard
-          render(:update) do |page|
-            element = "#{@family.class}_#{@family.id}_#{params[:family].keys[0]}"
-            page.replace_html(element,
-                              :partial => 'flipflop',
-                              :locals => {:family => @family,
-                                :type => params[:family].keys[0] } )
-          end
-        end
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @family.errors, :status => :unprocessable_entity }
-        message = "Unable to save family #{@family.familyname}: #{@family.errors.to_a.join(',')}"
-        flash[:error] = message
-        logger.error(message)
-        puts(message)
+        (@family.participants.size - 3).times do
+          @family.participants.build
+        end
+        format.html { render_showing_errors(:action => :edit) }
       end
     end
+  rescue Exception => e
+    render_showing_errors :action => "edit", :exception => e
   end
 
   def update_add_participant
@@ -152,26 +116,10 @@ class FamiliesController < ApplicationController
     @family.participants ||= []
     @family.participants << @participant
     redirect_to participants_url
+  rescue Exception => e
+    render_showing_errors(:action => :edit_choose_family, :exception => e)
   end
   
-  def family_registration
-    params[:participant].each_pair do |k,v|
-      p = Participant.find(k)
-      year = Configuration.current.year
-      reg = p.registrations.find(:first, :conditions => ["year = ?", year] )
-      room = Room.find(v)
-      if reg.nil?
-        reg = Registration.create(:year => year)
-        reg.room = room
-        p.registrations << reg
-      else
-        reg.room = Room.find(v.to_i)
-        reg.save
-      end
-    end
-    redirect_to family_url(params[:family][:id])
-  end
-
   # DELETE /families/1
   # DELETE /families/1.xml
   def destroy
@@ -185,5 +133,52 @@ class FamiliesController < ApplicationController
       format.html { redirect_to(families_url) }
       format.xml  { head :ok }
     end
+  end
+
+  private
+
+  def render_showing_errors(params)
+    general_message   = error_saving(@family)
+    exception_message = got_exception(params[:exception])
+    validation_errors = error_list_for(@family)
+
+    flash[:error] = flash_message_for(general_message, exception_message, validation_errors)
+    logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
+    logger.error "EXCEPTION: #{exception_message}\n BACTRACE: #{params[:exception].backtrace.join("\n\t")}" if params[:exception]
+
+    render :action => params[:action]
+  end
+
+  def error_saving(family)
+    "There was a problem saving the family '#{family.familyname}'"
+  end
+  
+  def got_exception(exception)
+    msg = ""
+    if exception
+      msg << "<br />#{exception.class} Exception: #{exception.message}"
+      msg << "<br />#{exception.backtrace[0]}"
+      msg << "<br />#{exception.backtrace[1]}"
+# TODO maybe keep printing stack until we know it's a line number for app code, not just rails code
+#      msg << "<br />#{exception.backtrace[2]}"
+#      msg << "<br />#{exception.backtrace[3]}"
+#      msg << "<br />#{exception.backtrace[4]}"
+#      msg << "<br />#{exception.backtrace[5]}"
+#      msg << "<br />#{exception.backtrace[6]}"
+    end
+    msg
+  end
+
+  def error_list_for(family)
+    family.errors ? family.errors.to_a.join(', ') : ""
+  end
+
+  def flash_message_for(general_message, exception_message, validation_errors)
+    msg = "#{general_message}"
+    # if validation error, let the validation stuff do it's thing. If not, put more info into the flash.
+    if validation_errors.empty?
+     msg << "<br />[TECHNICAL DETAILS: #{exception_message} <br />#{validation_errors}]"
+    end
+    msg
   end
 end

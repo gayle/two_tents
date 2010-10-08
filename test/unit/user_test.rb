@@ -4,118 +4,125 @@ class UserTest < ActiveSupport::TestCase
   # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead.
   # Then, you can remove it from this and the functional test.
   include AuthenticatedTestHelper
-  fixtures :users
 
   def test_should_create_user
     assert_difference 'User.count' do
-      user = create_user
+      user = Factory(:user)
       assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
     end
   end
 
   def test_should_require_login
     assert_no_difference 'User.count' do
-      u = create_user(:login => nil)
+      u = Factory.build(:user, :login => nil)
+      u.save
       assert u.errors.on(:login)
     end
   end
 
   def test_should_require_password
     assert_no_difference 'User.count' do
-      u = create_user(:password => nil)
+      u = Factory.build(:user, :password => nil)
+      u.save
       assert u.errors.on(:password)
     end
   end
 
   def test_should_require_password_confirmation
     assert_no_difference 'User.count' do
-      u = create_user(:password_confirmation => nil)
+      u = Factory.build(:user, :password_confirmation => nil)
+      u.save
       assert u.errors.on(:password_confirmation)
     end
   end
 
   def test_should_require_email
     assert_no_difference 'User.count' do
-      u = create_user(:email => nil)
+      u = Factory.build(:user, :email => nil)
+      u.save
       assert u.errors.on(:email)
     end
   end
 
   def test_should_require_security_question
     assert_no_difference 'User.count' do
-      u = create_user(:security_question => nil)
+      u = Factory.build(:user, :security_question => nil)
+      u.save
       assert u.errors.on(:security_question)
     end
   end
 
   def test_should_require_security_answer
     assert_no_difference 'User.count' do
-      u = create_user(:security_answer => nil)
+      u = Factory.build(:user, :security_answer => nil)
+      u.save
       assert u.errors.on(:security_answer)
     end
   end
 
   def test_should_reset_password
-    users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
-    assert_equal users(:quentin), User.authenticate('quentin', 'new password')
+    u = Factory(:user)
+    assert u.update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    assert_equal u, User.authenticate(u.login, 'new password')
   end
 
   def test_should_not_rehash_password
-    users(:quentin).update_attributes(:login => 'quentin2')
-    assert_equal users(:quentin), User.authenticate('quentin2', 'monkey')
+    u = Factory(:user, :password=>'monkey', :password_confirmation=>'monkey')
+    assert u.update_attributes(:login => 'quentin2')
+    assert_equal u, User.authenticate('quentin2', 'monkey')
   end
 
   def test_should_authenticate_user
-    assert_equal users(:quentin), User.authenticate('quentin', 'monkey')
+    Factory(:single_user)
+    u = User.find_all_by_login('quire').first
+    assert_equal u, User.authenticate('quire', 'quire69')
   end
 
   def test_should_set_remember_token
-    users(:quentin).remember_me
-    assert_not_nil users(:quentin).remember_token
-    assert_not_nil users(:quentin).remember_token_expires_at
+    u = Factory(:single_user)
+    u.remember_me
+    assert_not_nil u.remember_token
+    assert_not_nil u.remember_token_expires_at
   end
 
   def test_should_unset_remember_token
-    users(:quentin).remember_me
-    assert_not_nil users(:quentin).remember_token
-    users(:quentin).forget_me
-    assert_nil users(:quentin).remember_token
+    u = Factory(:single_user)
+    u.remember_me
+    assert_not_nil u.remember_token
+    u.forget_me
+    assert_nil u.remember_token
   end
 
   def test_should_remember_me_for_one_week
     before = 1.week.from_now.utc
-    users(:quentin).remember_me_for 1.week
+
+    u = Factory(:single_user)
+    u.remember_me_for 1.week
+
     after = 1.week.from_now.utc
-    assert_not_nil users(:quentin).remember_token
-    assert_not_nil users(:quentin).remember_token_expires_at
-    assert users(:quentin).remember_token_expires_at.between?(before, after)
+
+    assert_not_nil u.remember_token
+    assert_not_nil u.remember_token_expires_at
+    assert u.remember_token_expires_at.between?(before, after)
   end
 
   def test_should_remember_me_until_one_week
     time = 1.week.from_now.utc
-    users(:quentin).remember_me_until time
-    assert_not_nil users(:quentin).remember_token
-    assert_not_nil users(:quentin).remember_token_expires_at
-    assert_equal users(:quentin).remember_token_expires_at, time
+
+    u = Factory(:single_user)
+    u.remember_me_until time
+    assert_not_nil u.remember_token
+    assert_not_nil u.remember_token_expires_at
+    assert_equal u.remember_token_expires_at, time
   end
 
   def test_should_remember_me_default_two_weeks
     before = 2.weeks.from_now.utc
-    users(:quentin).remember_me
+    u = Factory(:single_user)
+    u.remember_me
     after = 2.weeks.from_now.utc
-    assert_not_nil users(:quentin).remember_token
-    assert_not_nil users(:quentin).remember_token_expires_at
-    assert users(:quentin).remember_token_expires_at.between?(before, after)
-  end
-
-protected
-  def create_user(options = {})
-    record = User.new({ :login => 'quire', :email => 'quire@example.com',
-                        :password => 'quire69', :password_confirmation => 'quire69',
-                        :security_question => "Moms maiden name?",
-                        :security_answer => "Mamacita" }.merge(options))
-    record.participant = Participant.new
-    record.save
-    record
+    assert_not_nil u.remember_token
+    assert_not_nil u.remember_token_expires_at
+    assert u.remember_token_expires_at.between?(before, after)
   end
 end

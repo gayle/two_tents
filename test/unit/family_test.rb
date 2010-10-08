@@ -2,15 +2,15 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class FamilyTest < ActiveSupport::TestCase
 
-  def test_should_get_multiple_family_members 
-    fam = Family.new(:familyname => 'xyzzy')
-    mary = Participant.create(:firstname => "Mary", :lastname => "Smith")
-    john = Participant.create(:firstname => "John", :lastname => "Smith")
-    fam.participants << mary
-    fam.participants << john
-    fam.save
-    fam.reload
+  def test_should_get_multiple_family_members
+    f = Factory(:family)
 
-    assert_equal 2, fam.participants.size
+    assert_equal 3, f.participants.size
+  end
+
+  def test_should_not_be_able_to_create_a_family_with_no_participants
+    f = Factory.build(:family, :participants => [])
+    f.save
+    assert f.errors.on(:participants)    
   end
 end

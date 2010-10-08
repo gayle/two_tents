@@ -1,0 +1,33 @@
+<h1>Families by State</h1>
+<strong>COUNT SUMMARY </strong>
+(note, if these numbers differ from the headings below,
+  it's because these numbers include families from multiple states in the
+  count. The headings below do not.)
+<br/>-
+<% @distinct_state_count.keys.sort.each do |key| %>
+  <%= " - #{key} (#{@distinct_state_count[key]}) - " %>
+<% end %> -
+<p />
+<table>
+  <% @families_by_state.keys.sort.each_with_index do |state, i| %>
+    <tr><th class="wide" colspan="2"><%= "#{state} (#{@families_by_state[state].size})" %></th></tr>
+    <% @families_by_state[state].each_with_index do |family, j| %>
+      <tr class="<%= ContentHelper.rowstyle(i+j) %>">
+        <td>
+          <%= "#{j+1}" %>
+        </td>
+        <td>
+          <strong><%= "#{family.familyname} (#{family.main_contact_name})" %></strong>
+          <% if (family.states.size > 1) %><i><%= "(this family is from multiple states: #{family.states.join(",")})" %></i><%end%>
+        </td>
+      </tr>
+      <tr class="<%= ContentHelper.rowstyle(i+j) %>">
+        <td></td>
+        <td>
+          <%= (family.states.size > 1) ? "City".pluralize : "City" %>:
+          [<%= "#{family.cities.join(" - ")}" %>]
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

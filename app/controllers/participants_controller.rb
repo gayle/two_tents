@@ -29,53 +29,24 @@ class ParticipantsController < ApplicationController
     @participant = Participant.new 
   end
 
-  def new_from_user
-    @participant = Participant.new
-    
-  end
-
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
   end
 
-  def create_from_user
-    @family = Family.find(params[:participant][:family]) rescue nil
-   # params[:participant][:family] = @family
-    @participant = Participant.new(params[:participant])
-
-    respond_to do |format|
-      if @participant.save
-        AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", participant_url(@participant))
-        flash[:notice] = "Participant #{@participant.fullname} was successfully created."
-        format.html { redirect_to new_user_path(:participant => @participant) }
-        puts "DBG redirecting to #{new_user_path(:participant => @participant)}"
-        format.xml  { render :xml => @participant, :status => :created, :location => @participant }
-      else
-        puts "DBG new"
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
   # POST /participants
   # POST /participants.xml
   def create
-    @family = Family.find(params[:participant][:family]) rescue nil
-    params[:participant][:family] = @family
     @participant = Participant.new(params[:participant])
 
     respond_to do |format|
       if @participant.save
         AuditTrail.audit("Participant #{@participant.fullname} created by #{current_user.login}", edit_participant_url(@participant))
         flash[:notice] = "Participant #{@participant.fullname} was successfully created."
-        format.html { redirect_to new_user_path(:participant => @participant) }
+        # TODO: is this right? was new_user_path for this participant; test didn't match
+        format.html { redirect_to participants_path }
       else
-        msg = @participant.errors.join(", ")
-        logger.error msg
-        puts msg
-        flash[:error] = msg
+        flash[:error] = @participant.errors.full_messages.join(", ")
         format.html { render :action => "new" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
@@ -85,29 +56,36 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1
   # PUT /participants/1.xml
   def update
-    @participants = Participant.find(params[:id])
-
+    @participant = Participant.find(params[:id])
     respond_to do |format|
-      if @participants.update_attributes(params[:participant])
-        AuditTrail.audit("Participant #{@participants.fullname} updated by #{current_user.login}", edit_participant_url(@participants))
+      if @participant.update_attributes(params[:participant])
+        AuditTrail.audit("Participant #{@participant.fullname} updated by #{current_user.login}", edit_participant_url(@participant))
         flash[:notice] = 'Participants was successfully updated.'
         format.html { redirect_to(participants_url) }
         format.xml  { head :ok }
-        format.js   do
-          flash.discard
-          render(:update) do |page|
-            element = "#{@participants.class}_#{@participants.id}_#{params[:participant].keys[0]}"
-            page.replace_html(element,
-                              :partial => 'flipflop',
-                              :locals => {:p => @participants,
-                                :type => params[:participant].keys[0] } )
-          end
-        end
+# I don't think we're using this anymore?
+#        format.js   do
+#          flash.discard
+#          render(:update) do |page|
+#            element = "#{@participant.class}_#{@participant.id}_#{params[:participant].keys[0]}"
+#            page.replace_html(element,
+#                              :partial => 'flipflop',
+#                              :locals => {:p => @participant,
+#                                :type => params[:participant].keys[0] } )
+#          end
+#        end
       else
+        flash[:error] = "Error updating #{@participant.fullname} <br />[TECHNICAL DETAILS: update(): #{@participant.errors.join(',')}]"
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @participants.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
+  rescue Exception => e
+    flash[:error] = "Error updating #{@participant.fullname} <br />[TECHNICAL DETAILS: update(): #{e.to_s}]"
+    logger.error "ERROR updating participant \n#{@participant.inspect}"
+    logger.error e.backtrace.join("\n\t")
+    format.html { render :action => "edit" }
+    format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
   end
 
   # DELETE /participants/1
@@ -124,7 +102,7 @@ class ParticipantsController < ApplicationController
         family_deleted = nil
         if participant_deleted
           AuditTrail.audit("Participant #{@participant_to_delete.fullname} removed by #{current_user.login}")
-          flash[:success] = "Participant #{@participant_to_delete.fullname} deleted"
+          flash[:notice] = "Participant #{@participant_to_delete.fullname} deleted"
           if @family_to_delete
             family_name = @family_to_delete.familyname
             family_deleted = @family_to_delete.destroy

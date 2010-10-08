@@ -1,0 +1,233 @@
+body {
+  background:url(/images/homepage/graphpaper.jpg) #cab27b;
+  color:#040302;
+  font:1.05em/1.2 Georgia, serif;
+}
+
+h1, h2, h3, h4 {
+  font-family:"ChunkFiveRegular", serif;
+}
+
+#messages {
+  display:none;
+}
+
+  #messages {
+    padding:1em;
+    margin-bottom:1em;
+  }
+
+  #error_messages.error {
+    padding: 20px;
+    color:red;
+    background:pink;
+    border:2px solid red;
+    margin-bottom: 20px;
+  }
+
+  #messages.success, #messages.notice {
+    color:#030;
+    background:#393;
+    border:2px solid #030;
+  }
+
+/* IN CASE THERE'S EVER A NEED TO USE NOTICE FOR SOMETHING OTHER THAN SUCCESS
+  #messages.notice {
+    color:#33F;
+    background:#86C9EF;;
+    border:2px solid #33F;
+  } */
+
+#errorExplanation {
+  color:red;
+  background:pink;
+  border:2px solid red;
+  padding: 20px
+}
+
+#flash{
+  font-size:12px;
+  text-align:center;
+}
+
+.flash_html {
+  display: block;
+  text-align:center;
+  bottom:0px;
+  width:100%;
+  z-index:1003;
+  color:#F33;
+  background-color:#000;
+  padding:4px;
+
+}
+.flash_ajax{
+display: block;
+text-align:center;
+position:fixed;
+bottom:0px;
+width:100%;
+z-index:1003;
+color:#ccc;
+background-color:#000;
+padding:4px;
+}
+
+#sticky_header {
+  z-index:1000;
+  color:#e0d6bf;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:130px;
+  border-bottom:10px solid rgba(4, 3, 2, 0.7);
+  background:#040302;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+
+#header {
+  font-size:0.9047619em;
+}
+
+#header .title {
+  background:url(../images/homepage/compass-icon_100.png) no-repeat 20px 14px;
+  padding:14px 0 14px 160px;
+}
+
+#container {
+  margin-top:164px;
+}
+
+#header h1, #header h2 {
+  color:rgb(224, 214, 191);
+  font-size:2em;
+  margin-bottom:0;
+}
+
+#header h2 {
+  font-size:2.65em;
+}
+
+h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
+  color:rgb(70, 67, 59);
+  color:rgba(224, 214, 191, 0.3);
+  text-decoration:none;
+}
+
+#navigation {
+  margin-top:5px;
+}
+
+#navigation ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+
+#navigation li {
+  float:right;
+}
+
+#navigation li a {
+  font-family:"ChunkFiveRegular", serif;
+  font-size:1em;
+  text-decoration:none;
+  color:#e0d6bf;
+  display:block;
+  float:left;
+  background:rgb(70, 67, 59);
+  background:rgba(224, 214, 191, 0.3);
+  padding:0.35em 0.5em 0.25em;
+  margin-top:0.5em;
+  margin-left:10px;
+}
+
+div.images img {
+  border:10px solid #040302;
+  width:100%;
+  -moz-box-sizing:border-box;
+}
+
+div.section {
+  margin-bottom:80px;
+  clear:both;
+}
+
+div.row {
+  margin-bottom:40px;
+}
+
+.quote {
+  background:rgb(219, 201, 159);
+  background:rgba(255, 255, 255, 0.25);
+  margin-bottom:40px;
+  float:left;
+}
+
+.quote blockquote {
+  color:#2A1A05;
+}
+
+.quote p.cite {
+  text-align:right;
+  margin:1.5em;
+  color:#6F5737;
+}
+
+#philosophy li,
+#mission li {
+  margin-bottom:1.5em;
+}
+
+#facilities {
+  position:relative;
+}
+
+#facilities h3 {
+  position:absolute;
+  top:295px;
+  padding:20px 20px 20px 120px;
+  width:850px;
+  margin-left:-20px;
+  color:#E0D6BF;
+  background:rgba(4, 3, 2, 0.5);
+}
+
+input[type="text"], input[type="password"] {
+  padding:0.5em;
+  font-size:1em;
+}
+
+textarea {
+  height:200px;
+}
+
+.fieldWithErrors label {color:#8a1f11;border-color:#FBC2C4;}
+
+.fieldWithErrors input,
+.fieldWithErrors textarea {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+
+#navigation li a.admin_access_link {
+  color:#8ECBDE;
+}
+
+#login_form button {
+  float:none;
+  display:inline;
+}
+
+form .secondary,
+form .secondary:link,
+form .secondary:visited {
+  color:#CCC;
+}
+
+form .secondary:hover,
+form .secondary:focus,
+form .secondary:active {
+  outline:0;
+  color:#666;
+}

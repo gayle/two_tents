@@ -5,11 +5,12 @@ require 'users_controller'
 class UsersController; def rescue_action(e) raise e end; end
 
 class UsersControllerTest < ActionController::TestCase
-  # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead
-  # Then, you can remove it from this and the units test.
-  include AuthenticatedTestHelper
 
   fixtures :users
+
+  def setup
+    login_as(:admin)
+  end
 
   def test_should_allow_signup
     assert_difference 'User.count' do
@@ -58,18 +59,36 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   def test_should_update_user
-    user = User.find(:first)
-    user.participant = Participant.find(:first)
-    user.login = "changedlogin"
-    put :update, :params => {:user => user}
+    user = Factory(:user)
+    participant = user.participant
+    put :update, {:id => user.id, :user => { :participant_attributes => 
+      { :id => participant.id, :firstname => 'FOO' }, :login => "changedlogin" }}
 
+    assert_response :redirect
+
+    user.reload
+    assert_equal 'FOO', user.participant(true).firstname
+    assert_equal 'changedlogin', user.login
   end
 
+  def test_new_user_should_have_staff_role
+    create_user
+    assert assigns(:user).has_role?("staff")
+  end
+
+  def test_new_user_should_have_admin_role_if_desired
+    create_user(:admin_role => '1')
+    assert assigns(:user).has_role?("admin")
+  end
 
   protected
     def create_user(options = {})
       post :create, :user => { :login => 'quire', :email => 'quire@example.com',
-        :password => 'quire69', :password_confirmation => 'quire69', :participant => Participant.find(:first)
+        :password => 'quire69', :password_confirmation => 'quire69',
+        :security_question => 'question', :security_answer => 'answer',
+        :participant_attributes => { :firstname => 'Quire', :lastname => 'Quire', :birthdate => 18.years.ago.to_date.to_s,
+                                     :state => 'OH' }
       }.merge(options)
     end
 end
+

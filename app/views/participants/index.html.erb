@@ -4,10 +4,12 @@
     <tr>
       <th></th>
       <th>Name</th>
-      <th>Edit</th>
+      <th>Edit or View</th>
       <th>Delete</th>
+      <!--
       <th>Health Form</th>
       <th>Liability Form</th>
+      -->
     </tr>
   </thead>
   <tbody>
@@ -16,7 +18,7 @@
   <% @participants.each_with_index do |p, row| %>
     <% form_for p do |form|%>
     <tr class="<%= ContentHelper.rowstyle(row) %>">
-      <td><%=h row+1 %>
+      <td><%=h( row+1 + @participants.offset ) %></td>
   	  <td><%=h p.list_name %></td>
       <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
       <td><% if p.can_delete?
@@ -27,9 +29,10 @@
             <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
           <% end %>
       </td>
-	  <!--<td><%= form.submit 'Change', :class => :flipflop %></td>-->
+	  <!--
       <td><%= form.check_box :health -%></td>
       <td><%= form.check_box :liability -%></td>
+      -->
       </tr>
     <% end %>
   <% end %>

@@ -3,3 +3,9 @@
 log/
 .DS_Store
 .idea/
+*.swp
+backups
+db/backups
+.heroku
+id_rsa*
+.rvmrc

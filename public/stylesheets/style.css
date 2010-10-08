@@ -16,10 +16,12 @@ tr.overload {
     margin-bottom:1em;
   }
 
-  #messages.error {
+  #error_messages.error {
+    padding: 20px;
     color:red;
     background:pink;
     border:2px solid red;
+    margin-bottom: 20px;
   }
 
   #messages.success, #messages.notice {
@@ -39,6 +41,7 @@ tr.overload {
     color:red;
     background:pink;
     border:2px solid red;
+    padding: 20px
 }
 
 #flash{
@@ -114,9 +117,9 @@ body.homepage #container {
 #header .registration_stats {
     position:relative;
     float:right;
-    width:250px;
+    width:275px;
     height:45px;
-    z-index:2;
+    z-index:1;
     border:3px solid #B0BFC7;
     margin: 30px 30px 0px 0px;
     background:#DDEEFF;
@@ -270,6 +273,10 @@ table tr td {
     padding:2px;
 }
 
+th.wide {
+    width:400px;
+}
+
 tr.even {
     background-color: #FFFFFF;
 }
@@ -296,4 +303,20 @@ img.portrait {
 img.landscape {
     width:300px;
     height:400px;
+}
+
+/* Audit Styles */
+
+div.audit {
+  background-color: #D1E4EF;
+  padding: 5px 10px;
+  margin: 0 0 10px 0;
+}
+
+div.audit p {
+  padding: 0;
+}
+
+tr.birthday-in-camp {
+  font-weight: bold;
 }

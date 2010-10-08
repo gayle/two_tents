@@ -1,11 +1,5 @@
 module FamiliesHelper
 
-  # see http://railscasts.com/episodes/75-complex-forms-part-3
-  def fields_for_participant(participant, &block)
-    prefix = participant.new_record? ? "new" : "existing"
-    fields_for("family[#{prefix}_participant_attributes][]", participant, &block)
-  end
-
   def move_main_contact_to_front(participants)
     participants = participants.sort_by{|a| a.main_contact.to_s}
     main_family_contact=participants.pop
@@ -21,4 +15,14 @@ module FamiliesHelper
 
     # maybe expand this to check for each attribute, is it blank or 0?
   end
+
+  def link_to_add_participant_fields(name, f)  
+    new_object = Participant.new  
+    fields = f.fields_for(:participants, new_object, :child_index => "new_participants") do |builder|  
+      render(:partial => 'participant_fields', :locals => { :pfields => builder })
+    end  
+    link_to_function(name, h("add_fields(this, \"participants\", \"#{escape_javascript(fields)}\")"))  
+  end
+
+
 end

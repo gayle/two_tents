@@ -2,34 +2,25 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:edit, :update, :destroy, :answer_question, :reset_password]
 
   before_filter :login_required, :except => [:reset_login, :enter_login, :answer_question, :change_password]
-  
+
 #  require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
 #    require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
 
   def new
     @user = User.new
-    @participants = Participant.find_non_staff_participants
-    @participant = Participant.find(params[:participant]) if params[:participant]
-    puts "DBG @participant=#{@participant}"
+    @user.build_participant
   end
- 
-  def create
-    if not params[:user][:participant].blank?
-      @participant = Participant.find(params[:user][:participant])
-      params[:user].delete(:participant)
-    end
 
-    params[:user][:participant] = @participant
-    @user = User.new(params[:user])
-    @user.participant = @participant
-    success = @user && @user.save
-    if success && @user.errors.empty?
-      # Protects against session fixation attacks, causes request forgery
-      # protection if visitor resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
-      # reset session
+  def create
+    @user = User.new
+    @user.build_participant
+    #HACK - change habtm to has_many :through => :rich_join_model
+    @user.roles << Role.find_or_create_by_name(:name => "staff")
+    @user.roles << Role.find_or_create_by_name(:name => "admin") if params[:user][:admin_role] == '1'
+    @user.attributes = params[:user]
+    if @user.save
       AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", user_url(@user))
-      flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as a staff member."
+      flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as #{@user.roles.collect { |x| x.name }.join(', ')}"
       redirect_to :action => 'index'
     else
       flash[:error]  = @user.errors.full_messages
@@ -51,42 +42,25 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @participant = @user.participant
     @participants = Participant.find_non_staff_participants
-    @participants << @participant
+    @participants << @user.participant
   end
 
   def update
-    @participant = (params[:user][:participant]).blank? ? @user.participant : Participant.find(params[:user][:participant])
-    # Once we have participant form attributes partial rendered on the same page, update attributes
-    # @participant.update_attributes(params[])
-    success = @participant && @participant.save
-    if success && @participant.errors.empty?
-      params[:user][:participant] = @participant
-      params[:user][:password] = "" if params[:user][:password_confirmation].blank?
-      begin
-        User.transaction do
-          @user.update_attributes!(params[:user])
-          @user && @user.save!
-          AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) updated by user #{current_user.login}", edit_user_url(@user))
-          flash[:notice] = "User '#{@user.participant.fullname}' (#{@user.login}) updated."
-          redirect_to :action => 'index'
-        end
-      rescue
-        flash[:error] = "Problem with participant creation, please correct the errors and try again."
-        redirect_to :action => 'edit', :user => @user
-      end
+    if @user.update_attributes(params[:user])
+      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) updated by user #{current_user.login}", edit_user_url(@user))
+      flash[:notice] = "User '#{@user.participant.fullname}' (#{@user.login}) updated."
+      redirect_to :action => 'index'
     else
       flash[:error] = "Problem with participant creation, please correct the errors and try again."
-      render :action => 'edit'
+      redirect_to :action => 'edit', :user => @user
     end
-
   end
 
   def destroy
     user_full_name = @user.participant.fullname
     user_login = @user.login
-    if (@user.destroy)
+    if @user.destroy
       AuditTrail.audit("User '#{user_full_name}' (#{user_login}) removed by user #{current_user.login}")
       flash[:notice] = "User '#{user_full_name}' (#{user_login}) deleted"
     else
@@ -128,7 +102,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Your password has been reset!"
       if current_user
-        redirect_to staff_path
+        redirect_to dashboard_path
       else
         redirect_to login_path
       end
@@ -140,4 +114,5 @@ class UsersController < ApplicationController
   def find_user
     @user = User.find(params[:id])
   end
+
 end

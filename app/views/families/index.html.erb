@@ -9,14 +9,14 @@
     <th></th>
     <th>Family Name</th>
     <th>Contact Person</th>
-    <th>Edit</th>
+    <th>Edit or View</th>
     <th>Delete</th>
   </tr>
 
 <% @families.sort_by {|f| f.familyname}.each_with_index do |family, row| %>
   <% form_for family do |form| -%>
   <tr class="<%= ContentHelper.rowstyle(row) %>">
-    <td><%= h row+1 -%></td>
+    <td><%= h( row+1 + @families.offset ) -%></td>
     <td><%= family.familyname -%></td>
     <td><%= family.main_contact_name -%></td> 
 <!--    <td><%= form.check_box :infosheet -%></td> -->

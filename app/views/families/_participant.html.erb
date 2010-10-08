@@ -1,5 +1,5 @@
 <hr />
-<% fields_for_participant(participant) do |participant_form| %>
+<% form.fields_for participant do |participant_form| %>
     <table>
       <tr>
         <td>
@@ -7,83 +7,10 @@
           <%= participant_form.label "Click if this person is the main contact for this family." -%>
         </td>
       </tr>
+    </table>
+    <table>
       <tr><td>
-        <table>
-          <tr>
-            <td class="field">
-              <%= participant_form.text_field :firstname, :size => 40 -%><br /><%= participant_form.label "First Name" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :lastname, :size => 45 -%><br /><%= participant_form.label "Last Name" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :birthdate_string, :size => 20 -%><br /><%= participant_form.label "Birthdate (MM/DD/YYYY)" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :gender, :size => 10 -%><br /><%= participant_form.label "Gender (M/F)" -%>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
-      <tr><td>
-        <table>
-          <tr>
-            <td class="field">
-              <%= participant_form.text_field :address1, :size => 40 -%><br /><%= participant_form.label "Address" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :city, :size => 20 -%><br /><%= participant_form.label "City" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :state, :size => 5 -%><br /><%= participant_form.label "State" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :zip, :size => 10 -%><br /><%= participant_form.label "Zip" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :homechurch, :size => 35 -%><br /><%= participant_form.label "Home Church" -%>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
-      <tr><td>
-        <table>
-          <tr>
-            <td class="field">
-              <%= participant_form.text_field :phone -%><br /><%= participant_form.label "Home Phone" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :mobile -%><br /><%= participant_form.label "Cell Phone" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :email, :size => 60 -%><br /><%= participant_form.label "Email" -%>
-            </td>
-          </tr>
-        </table>
-      </td></tr>
-      <tr><td>
-        <table>
-          <tr>
-            <td class="field">
-              <%= participant_form.text_field :occupation -%><br /><%= participant_form.label "Occupation" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :employer -%><br /><%= participant_form.label "Employer" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :school -%><br /><%= participant_form.label "School Name" -%>
-            </td>
-            <td class="field">
-              <%= participant_form.text_field :grade -%><br /><%= participant_form.label "Grade level (in Fall)" -%>
-            </td>
-          </tr>
-        </table>
+        <%= render :partial => "participants/form", :locals => {:participant_form => participant_form} -%>
       </td></tr>
     </table>
-<!--
-    <a class="more_info_link" href="#" onclick=jQuery(".more_info").show();jQuery(".more_info_link").hide();jQuery(".less_info_link").show();>More Info</a>
-    <div class="more_info">
-    <a class="less_info_link" style="display:none;" href="#" onclick=jQuery(".more_info").hide();jQuery(".more_info_link").show();jQuery(".less_info_link").hide();>Less Info</a>
--->
-
 <% end %>

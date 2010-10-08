@@ -1,101 +1,81 @@
-<fieldset>
-  <legend>Basic Info</legend>
-  <div class="field">
-    <%= form.label "First Name" -%>
-    <%= form.text_field :firstname -%>
-  </div>
-  <div class="field">
-    <%= form.label "Last Name" -%>
-    <%= form.text_field :lastname -%>
-  </div>
-  <div class="field">
-    <%= form.label "Birthdate (MM/DD/YYYY)" -%>
-    <%= form.text_field :birthdate_string -%>
-  </div>
-</fieldset>
+<!-- Oh yes, I do hate all these tables. -->
+<table>
+  <tr>
+    <td class="field">
+      <%= participant_form.text_field :firstname, :size => 40 -%><br /><%= participant_form.label "First Name" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :lastname, :size => 45 -%><br /><%= participant_form.label "Last Name" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :birthdate_string, :size => 20, :class => 'ui-date' -%><br /><%= participant_form.label "* Birthdate (MM/DD/YYYY)" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.select :gender, [['',''],['Male','M'],['Female','F']] -%><br /><%= participant_form.label "Gender" -%>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td class="field">
+      <%= participant_form.text_field :address, :size => 40 -%><br /><%= participant_form.label "Address" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :city, :size => 20 -%><br /><%= participant_form.label "City" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.select :state, States::NAMES.collect{|key, value| [value, value]}, :include_blank => true -%><br /><%= participant_form.label "State" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :zip, :size => 10 -%><br /><%= participant_form.label "Zip" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :homechurch, :size => 35 -%><br /><%= participant_form.label "Home Church" -%>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td class="field">
+      <%= participant_form.text_field :phone -%><br /><%= participant_form.label "Home Phone" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :mobile -%><br /><%= participant_form.label "Cell Phone" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :email, :size => 60 -%><br /><%= participant_form.label "Email" -%>
+    </td>
+  </tr>
 
-<div class="more_info">
-  <fieldset>
-    <legend>Basic Info</legend>
-    <div class="field">
-      <%= form.label "Phone" -%>
-      <%= form.text_field :phone -%>
-    </div>
-    <div class="field">
-      <%= form.label "Email" -%>
-      <%= form.text_field :email -%>
-    </div>
-  </fieldset>
+</table>
+<table>
 
-  <fieldset>
-    <legend>Address</legend>
-    <div class="field">
-      <%= form.label "Address1" -%>
-      <%= form.text_field :address1 -%>
-    </div>
-    <div class="field">
-      <%= form.label "Address2" -%>
-      <%= form.text_field :address2 -%>
-    </div>
-    <div class="field">
-      <%= form.label "City" -%>
-      <%= form.text_field :city -%>
-    </div>
-    <div class="field">
-      <%= form.label "State" -%>
-      <%= form.text_field :state -%>
-    </div>
-    <div class="field">
-      <%= form.label "Zip" -%>
-      <%= form.text_field :zip -%>
-    </div>
-  </fieldset>
+  <tr>
+    <td class="field">
+      <%= participant_form.text_field :occupation -%><br /><%= participant_form.label "Occupation" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :employer -%><br /><%= participant_form.label "Employer" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :school -%><br /><%= participant_form.label "School Name" -%>
+    </td>
+    <td class="field">
+      <%= participant_form.text_field :grade -%><br /><%= participant_form.label "Grade level (in Fall)" -%>
+    </td>
+  </tr>
 
-  <fieldset>
-    <legend>Church Info</legend>
-    <div class="field">
-      <%= form.label "Home Church" -%>
-      <%= form.text_field :homechurch -%>
-    </div>
-    <div class="field">
-      <%= form.label "Pastor" -%>
-      <%= form.text_field :pastor -%>
-    </div>
-  </fieldset>
+</table>
+<table>
+  <tr><td>
+    <%= participant_form.text_area :trivia, :cols => 105, :rows => 2 -%><br /><%= participant_form.label "2-3 interesting facts about this person" -%>
+  </td></tr>
+</table>
+  * indicates required fields
 
-  <fieldset>
-    <legend>Employment Info</legend>
-    <div class="field">
-      <%= form.label "Employer" -%>
-      <%= form.text_field :employer -%>
-    </div>
-    <div class="field">
-      <%= form.label "Occupation" -%>
-      <%= form.text_field :occupation -%>
-    </div>
-  </fieldset>
+<!--
+    <a class="more_info_link" href="#" onclick=jQuery(".more_info").show();jQuery(".more_info_link").hide();jQuery(".less_info_link").show();>More Info</a>
+    <div class="more_info">
+    <a class="less_info_link" style="display:none;" href="#" onclick=jQuery(".more_info").hide();jQuery(".more_info_link").show();jQuery(".less_info_link").hide();>Less Info</a>
+-->
 
-  <fieldset>
-    <legend>School Info</legend>
-    <div class="field">
-      <%= form.label "School Name" -%>
-      <%= form.text_field :school -%>
-    </div>
-    <div class="field">
-      <%= form.label "Grade Level" -%>
-      <%= form.text_field :grade -%>
-    </div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Camp Info</legend>
-    <div class="field">
-      <%= form.label "Health Form" -%>
-      <%= form.check_box :health -%>
-    </div>
-    <div class="field">
-      <%= form.label "Liability Form" -%>
-      <%= form.check_box :liability -%>
-    </div>
-  </fieldset>
-</div>

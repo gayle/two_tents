@@ -1,183 +1,207 @@
-aaron:
-  id:                        1
-  lastname:                  Space
-  firstname:                 Aaron
-  address1:                  an address1
-  address2:                  an address2
-  city:                      oz
-  state:                     ok
-  zip:                       55555
-  family_id:                 1
-  
-old_macdonald:
-  id:                        2
-  lastname:                  MacDonald
-  firstname:                 Old
-  address1:                  an address1
-  address2:                  an address2
-  city:                      oz
-  state:                     ok
-  zip:                       55555
-  family_id:                 2
-
-annie:
-  id:                        3
-  lastname:                  MacDonald
-  firstname:                 Annie
-  address1:                  an address1
-  address2:                  an address2
-  city:                      oz
-  state:                     ok
-  zip:                       55555
-  user_id:                   1
-  family_id:                 2
-
-jimcraig:
-  id:                        4
-  lastname:                  Craig
-  firstname:                 Jim
-  address1:                  123 Some St.
-  address2:
-  city:                      Charleston
-  state:                     IL
-  zip:                       61920
-  user_id:                   2
-  family_id:                 3
-
-carolyncraig:
-  id:                        5
-  lastname:                  Craig
-  firstname:                 Carolyn
-  address1:                  123 Some St.
-  address2:
-  city:                      Charleston
-  state:                     IL
-  zip:                       61920
-  user_id:                   3
-  family_id:                 3
-
-gaylecraig:
-  id:                        6
-  lastname:                  Craig
-  firstname:                 Gayle
-  address1:                  123 Another St.
-  address2:
-  city:                      Dublin
-  state:                     OH
-  zip:                       43016
-  user_id:                   4
-  family_id:                 3
-
-dancraig:
-  id:                        7
-  lastname:                  Craig
-  firstname:                 Dan
-  address1:                  999 Whatever St.
-  address2:
-  city:                      Kettering
-  state:                     OH
-  zip:                       45433
-  family_id:                 3
-
-suecupples:
-  id:                        8
-  lastname:                  Cupples
-  firstname:                 Sue
-  address1:                  456 Hello St.
-  address2:
-  city:                      Findlay
-  state:                     OH
-  zip:                       45840
-  user_id:                   5
-  family_id:                 4
-
-jackcupples:
-  id:                        9
-  lastname:                  Cupples
-  firstname:                 Jack
-  address1:                  456 Hello St.
-  address2:
-  city:                      Findlay
-  state:                     OH
-  zip:                       45840
-  family_id:                 4
-
-garywortman:
-  id:                        10
-  lastname:                  Wortman
-  firstname:                 Gary
-  address1:                  678 Spring St.
-  address2:
-  city:                      Orrville
-  state:                     OH
-  zip:                       44667
-  user_id:                   6
-  family_id:                 5
-
-michelewortman:
-  id:                        11
-  lastname:                  Wortman
-  firstname:                 Michele
-  address1:                  678 Spring St.
-  address2:
-  city:                      Orrville
-  state:                     OH
-  zip:                       44667
-  user_id:                   7
-  family_id:                 5
-
-tylerwortman:
-  id:                        12
-  lastname:                  Wortman
-  firstname:                 Tyler
-  address1:                  678 Spring St.
-  address2:
-  city:                      Orrville
-  state:                     OH
-  zip:                       44667
-  family_id:                 5
-
-kaitlinwortman:
-  id:                        13
-  lastname:                  Wortman
-  firstname:                 Kaitlin
-  address1:                  678 Spring St.
-  address2:
-  city:                      Orrville
-  state:                     OH
-  zip:                       44667
-  family_id:                 5
-
-jeaninelewis:
-  id:                        14
-  lastname:                  Lewis
-  firstname:                 Jeanine
-  address1:                  196 Reading Rd.
-  address2:
-  city:                      Cridersville
-  state:                     OH
-  zip:                       445806
-  user_id:                   8
-  family_id:                 6
-
-dylanlewis:
-  id:                        15
-  lastname:                  Lewis
-  firstname:                 Dylan
-  address1:                  196 Reading Rd.
-  address2:
-  city:                      Cridersville
-  state:                     OH
-  zip:                       445806
-  family_id:                 6
-
-joannearnold:
-  id:                        16
-  lastname:                  Arnold
-  firstname:                 Joanne
-  address1:                  934 West Ave.
-  address2:
-  city:                      Logan
-  state:                     OH
-  zip:                       43138
-  family_id:                 6
+#aaron:
+#  id:                        1
+#  lastname:                  Space
+#  firstname:                 Aaron
+#  address:                   an address
+#  city:                      oz
+#  state:                     OK
+#  zip:                       55555
+#  family_id:                 1
+#  birthdate:                 1975-01-01
+#  main_contact:              true
+#
+#old_macdonald:
+#  id:                        2
+#  lastname:                  MacDonald
+#  firstname:                 Old
+#  address:                  an address
+#  city:                      oz
+#  state:                     ok
+#  zip:                       55555
+#  family_id:                 2
+#  birthdate:                 1945-01-01
+#
+#annie:
+#  id:                        3
+#  lastname:                  MacDonald
+#  firstname:                 Annie
+#  address:                  an address
+#  city:                      oz
+#  state:                     ok
+#  zip:                       55555
+#  user_id:                   1
+#  family_id:                 2
+#  birthdate:                 1971-01-02
+#
+#jimcraig:
+#  id:                        4
+#  lastname:                  Craig
+#  firstname:                 Jim
+#  address:                  123 Some St.
+#  city:                      Charleston
+#  state:                     IL
+#  zip:                       61920
+#  user_id:                   2
+#  family_id:                 3
+#  birthdate:                 1945-01-02
+#
+#carolyncraig:
+#  id:                        5
+#  lastname:                  Craig
+#  firstname:                 Carolyn
+#  address:                  123 Some St.
+#  city:                      Charleston
+#  state:                     IL
+#  zip:                       61920
+#  user_id:                   3
+#  family_id:                 3
+#  birthdate:                 1945-01-03
+#
+#gaylecraig:
+#  id:                        6
+#  lastname:                  Craig
+#  firstname:                 Gayle
+#  address:                  123 Another St.
+#  city:                      Dublin
+#  state:                     OH
+#  zip:                       43016
+#  user_id:                   4
+#  family_id:                 3
+#  birthdate:                 1965-01-03
+#
+#dancraig:
+#  id:                        7
+#  lastname:                  Craig
+#  firstname:                 Dan
+#  address:                  999 Whatever St.
+#  city:                      Kettering
+#  state:                     OH
+#  zip:                       45433
+#  family_id:                 3
+#  birthdate:                 1965-01-04
+#
+#suecupples:
+#  id:                        8
+#  lastname:                  Cupples
+#  firstname:                 Sue
+#  address:                  456 Hello St.
+#  city:                      Findlay
+#  state:                     OH
+#  zip:                       45840
+#  user_id:                   5
+#  family_id:                 4
+#  birthdate:                 1945-01-04
+#
+#jackcupples:
+#  id:                        9
+#  lastname:                  Cupples
+#  firstname:                 Jack
+#  address:                  456 Hello St.
+#  city:                      Findlay
+#  state:                     OH
+#  zip:                       45840
+#  family_id:                 4
+#  birthdate:                 1965-01-05
+#
+#garywortman:
+#  id:                        10
+#  lastname:                  Wortman
+#  firstname:                 Gary
+#  address:                  678 Spring St.
+#  city:                      Orrville
+#  state:                     OH
+#  zip:                       44667
+#  user_id:                   6
+#  family_id:                 5
+#  birthdate:                 1955-01-01
+#
+#michelewortman:
+#  id:                        11
+#  lastname:                  Wortman
+#  firstname:                 Michele
+#  address:                  678 Spring St.
+#  city:                      Orrville
+#  state:                     OH
+#  zip:                       44667
+#  user_id:                   7
+#  family_id:                 5
+#  birthdate:                 1955-01-02
+#
+#tylerwortman:
+#  id:                        12
+#  lastname:                  Wortman
+#  firstname:                 Tyler
+#  address:                  678 Spring St.
+#  city:                      Orrville
+#  state:                     OH
+#  zip:                       44667
+#  family_id:                 5
+#  birthdate:                 1985-01-01
+#
+#kaitlinwortman:
+#  id:                        13
+#  lastname:                  Wortman
+#  firstname:                 Kaitlin
+#  address:                  678 Spring St.
+#  city:                      Orrville
+#  state:                     OH
+#  zip:                       44667
+#  family_id:                 5
+#  birthdate:                 1985-01-02
+#
+#jeaninelewis:
+#  id:                        14
+#  lastname:                  Lewis
+#  firstname:                 Jeanine
+#  address:                  196 Reading Rd.
+#  city:                      Cridersville
+#  state:                     OH
+#  zip:                       445806
+#  user_id:                   8
+#  family_id:                 6
+#  birthdate:                 1985-01-03
+#
+#dylanlewis:
+#  id:                        15
+#  lastname:                  Lewis
+#  firstname:                 Dylan
+#  address:                  196 Reading Rd.
+#  city:                      Cridersville
+#  state:                     OH
+#  zip:                       445806
+#  family_id:                 6
+#  birthdate:                 1995-01-01
+#
+#joannearnold:
+#  id:                        16
+#  lastname:                  Arnold
+#  firstname:                 Joanne
+#  address:                  934 West Ave.
+#  city:                      Logan
+#  state:                     OH
+#  zip:                       43138
+#  family_id:                 6
+#  birthdate:                 1945-01-01
+#
+#quentin:
+#  id:                        17
+#  lastname:                  User
+#  firstname:                 Quentin
+#  address:                  an address
+#  city:                      oz
+#  state:                     ok
+#  zip:                       55555
+#  user_id:                   9
+#  family_id:                 6
+#  birthdate:                 1971-01-01
+#
+#gary:
+#  id:                        18
+#  lastname:                  Craig
+#  firstname:                 Gary
+#  address:                  456 Hello St.
+#  city:                      Findlay
+#  state:                     OH
+#  zip:                       45840
+#  family_id:                 4
+#  birthdate:                 1945-01-04

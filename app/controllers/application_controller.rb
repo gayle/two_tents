@@ -12,5 +12,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
+
+  layout :choose_layout
+  def choose_layout
+    if request.xhr?
+      false
+    else
+      request.path =~ /^\/admin\// ? "application" : "homepage"
+    end
+  end
 end

@@ -1,50 +1,94 @@
 require 'test_helper'
 
 class ParticipantTest < ActiveSupport::TestCase
+  def setup
+    @camp_start = Date.new(2010,7,21)
+    9.times { Factory(:user) }
+    9.times { Factory(:participant) }
+  end
 
-fixtures :participants
+  def test_should_be_able_to_decide_not_to_be_staff
+    @user = Factory(:user)
+    @participant = @user.participant
+    assert_equal Participant.find_by_user_id(@user.id), @participant
+    @user.quit_staff_and_remain_participant
+    assert_equal [], User.all(:conditions => {:id => @user.id})
+    assert_nil @participant.user_id
+  end
 
-    def test_should_find_non_users
-      nu = participants(:non_user)
-      nu.save
-      
-      non_staff = Participant.find_non_staff_participants
-      assert_equal(1, non_staff.size)
-      assert_equal nu, non_staff[0]
-    end
-    
-    def test_should_not_find_existing_users
-      staff = create_user
-      non_staff = Participant.find_non_staff_participants
-      assert_equal(1, non_staff.size)
-      assert_not_equal staff, non_staff[0]
-    end
+  def test_there_18_users_created_by_fixtures
+    assert_equal 18, Participant.all.size
+  end
 
-    def test_fullname_should_handle_nil_values
-      p = participants(:quentin)
+  def test_there_9_non_staff_users_created_by_fixtures
+    assert_equal 9, Participant.find_non_staff_participants.size
+  end
 
-      p.firstname=nil
-      assert p.fullname, "resulting fullname was nil"
-      assert_equal false, p.fullname.include?("nil"), "the string fullname shouldn't contain the word nil if the value is nil"
+  def test_should_find_non_users
+    Factory(:participant)
 
-      p.lastname = nil
-      assert p.fullname, "resulting fullname was nil"
-      assert_equal false, p.fullname.include?("nil"), "the string fullname shouldn't contain the word nil if the value is nil"
-    end
-    
-    def test_participant_cannot_be_destroyed_if_it_belongs_to_a_user
-      p = create_user.participant
-      
-      p.destroy
-      assert_equal p, participants(:quentin)
-    end
+    non_staff = Participant.find_non_staff_participants
+    assert_equal(10, non_staff.size)
+  end
 
-  protected
-    def create_user
-      record = User.new({ :login => 'quire', :email => 'quire@example.com',
-                          :password => 'quire69', :password_confirmation => 'quire69' })
-      record.participant = participants(:quentin)
-      record.save
-      record
-    end
+  def test_should_not_find_existing_users
+    Factory(:user)
+    non_staff = Participant.find_non_staff_participants
+    assert_equal(9, non_staff.size)
+  end
+
+  def test_firstname_should_not_nil
+    p = Factory.build(:participant, :firstname => nil)
+    p.save
+
+    assert p.errors.on(:firstname)
+  end
+
+  def test_lastname_should_not_nil
+    p = Factory.build(:participant, :lastname => nil)
+    p.save
+
+    assert p.errors.on(:lastname)
+  end
+
+  def test_participant_cannot_be_destroyed_if_it_belongs_to_a_user
+    u = Factory(:user)
+    u.destroy
+    assert_equal 19, Participant.all.size
+  end
+
+  def test_under_one_month
+    p = Participant.new(:birthdate => @camp_start.advance(:days => -10))
+    assert_equal [0,0,10], p.age_parts
+    assert_equal 0, p.age
+    assert_equal "10 days", p.display_age
+  end
+
+  def test_under_one_year
+    p = Participant.new(:birthdate => @camp_start.advance(:months => -9, :days => -21))
+    assert_equal [0,9,21], p.age_parts
+    assert_equal 0, p.age
+    assert_equal "9 months", p.display_age
+  end
+
+  def test_one_year_edge_case
+    p = Participant.new(:birthdate => @camp_start.advance(:months => -11, :days => -29))
+    assert_equal [0,11,29], p.age_parts
+    assert_equal 0, p.age
+    assert_equal "11 months", p.display_age
+  end
+
+  def test_over_one_year
+    p = Participant.new(:birthdate => @camp_start.advance(:years => -1, :months => -10, :days => -10))
+    assert_equal [1,10,10], p.age_parts
+    assert_equal 1, p.age
+    assert_equal "22 months", p.display_age
+  end
+
+  def test_over_ten_years
+    p = Participant.new(:birthdate => @camp_start.advance(:years => -10, :months => -10, :days => -10))
+    assert_equal [10,10,10], p.age_parts
+    assert_equal 10, p.age
+    assert_equal "10", p.display_age
+  end
 end

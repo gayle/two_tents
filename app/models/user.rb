@@ -6,10 +6,12 @@ class User < ActiveRecord::Base
   # You may wish to modify it to suit your need
   has_and_belongs_to_many :roles
 
+  attr_accessor :admin_role
+
   has_one :participant
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
-
-  has_attached_file :head_shot
+#  delegate :fullname, :to => :participant  # Why isn't delegate working????
+  accepts_nested_attributes_for :participant
 
   # has_role? simply needs to return true or false whether a user has a role or not.
   # It may be a good idea to have "admin" roles return true always
@@ -46,10 +48,8 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible(:login, :email, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :mobilephone, :participant,
-                  :photourl, :workphone, :position,
-                  :head_shot_file_name, :head_shot_content_type,
-                  :head_shot_file_size, :head_shot)
+                  :security_answer, :cell_phone, :participant_attributes,
+                  :home_phone, :position)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -79,12 +79,19 @@ class User < ActiveRecord::Base
     id == param_id.to_i
   end
 
+  def quit_staff_and_remain_participant
+    self.participant.update_attributes(:user_id => nil)
+    self.destroy
+  end
+
   # define readable methods for role access
   Role.all.each do |role|
     define_method "is_#{role.name}?" do
       has_role?(role.name)
     end
   end
+
+
 
   protected
 

@@ -3,6 +3,15 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
 class ActiveSupport::TestCase
+
+  include AuthenticatedTestHelper
+  require 'factory_girl'
+
+  #TODO: Create a wildcard require to require factories/*
+  require 'factories/family.rb'
+  require 'factories/user.rb'
+  require 'factories/participant.rb'
+
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
   # test database remains unchanged so your fixtures don't have to be reloaded

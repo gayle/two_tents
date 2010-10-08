@@ -1,2 +1,0 @@
-    <%= family.send(type.to_s) ? "Yes" : "No" -%>
-    <%= hidden_field_tag "#{family.class.to_s.singularize.underscore}[#{type.to_s}]", family.send(type.to_s) ? "0":"1" -%>

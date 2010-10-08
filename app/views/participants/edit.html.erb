@@ -8,7 +8,7 @@
 
 
 <% form_for(@participant) do |f| %>
-  <%= render :partial => f%>
+  <%= render :partial => f, :locals => {:participant_form => f} %>
   <p>
     <%= f.submit 'Update' %>
   </p>
