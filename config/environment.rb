@@ -15,6 +15,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
+  config.gem "bundler"
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
@@ -39,11 +40,11 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  # Use will_paginate
-  config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate',
-    :source => 'http://gems.github.com'
-
-  # should this move to environments/production.rb ? 
+#  # Use will_paginate
+#  config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate',
+#    :source => 'http://gems.github.com'
+#
+  # should this move to environments/production.rb ?
   config.gem 'hoptoad_notifier'
   
 end
