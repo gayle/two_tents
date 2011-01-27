@@ -1,23 +1,25 @@
-<h1>Edit current Year</h1>
-<% form_for :year, @year, :url => {:action => 'update'} do |form| -%>
-  <table>
-    <tr>
-      <th>Year</th><th>Start Date</th><th>End Date</th><th>Theme</th>
-    </tr>
-    <tr>
-      <td>
-        <%= form.text_field "year" -%>
-      </td>
-      <td>
-        <%= form.text_field "starts_on", :class => 'ui-date', :value => @year.starts_on.to_s -%>
-      </td>
-      <td>
-        <%= form.text_field "ends_on", :class => 'ui-date', :value => @year.ends_on.to_s -%>
-      </td>
-      <td>
-        <%= form.text_field "theme" -%>
-      </td>
-    </tr>
-    </table>
-  <%= form.submit 'Save' -%>
+<h1>Edit Camp Years</h1>
+<% form_for :years do |form| %>
+    <% @years.each_with_index do |year, i|  %>
+        <%= render :partial => "form_fields", :locals => {:year => year, :index => i} -%>
+    <% end -%>
+    <%= form.submit 'Save' -%>
+    <%= submit_tag "Add New", :type => 'button',
+                               :onclick => 'addAnotherYear();' %>
 <% end -%>
+
+<% javascript_tag do %>
+    function addAnotherYear() {
+        new_row = $("#year_row_").clone(true);
+        // TODO set new id
+        number_of_rows = $("[name='camp_year']").size();
+
+        // clear out values in new row
+        row_inputs = new_row.find('input');
+        for(i in row_inputs) {
+            row_inputs[i].value="";
+        }
+    
+        new_row.insertAfter("#year_table_header");
+    }
+<% end %>
