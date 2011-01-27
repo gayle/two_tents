@@ -1,4 +1,4 @@
-class Configuration < ActiveRecord::Base
+class Year < ActiveRecord::Base
 
   def self.current
     find(:first, :order => "created_at DESC")

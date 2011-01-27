@@ -14,9 +14,9 @@ ActionController::Routing::Routes.draw do |map|
       report.birthdays_by_month '/birthdays_by_month', :action => 'birthdays_by_month'
     end
 
-    admin.with_options :controller => 'config_edit' do |config|
-      config.config_edit '/config', :action => 'index', :conditions => {:method => :get}
-      config.config_edit '/config', :action => 'update', :conditions => {:method => :post}
+    admin.with_options :controller => 'years' do |year|
+      year.edit '/years', :action => 'edit', :conditions => {:method => :get}
+      year.update '/years', :action => 'update', :conditions => {:method => :post}
     end
 
     admin.resources :users,

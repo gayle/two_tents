@@ -47,7 +47,7 @@ class Participant < ActiveRecord::Base
   end
 
   def age_parts
-    start_of_camp = Configuration.current.starts_on
+    start_of_camp = Year.current.starts_on
     dob = birthdate.to_date
     d_year = start_of_camp.year - dob.year
     d_month = start_of_camp.month - dob.month
@@ -81,7 +81,7 @@ class Participant < ActiveRecord::Base
 
   def birthday_during_camp?
     return false if birthdate.blank?
-    conf = Configuration.current
+    conf = Year.current
     current_year_birthday = Date.new(conf.starts_on.year, birthdate.month, birthdate.day)
     conf.starts_on <= current_year_birthday && current_year_birthday <= conf.ends_on
   end
@@ -130,7 +130,7 @@ class Participant < ActiveRecord::Base
   end
 
   def registered_for_current_year?
-    registered_for_year?(Configuration.current.year)
+    registered_for_year?(Year.current.year)
   end
 
   def self.find_non_staff_participants
