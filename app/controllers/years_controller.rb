@@ -1,11 +1,11 @@
 class YearsController < ApplicationController
   def edit
-    @year = Year.current
+    @years = Year.all # TODO sort this descending by year
   end
 
   def update
     Year.create(params[:year])
-    redirect_to :action => 'index'
+    redirect_to :action => 'edit'
   end
 
 end

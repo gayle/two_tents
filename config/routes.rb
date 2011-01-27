@@ -15,8 +15,8 @@ ActionController::Routing::Routes.draw do |map|
     end
 
     admin.with_options :controller => 'years' do |year|
-      year.edit '/years', :action => 'edit', :conditions => {:method => :get}
-      year.update '/years', :action => 'update', :conditions => {:method => :post}
+      year.edit_years '/years', :action => 'edit', :conditions => {:method => :get}
+      year.update_years '/years', :action => 'update', :conditions => {:method => :post}
     end
 
     admin.resources :users,

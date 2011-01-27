@@ -1,0 +1,23 @@
+<table id="years">
+  <tr id="year_table_header">
+    <th>Year</th><th>Start Date</th><th>End Date</th><th>Theme</th>
+  </tr>
+  <tr id="year_row_" name="camp_year">
+    <td>
+      <%= text_field_tag :year, year.year,
+                         :id => "year_#{index}", :size => 4 -%>
+    </td>
+    <td>
+      <%= text_field_tag :starts_on, year.starts_on.to_s,
+                         :id => "starts_on_#{index}", :class => 'ui-date', :size => 15 -%>
+    </td>
+  <td>
+    <%= text_field_tag :ends_on, year.ends_on.to_s,
+                       :id => "ends_on_#{index}", :class => 'ui-date', :size => 15 -%>
+  </td>
+  <td>
+    <%= text_field_tag :theme, year.theme,
+                       :id => "theme_#{index}", :size => 75 -%>
+  </td>
+  </tr>
+</table>
