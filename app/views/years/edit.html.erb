@@ -1,25 +1,40 @@
 <h1>Edit Camp Years</h1>
-<% form_for :years do |form| %>
-    <% @years.each_with_index do |year, i|  %>
-        <%= render :partial => "form_fields", :locals => {:year => year, :index => i} -%>
-    <% end -%>
-    <%= form.submit 'Save' -%>
+<% form_tag url_for(:action => :update) do %>
+    <table id="years_table">
+         <tr id="year_table_header">
+             <th>Year</th><th>Start Date</th><th>End Date</th><th>Theme</th>
+         </tr>
+    <% @years.each_with_index do |@year, index| %>
+          <tr id="year_row_" name="camp_year">
+          <% fields_for "year[]" do |year| %>
+              <td><%= year.text_field "year", :size => 4 -%></td>
+              <td><%= year.text_field "starts_on", :size => 15 -%></td>
+              <td><%= year.text_field "ends_on", :size => 15 -%></td>
+              <td><%= year .text_field "theme", :size => 75 -%></td>
+          <% end %>
+          </tr>
+    <% end %>
+    </table>
+    <%= submit_tag 'Save' -%>
     <%= submit_tag "Add New", :type => 'button',
-                               :onclick => 'addAnotherYear();' %>
+                              :onclick => 'addAnotherYear();' %>
 <% end -%>
 
 <% javascript_tag do %>
     function addAnotherYear() {
         new_row = $("#year_row_").clone(true);
-        // TODO set new id
         number_of_rows = $("[name='camp_year']").size();
+        new_row.attr("id","year_row_"+number_of_rows);
 
         // clear out values in new row
         row_inputs = new_row.find('input');
-        for(i in row_inputs) {
-            row_inputs[i].value="";
+        for(i=0; i<row_inputs.size(); i++) {
+            row_inputs[i].id += number_of_rows;
+            row_inputs[i].value = "";
+            old_name = row_inputs[i].name;
+            console.log(""+old_name);
+            row_inputs[i].name = "new_"+old_name.replace(/\[\d*\]/i, "[]");
         }
-    
         new_row.insertAfter("#year_table_header");
     }
 <% end %>

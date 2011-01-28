@@ -5,19 +5,19 @@
   <tr id="year_row_" name="camp_year">
     <td>
       <%= text_field_tag :year, year.year,
-                         :id => "year_#{index}", :size => 4 -%>
+                         :name => "year[]", :id => "year_", :size => 4 -%>
     </td>
     <td>
       <%= text_field_tag :starts_on, year.starts_on.to_s,
-                         :id => "starts_on_#{index}", :class => 'ui-date', :size => 15 -%>
+                         :name => "starts_on[]", :id => "starts_on_", :class => 'ui-date', :size => 15 -%>
     </td>
   <td>
     <%= text_field_tag :ends_on, year.ends_on.to_s,
-                       :id => "ends_on_#{index}", :class => 'ui-date', :size => 15 -%>
+                       :name => "ends_on[]", :id => "ends_on_", :class => 'ui-date', :size => 15 -%>
   </td>
   <td>
     <%= text_field_tag :theme, year.theme,
-                       :id => "theme_#{index}", :size => 75 -%>
+                       :name => "theme[]", :id => "theme_", :size => 75 -%>
   </td>
   </tr>
 </table>
