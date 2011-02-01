@@ -8,8 +8,8 @@
           <tr id="year_row_" name="camp_year">
           <% fields_for "year[]" do |year| %>
               <td><%= year.text_field "year", :size => 4 -%></td>
-              <td><%= year.text_field "starts_on", :size => 15, :class => 'ui-date' -%></td>
-              <td><%= year.text_field "ends_on", :size => 15, :class => 'ui-date' -%></td>
+              <td><%= year.text_field "starts_on",  :size => 15, :class => 'ui-date', :value => @year.starts_on.strftime('%m/%d/%Y') -%></td>
+              <td><%= year.text_field "ends_on", :size => 15, :class => 'ui-date', :value => @year.ends_on.strftime('%m/%d/%Y')  -%></td>
               <td><%= year .text_field "theme", :size => 75 -%></td>
           <% end %>
           </tr>
@@ -28,7 +28,7 @@
 
         // clear out values in new row
         row_inputs = new_row.find('input');
-        for(i=0; i<row_inputs.size(); i++) {
+        for(i=0; i < row_inputs.size(); i++) {
             row_inputs[i].id += number_of_rows;
             row_inputs[i].value = "";
             old_name = row_inputs[i].name;
