@@ -4,14 +4,12 @@ class YearsController < ApplicationController
   end
 
   def update
-    # >>> START HERE, get the years to save. (create or update)
-    @years = params[:new_year] || []
-    puts
-    @years.each do |year|
-      puts "DBG year=#{year.inspect}"
-      puts
-#      Year.create(year)
+    @years_to_create = params[:new_year] || []
+    @years_to_create.each do |year_params|
+      Year.create!(year_params)
     end    
+
+    # >>> START HERE, get existing years to update if necessary.
     redirect_to :action => 'edit'
   end
 
