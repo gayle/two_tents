@@ -1,6 +1,6 @@
 class YearsController < ApplicationController
   def edit
-    @years = Year.all # TODO sort this descending by year
+    @years = Year.all.sort_by { |a| -a.year } 
   end
 
   def update
