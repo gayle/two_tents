@@ -39,4 +39,14 @@ module ApplicationHelper
     "homepage" if controller.controller_name == 'landing' && controller.action_name == 'index'
   end
 
+  def format_flash_error(general_message, technical_message=nil, validation_errors=nil)
+    message = general_message
+    if technical_message or validation_errors
+      message << "<br />[TECHNICAL DETAILS:"
+      message << "#{technical_message}" if technical_message.present?
+      message << "<br />#{validation_errors}" if validation_errors.present?
+      message << "]"
+    end
+    message
+  end
 end

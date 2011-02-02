@@ -142,7 +142,7 @@ class FamiliesController < ApplicationController
     exception_message = got_exception(params[:exception])
     validation_errors = error_list_for(@family)
 
-    flash[:error] = flash_message_for(general_message, exception_message, validation_errors)
+    flash[:error] = format_flash_error(general_message, exception_message, validation_errors)
     logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
     logger.error "EXCEPTION: #{exception_message}\n BACTRACE: #{params[:exception].backtrace.join("\n\t")}" if params[:exception]
 
@@ -171,14 +171,5 @@ class FamiliesController < ApplicationController
 
   def error_list_for(family)
     family.errors ? family.errors.to_a.join(', ') : ""
-  end
-
-  def flash_message_for(general_message, exception_message, validation_errors)
-    msg = "#{general_message}"
-    # if validation error, let the validation stuff do it's thing. If not, put more info into the flash.
-    if validation_errors.empty?
-     msg << "<br />[TECHNICAL DETAILS: #{exception_message} <br />#{validation_errors}]"
-    end
-    msg
   end
 end

@@ -75,13 +75,14 @@ class ParticipantsController < ApplicationController
 #          end
 #        end
       else
-        flash[:error] = "Error updating #{@participant.fullname} <br />[TECHNICAL DETAILS: update(): #{@participant.errors.join(',')}]"
+        flash[:error] = format_flash_error("Error updating #{@participant.fullname}",
+                                           "update(): #{@participant.errors.to_a.join(',')}")
         format.html { render :action => "edit" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
   rescue Exception => e
-    flash[:error] = "Error updating #{@participant.fullname} <br />[TECHNICAL DETAILS: update(): #{e.to_s}]"
+    flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "update(): #{e.to_s}")
     logger.error "ERROR updating participant \n#{@participant.inspect}"
     logger.error e.backtrace.join("\n\t")
     format.html { render :action => "edit" }
