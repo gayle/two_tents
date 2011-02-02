@@ -1,7 +1,7 @@
 class Year < ActiveRecord::Base
 
   def self.current
-    find(:first, :order => "created_at DESC")
+    find(:first, :order => "year DESC")
   end
 
   def date_range
@@ -12,4 +12,15 @@ class Year < ActiveRecord::Base
     end
   end
 
+  def self.update_multiple!(years_hash)
+    years_hash.each do |key, value|
+      year = Year.find(key)
+      if year
+        Rails.logger.debug("year '#{key}' updated with (#{value})")
+        year.update_attributes!(value)
+      else
+        Rails.logger.warn("year '#{key}' not found, attributes not updated (#{value})")
+      end
+    end
+  end
 end
