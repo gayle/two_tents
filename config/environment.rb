@@ -40,10 +40,11 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-#  # Use will_paginate
-#  config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate',
-#    :source => 'http://gems.github.com'
-#
+# ?? It seems like I shouldn't need these two since they're in the Gemfile, but app doesn't work w/o these here. 
+  # Use will_paginate
+  config.gem 'mislav-will_paginate', :version => '~> 2.3.8', :lib => 'will_paginate',
+    :source => 'http://gems.github.com'
+
   # should this move to environments/production.rb ?
   config.gem 'hoptoad_notifier'
   
