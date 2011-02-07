@@ -27,4 +27,4 @@ config.action_view.cache_template_loading            = true
 # Enable threaded mode
 # config.threadsafe!
 
-CONTACT_EMAIL = "gayle@craigworld.com"
+CONTACT_EMAIL = "familycampstaff@gmail.com"
