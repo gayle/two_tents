@@ -1,5 +1,5 @@
 body {
-  background:url(/images/homepage/graphpaper.jpg) #cab27b;
+  background:url(/images/homepage/background.jpg) #cab27b;
   color:#040302;
   font:1.05em/1.2 Georgia, serif;
 }
@@ -93,7 +93,7 @@ padding:4px;
 }
 
 #header .title {
-  background:url(../images/homepage/compass-icon_100.png) no-repeat 20px 14px;
+  background:url(../images/homepage/theme-icon_100.png) no-repeat 20px 14px;
   padding:14px 0 14px 160px;
 }
 
