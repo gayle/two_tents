@@ -2,19 +2,17 @@
   <hr />
   <table width="100%">
     <tr>
-      <td>
+      <td class="field">
         <%= pfields.check_box :main_contact, :class => 'main-contact-select' %>
         <%= pfields.label "Click if this person is the main contact for this family." -%>
       </td>
-      <td align="right">
-        <%= pfields.hidden_field :_destroy %>  
+      <td class="field" align="right">
+        <%= pfields.hidden_field :_destroy %>
         <%= link_to_function "Remove", "remove_fields(this)" %>
       </td>
     </tr>
-  </table>
-  <table>
     <tr>
-      <td>
+      <td class="field" colspan="2">
         <%= render :partial => "participants/form", :locals => {:participant_form => pfields} -%>
       </td>
     </tr>
