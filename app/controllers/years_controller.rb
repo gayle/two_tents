@@ -1,8 +1,8 @@
 class YearsController < ApplicationController
   def edit
-    @years=[] # so we never have nil @years
+    yrs = Year.all || [] # so we never have nil yrs
     begin
-      @years = Year.all.sort_by { |a| -a.year }
+      @years = yrs.sort_by { |a| -a.year }
     rescue Exception => e
       flash[:error] = e.to_s #format_flash_error("Error showing years", e.to_s)
     end
