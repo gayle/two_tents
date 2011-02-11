@@ -1,6 +1,11 @@
 class YearsController < ApplicationController
   def edit
-    @years = Year.all.sort_by { |a| -a.year } 
+    @years=[] # so we never have nil @years
+    begin
+      @years = Year.all.sort_by { |a| -a.year }
+    rescue Exception => e
+      flash[:error] = e.to_s #format_flash_error("Error showing years", e.to_s)
+    end
   end
 
   def update

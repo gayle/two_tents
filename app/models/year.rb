@@ -1,7 +1,9 @@
 class Year < ActiveRecord::Base
 
+  validates_presence_of :year
+  
   def self.current
-    find(:first, :order => "year DESC") || Year.new
+    find(:first, :order => "year DESC") || Year.create!(:year=>"0")
   end
 
   def date_range

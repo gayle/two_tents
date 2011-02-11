@@ -7,7 +7,7 @@ class ParticipantsController < ApplicationController
     begin
       @participants = Participant.paginate :all, :page => params[:page], :order => "lastname ASC, firstname ASC"
     rescue Exception => e
-      flash[:notice] = format_flash_error("We're sorry, but something went wrong.", e.to_s)
+      flash[:error] = format_flash_error("We're sorry, but something went wrong.", e.to_s)
     end
 
     respond_to do |format|

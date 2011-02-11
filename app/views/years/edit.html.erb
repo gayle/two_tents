@@ -8,8 +8,8 @@
           <tr id="year_row_" name="camp_year">
           <% fields_for "year[]" do |year| %>
               <td><%= year.text_field "year", :size => 3 -%></td>
-              <td><%= year.text_field "starts_on",  :size => 9, :class => 'ui-date', :value => @year.starts_on.strftime('%m/%d/%Y') -%></td>
-              <td><%= year.text_field "ends_on", :size => 9, :class => 'ui-date', :value => @year.ends_on.strftime('%m/%d/%Y')  -%></td>
+              <td><%= year.text_field "starts_on",  :size => 9, :class => 'ui-date', :value => (@year.starts_on.strftime('%m/%d/%Y') if @year.starts_on) -%></td>
+              <td><%= year.text_field "ends_on", :size => 9, :class => 'ui-date', :value => (@year.ends_on.strftime('%m/%d/%Y') if @year.ends_on) -%></td>
               <td><%= year.text_field "theme", :size => 20 -%></td>
               <td><%= year.text_field "registration_pdf", :size => 40 -%></td>
               <td><%= year.text_field "registration_doc", :size => 40 -%></td>
