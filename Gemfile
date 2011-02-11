@@ -13,7 +13,9 @@ end
 # bundle install --without test
 group :test do
   gem 'factory_girl'
+  gem 'sqlite3-ruby' 
 end
 
 group :production do
+  gem "pg"
 end
