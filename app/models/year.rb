@@ -1,7 +1,7 @@
 class Year < ActiveRecord::Base
 
   def self.current
-    find(:first, :order => "year DESC")
+    find(:first, :order => "year DESC") || Year.new
   end
 
   def date_range
