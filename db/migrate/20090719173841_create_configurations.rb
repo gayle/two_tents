@@ -4,7 +4,7 @@ class CreateConfigurations < ActiveRecord::Migration
       t.integer :year
       t.timestamps
     end
-    Configuration.create(:year => 2010)
+    #Configuration.create(:year => 2010)
   end
 
   def self.down

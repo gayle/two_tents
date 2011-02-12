@@ -285,6 +285,10 @@ tr.odd {
     background-color: #ecf2f6;
 }
 
+table.field, tr.field, td.field {
+    background-color: #EEEEEE;
+}
+
 img.pictureframe {
     margin:11px;
     padding:2px;
