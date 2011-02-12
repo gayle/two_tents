@@ -7,25 +7,25 @@
 <div class="data-entry">
   Login Information:
     <div class="data-entry-form">
-    <p><%= label_tag 'login' %><br/>
+    <p><%= label_tag 'login', "* Login" %><br/>
     <%= form.text_field :login %></p>
     </div>
 
     <div class="data-entry-form">
     <% if show_password %>
-    <p><%= label_tag 'password' %><br/>
+    <p><%= label_tag 'password', '* Password' %><br/>
     <%= form.password_field :password %></p>
 
-    <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
+    <p><%= label_tag 'password_confirmation', '* Confirm Password' %><br/>
     <%= form.password_field :password_confirmation %></p>
     <% end %>
     </div>
 
     <div class="data-entry-form">
-    <p><%= label_tag 'security_question'%><br/>
+    <p><%= label_tag 'security_question', '* Security Question' %><br/>
     <%= form.text_field :security_question %></p>
 
-    <p><%= label_tag 'security_answer'%><br/>
+    <p><%= label_tag 'security_answer', '* Security Answer' %><br/>
     <%= form.text_field :security_answer %></p>
   </div>
 </div>
@@ -37,7 +37,7 @@
     <p><%= label_tag 'position(s) on staff' %><br/>
     <%= form.text_field :position %></p>
 
-    <p><%= label_tag 'email' %><br/>
+    <p><%= label_tag 'email', '* Email' %><br/>
     <%= form.text_field :email %></p>
 
     <p><%= label_tag 'home phone' %><br/>
