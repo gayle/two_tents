@@ -2,7 +2,7 @@
 source 'http://gemcutter.org'  
 source 'http://gems.github.com'
 
-gem "rails", "2.3.5"
+gem "rails", "2.3.9"
 gem "mislav-will_paginate", "2.3.11", :require => 'will_paginate'
 gem "hoptoad_notifier", "2.3.2"  # Perhaps this should be in a :production group?
 
