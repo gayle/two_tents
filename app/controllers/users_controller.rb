@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new
     @user.build_participant
-    #HACK - change habtm to has_many :through => :rich_join_model
+    #HACK - change habtm to has_many :through => :rich_join_model.  See https://github.com/gayle/two_tents/issues#issue/52
     @user.roles << Role.find_or_create_by_name(:name => "staff")
     @user.roles << Role.find_or_create_by_name(:name => "admin") if params[:user][:admin_role] == '1'
     @user.attributes = params[:user]
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as #{@user.roles.collect { |x| x.name }.join(', ')}"
       redirect_to :action => 'index'
     else
-      flash[:error]  = @user.errors.full_messages
+      flash[:error]  = "there was an error saving this staff member"
       AuditTrail.audit("Creation of user '#{@user.login}' failed, attempted by user #{current_user.login}")
       @participants = Participant.find_non_staff_participants
       render :action => 'new'
