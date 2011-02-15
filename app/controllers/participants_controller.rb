@@ -5,7 +5,7 @@ class ParticipantsController < ApplicationController
   # GET /participants.xml
   def index
     begin
-      @participants = Participant.paginate :all, :page => params[:page], :order => "lastname ASC, firstname ASC"
+      @participants = Participant.current.paginate :all, :joins => :years, :conditions => ["years.id=?",2], :page => params[:page], :order => "lastname ASC, firstname ASC"
     rescue Exception => e
       flash[:error] = format_flash_error("We're sorry, but something went wrong.", e.to_s)
     end

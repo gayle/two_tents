@@ -1,6 +1,7 @@
 class Year < ActiveRecord::Base
 
   has_and_belongs_to_many :families
+  has_and_belongs_to_many :participants
 
   validates_presence_of :year
   

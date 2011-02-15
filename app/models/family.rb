@@ -11,10 +11,11 @@ class Family < ActiveRecord::Base
   has_one :main_contact, :class_name => 'Participant', :conditions => { :main_contact => true }
 
   validates_associated :participants
-
   validates_presence_of :familyname, :message =>"Family Name Can't be blank"
   validates_presence_of :participants, :message =>"Participants were not added"
 
+  named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}"
+  
   def familyname
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end

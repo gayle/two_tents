@@ -2,6 +2,7 @@ class Participant < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
 
+  has_and_belongs_to_many :years
   belongs_to :family
   belongs_to :user
 
@@ -12,6 +13,8 @@ class Participant < ActiveRecord::Base
 
   named_scope :main_contact, :conditions => { :main_contact => true }
 
+  named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}"
+  
   def participant_address
     address.present? ? address : family.family_address
   end
