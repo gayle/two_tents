@@ -1,6 +1,7 @@
 class Family < ActiveRecord::Base
   include FamiliesHelper
-  
+
+  has_and_belongs_to_many :years
   has_many :participants, :order => 'main_contact DESC, birthdate ASC'
 
   accepts_nested_attributes_for :participants, :allow_destroy => true, :reject_if => proc { 
