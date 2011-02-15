@@ -3,7 +3,7 @@ class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
     year_results = execute("SELECT * FROM years ORDER BY year ASC")
     oldest_year_id = year_results[0]["id"]
 
-    create_table :families_years do |t|
+    create_table :families_years, :id => false do |t|
       t.integer :family_id
       t.integer :year_id
       t.timestamps
@@ -13,7 +13,7 @@ class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
       insert %{INSERT INTO families_years (family_id, year_id) VALUES('#{family["id"]}','#{oldest_year_id}')}
     end
 
-    create_table :participants_years do |t|
+    create_table :participants_years, :id => false do |t|
       t.integer :participant_id
       t.integer :year_id
       t.timestamps
