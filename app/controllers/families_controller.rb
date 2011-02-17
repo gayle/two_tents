@@ -14,6 +14,9 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def families_past
+  end
+
   # GET /families/1
   # GET /families/1.xml
   def show

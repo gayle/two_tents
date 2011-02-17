@@ -14,7 +14,8 @@ class Participant < ActiveRecord::Base
   named_scope :main_contact, :conditions => { :main_contact => true }
 
   named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}"
-  
+  named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}"
+
   def participant_address
     address.present? ? address : family.family_address
   end
