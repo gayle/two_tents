@@ -16,6 +16,12 @@ class ParticipantsController < ApplicationController
     end
   end
 
+  def participants_past
+    @past_participants = Participant.all :order => "lastname ASC, firstname ASC"
+    @current_participants = Participant.current
+
+  end
+  
   # GET /participants/1
   # GET /participants/1.xml
   def show

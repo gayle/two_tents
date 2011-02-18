@@ -1,0 +1,46 @@
+<h1>All participants</h1>
+
+<% if @past_participants.blank? and @current_participants.blank? %>
+    <p>No participants yet. Click the link below to create one.</p>
+    <%= link_to 'New Participant', new_participant_path %>
+<% else %>
+
+  <table id="past_info" class="past_info">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Past Participants</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @past_participants.each_with_index do |p, row| %>
+        <tr class="<%= ContentHelper.rowstyle(row) %>">
+          <td><%=h( row+1 ) %></td>
+          <td><%=h p.list_name %></td>
+          <td><%=link_to("register >> ") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+
+  <table id="current_info" class="current_info">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Current Participants</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @current_participants.each_with_index do |p, row| %>
+        <tr class="<%= ContentHelper.rowstyle(row) %>">
+          <td><%=link_to("<< un-register") %></td>
+          <td><%=h( row+1 ) %></td>
+          <td><%=h p.list_name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

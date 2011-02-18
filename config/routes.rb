@@ -1,9 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
     admin.resources :participants
+    admin.with_options :controller => 'participants' do |family|
+      family.participants_past '/participants_past', :action => 'participants_past'
+    end
 
     admin.resources :families
     admin.with_options :controller => 'families' do |family|
+      family.families_past '/families_past', :action => 'families_past'
       family.edit_choose_family '/edit_choose_family', :action => 'edit_choose_family'
       family.update_add_participant '/update_add_participant', :action => 'update_add_participant'
     end
