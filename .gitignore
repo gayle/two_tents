@@ -8,4 +8,4 @@ backups
 db/backups
 .heroku
 id_rsa*
-.rvmrc
+config/setup_load_paths.rb
