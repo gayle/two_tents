@@ -13,5 +13,8 @@ class SplitConfigurationDates < ActiveRecord::Migration
   end
 
   def self.down
+    add_column :configurations, :dates, :date
+    remove_column :configurations, :starts_on
+    remove_column :configurations, :ends_on
   end
 end

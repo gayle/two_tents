@@ -1,9 +1,9 @@
 class NormalizeGenders < ActiveRecord::Migration
   def self.up
-    Participant.transaction do
-      Participant.all.each do |p|
-        p.update_attribute(:gender, p.gender.upcase) unless p.gender.blank?
-      end
+    results = execute %{SELECT id, gender FROM participants}
+    results.each do |row|
+      gender = row[:gender]
+      execute %{UPDATE participants SET state='#{row[:gender].upcase}' where id='#{row[:id]}'} if (gender)
     end
   end
 
