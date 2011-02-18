@@ -1,9 +1,9 @@
 # Edit this Gemfile to bundle your application's dependencies.
-source 'http://gemcutter.org'  
+source 'http://gemcutter.org'
 source 'http://gems.github.com'
 
 gem "rails", "2.3.9"
-gem "mislav-will_paginate", "2.3.11", :require => 'will_paginate'
+gem "will_paginate", "~> 2.3.15"
 gem "hoptoad_notifier", "2.3.2"  # Perhaps this should be in a :production group?
 
 group :development do
@@ -13,7 +13,7 @@ end
 # bundle install --without test
 group :test do
   gem 'factory_girl'
-  gem 'sqlite3-ruby' 
+  gem 'sqlite3-ruby'
 end
 
 group :production do
