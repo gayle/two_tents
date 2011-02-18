@@ -7,14 +7,15 @@ class Participant < ActiveRecord::Base
   belongs_to :user
 
   before_destroy :validate_no_dependents
+  after_create :add_current_year
 
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
   named_scope :main_contact, :conditions => { :main_contact => true }
 
-  named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}"
-  named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}"
+  named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}", :order => "lastname ASC, firstname ASC"
+  named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}", :order => "lastname ASC, firstname ASC"
 
   def participant_address
     address.present? ? address : family.family_address
@@ -102,6 +103,12 @@ class Participant < ActiveRecord::Base
 
   def staff?
     user.present?
+  end
+
+  # This means registered for the current year
+  def registered?
+    most_recent_year_registered = years.sort_by{|a| -a.year}.first
+    return (most_recent_year_registered == Year.current)
   end
 
   def duplicate?
@@ -211,5 +218,11 @@ class Participant < ActiveRecord::Base
     participants_in_group.sort_by do |p|
       [p.birthdate.day, p.lastname, p.firstname]
     end
+  end
+
+  def add_current_year
+    years ||= []
+    current = Year.current
+    years << current if not years.include?(current)
   end
 end

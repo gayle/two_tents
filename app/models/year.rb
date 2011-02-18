@@ -4,7 +4,12 @@ class Year < ActiveRecord::Base
   has_and_belongs_to_many :participants
 
   validates_presence_of :year
-  
+
+  # Always sort with most recent year first by default
+  def <=> (other_year)
+    other_year.year <=> self.year 
+  end
+
   def self.current
     find(:first, :order => "year DESC") || Year.create!(:year=>"0")
   end

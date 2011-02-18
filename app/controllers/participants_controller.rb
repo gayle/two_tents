@@ -17,7 +17,7 @@ class ParticipantsController < ApplicationController
   end
 
   def participants_past
-    @past_participants = Participant.all :order => "lastname ASC, firstname ASC"
+    @past_participants = Participant.past :order => "lastname ASC, firstname ASC"
     @current_participants = Participant.current
 
   end
