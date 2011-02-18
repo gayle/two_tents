@@ -8,7 +8,11 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.build_participant
+    if params[:participant]
+      @user.participant = Participant.find(params[:participant])
+    else
+      @user.build_participant
+    end
   end
 
   def create

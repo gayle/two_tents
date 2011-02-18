@@ -100,6 +100,10 @@ class Participant < ActiveRecord::Base
       return false if self.user
   end
 
+  def staff?
+    user.present?
+  end
+
   def duplicate?
     return true if Participant.find(:first, :conditions => ["lastname = ? AND firstname = ?",
                                                             lastname, firstname])
