@@ -10,6 +10,8 @@
       <tr>
         <th></th>
         <th>Past Participants</th>
+        <th>Edit or View</th>
+        <th>Delete</th>
         <th></th>
       </tr>
     </thead>
@@ -18,6 +20,14 @@
         <tr class="<%= ContentHelper.rowstyle(row) %>">
           <td><%=h( row+1 ) %></td>
           <td><%=h p.list_name %></td>
+          <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+          <td><% if p.can_delete?
+                    confirm_msg = p.only_member_of_associated_family? ?
+                      "This is the last person in '#{p.family.familyname}' family.
+                       Are you sure you want to delete the participant & the family?" : 'Are you sure?' %>
+                 <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+               <% end %>
+          </td>
           <td><%=link_to("register >> ") %></td>
         </tr>
       <% end %>
