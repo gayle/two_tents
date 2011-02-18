@@ -2,7 +2,7 @@ class Participant < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
 
-#  has_and_belongs_to_many :years
+  has_and_belongs_to_many :years
   belongs_to :family
   belongs_to :user
 
