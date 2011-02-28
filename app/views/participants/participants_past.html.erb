@@ -10,8 +10,8 @@
       <tr>
         <th></th>
         <th>Past Participants</th>
-        <th>Edit or View</th>
-        <th>Delete</th>
+        <th></th>
+        <th></th>
         <th></th>
       </tr>
     </thead>
@@ -28,7 +28,7 @@
                  <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
                <% end %>
           </td>
-          <td><%=link_to("register >> ") %></td>
+          <td><%=link_to("register", "#", :class => 'register', :onclick => "") %></td>
         </tr>
       <% end %>
     </tbody>
@@ -46,7 +46,7 @@
     <tbody>
       <% @current_participants.each_with_index do |p, row| %>
         <tr class="<%= ContentHelper.rowstyle(row) %>">
-          <td><%=link_to("<< un-register") %></td>
+          <td><%=link_to("un-register", "#", :class => 'unregister', :onclick => "") %></td>
           <td><%=h( row+1 ) %></td>
           <td><%=h p.list_name %></td>
         </tr>
@@ -54,3 +54,19 @@
     </tbody>
   </table>
 <% end %>
+
+
+$(document).ready(function() {
+	var $dialog = $('<div></div>')
+		.html('This dialog will show every time!')
+		.dialog({
+			autoOpen: false,
+			title: 'Basic Dialog'
+		});
+
+	$('#opener').click(function() {
+		$dialog.dialog('open');
+		// prevent the default action, e.g., following a link
+		return false;
+	});
+});
