@@ -7,9 +7,8 @@ module ApplicationHelper
     content_tag(:h2, title)
   end
   def registration_stats
-    num_families = Family.find(:all).size
-    participants = Participant.find_active
-    num_participants = participants.size
+    num_families = Family.registered.size
+    num_participants = Participant.registered.size
     "#{num_families} families, #{num_participants} participants"
   end
 

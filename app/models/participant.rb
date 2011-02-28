@@ -15,6 +15,9 @@ class Participant < ActiveRecord::Base
   named_scope :main_contact, :conditions => { :main_contact => true }
 
   named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}", :order => "lastname ASC, firstname ASC"
+#  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
+  named_scope :not_admin, :conditions => ["lastname <> ? and lastname <> ?",'administrator','admin']
+
   named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}", :order => "lastname ASC, firstname ASC"
 
   def participant_address
@@ -105,12 +108,6 @@ class Participant < ActiveRecord::Base
     user.present?
   end
 
-  # This means registered for the current year
-  def registered?
-    most_recent_year_registered = years.sort_by{|a| -a.year}.first
-    return (most_recent_year_registered == Year.current)
-  end
-
   def duplicate?
     return true if Participant.find(:first, :conditions => ["lastname = ? AND firstname = ?",
                                                             lastname, firstname])
@@ -134,29 +131,21 @@ class Participant < ActiveRecord::Base
     age >= 18  
   end
 
-  # TODO This is a total hack for 2010, the first year. Eventually we need to
-  # create a cross-ref association between participant and year.  For now
-  # just get this done by hardcoding false for staff members who are in
-  # the system, but are not attending in 2010
   def registered_for_year?(year)
-    return false if
-            firstname=="Jim" and lastname=="Lawrence"
-    return true
+    yrs = years.map {|y| y.year}
+    return yrs.include?(year)
   end
 
   def registered_for_current_year?
     registered_for_year?(Year.current.year)
   end
 
+  def self.registered
+    self.current.not_admin
+  end
+  
   def self.find_non_staff_participants
     Participant.all.reject { |p| p.user or not p.registered_for_current_year? }.sort
-  end
-
-  # This includes all participants but excludes the "admin" participant who is not a "real" user.
-  # Eventually this will also include participants who are active for current year
-  def self.find_active
-    Participant.all.reject { |p| (p.user and p.user.administrator?) or
-            not p.registered_for_current_year? }.sort
   end
 
 #  def self.find_main_contacts
@@ -164,7 +153,7 @@ class Participant < ActiveRecord::Base
 #  end
 #
   def self.group_by_age
-    participants = Participant.find_active
+    participants = Participant.registered
     young_children = participants.select { |p| p.age <= 5 }
     children = participants.select       { |p| p.age >= 6  and p.age <= 11 }
     youth = participants.select          { |p| p.age >= 12 and p.age <= 17 }
@@ -178,7 +167,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.group_by_birth_month
-    participants = Participant.find_active
+    participants = Participant.registered
     # Use 2-digit month so it sorts chronologically by month
     { "01 January"   => sort_by_birthday(participants.select { |p| p.birthdate.month == 1 }),
       "02 February"  => sort_by_birthday(participants.select { |p| p.birthdate.month == 2 }),

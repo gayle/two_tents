@@ -6,7 +6,7 @@ class FamiliesController < ApplicationController
   # GET /families
   # GET /families.xml
   def index
-    @families = Family.current.paginate :all, :page => params[:page], :order => "familyname ASC"
+    @families = Family.registered.paginate :all, :page => params[:page], :order => "familyname ASC"
 
     respond_to do |format|
       format.html # index.html.erb
