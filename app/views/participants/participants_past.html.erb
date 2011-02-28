@@ -1,11 +1,18 @@
 <h1>All participants</h1>
 
 <% if @past_participants.blank? and @current_participants.blank? %>
-    <p>No participants yet. Click the link below to create one.</p>
-    <%= link_to 'New Participant', new_participant_path %>
+  <p>No participants yet. Click the link below to create one.</p>
+  <%= link_to 'New Participant', new_participant_path %>
 <% else %>
-
   <table id="past_info" class="past_info">
+  <% if @past_participants.empty? %>
+    <thead>
+      <tr><th>No more past participants to choose from.</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><%= link_to 'New Participant', new_participant_path %></td></tr>
+    </tbody>
+  <% else %> 
     <thead>
       <tr>
         <th></th>
@@ -22,20 +29,25 @@
           <td><%=h p.list_name %></td>
           <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
           <td><% if p.can_delete?
-                    confirm_msg = p.only_member_of_associated_family? ?
-                      "This is the last person in '#{p.family.familyname}' family.
-                       Are you sure you want to delete the participant & the family?" : 'Are you sure?' %>
-                 <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
-               <% end %>
+                confirm_msg = p.only_member_of_associated_family? ?
+                  "This is the last person in '#{p.family.familyname}' family.
+                   Are you sure you want to delete the participant & the family?" : 'Are you sure?' %>
+             <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+           <% end %>
           </td>
-          <td><%=link_to("register", "#", :class => 'register', :onclick => "") %></td>
+          <td><%=link_to("register", "#", :id => "register#{p.id}", :class => 'register', :participant => p.id) -%></td>
         </tr>
       <% end %>
     </tbody>
+  <% end %>
   </table>
 
-
   <table id="current_info" class="current_info">
+  <% if @current_participants.empty? %>
+    <thead>
+      <tr><th>No participants are registered for <%= Year.current.year %> yet.</th></tr>
+    </thead>
+  <% else %>
     <thead>
       <tr>
         <th></th>
@@ -46,27 +58,35 @@
     <tbody>
       <% @current_participants.each_with_index do |p, row| %>
         <tr class="<%= ContentHelper.rowstyle(row) %>">
-          <td><%=link_to("un-register", "#", :class => 'unregister', :onclick => "") %></td>
+          <td><%=link_to("un-register", "#", :id => "unregister#{p.id}", :class => 'unregister', :participant => p.id) %></td>
           <td><%=h( row+1 ) %></td>
           <td><%=h p.list_name %></td>
         </tr>
       <% end %>
     </tbody>
+  <% end %>
   </table>
+
 <% end %>
 
+<% javascript_tag do -%>
+    var i=0;
+    $(document).ready(function() {
+        var $dialog = $('<div id="review_participant"></div>')
+            .dialog({
+                autoOpen: false,
+                modal: true,
+                title: 'Review Participant'
+            });
 
-$(document).ready(function() {
-	var $dialog = $('<div></div>')
-		.html('This dialog will show every time!')
-		.dialog({
-			autoOpen: false,
-			title: 'Basic Dialog'
-		});
-
-	$('#opener').click(function() {
-		$dialog.dialog('open');
-		// prevent the default action, e.g., following a link
-		return false;
-	});
-});
+        $('.register').click(function() {
+            url = '<%= url_for :action => "ajax_review_past_participant" %>?id='+$(this).attr('participant');
+            $.get(url, function(data) {
+              $("#review_participant").html(data);
+            });
+            $dialog.dialog('open');
+            // prevent the default action, e.g., following a link
+            return false;
+        });
+    });    
+<% end -%>

@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :participants
     admin.with_options :controller => 'participants' do |family|
       family.participants_past '/participants_past', :action => 'participants_past'
+      family.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
     end
 
     admin.resources :families

@@ -17,11 +17,17 @@ class ParticipantsController < ApplicationController
   end
 
   def participants_past
-    @past_participants = Participant.past :order => "lastname ASC, firstname ASC"
-    @current_participants = Participant.current
-
+    @past_participants = Participant.past.not_admin :order => "lastname ASC, firstname ASC"
+    @current_participants = Participant.current.not_admin :order => "lastname ASC, firstname ASC"
   end
-  
+
+  def ajax_review_past_participant
+    # TODO handle exceptions here
+    @participant = Participant.find(params[:id])
+
+    render :text => "participant=#{@participant.lastname}"
+  end
+
   # GET /participants/1
   # GET /participants/1.xml
   def show
