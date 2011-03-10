@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class ParticipantTest < ActiveSupport::TestCase
   def setup
@@ -90,5 +90,32 @@ class ParticipantTest < ActiveSupport::TestCase
     assert_equal [10,10,10], p.age_parts
     assert_equal 10, p.age
     assert_equal "10", p.display_age
+  end
+
+  def test_new_participant_automatically_registered_for_current_year
+    yr = Year.current
+    p = Participant.new(:firstname => "Marge", :lastname => "Simpson", :birthdate => Date.parse("04-06-1962"))
+    assert p.years.include?(yr), "#{p.years.inspect} did not include '#{yr.inspect}'"
+  end
+
+  def test_existing_participant_not_automatically_registered_for_current_year_on_find_or_save
+    this_yr = Year.current
+    p = Participant.create!(:firstname => "Marge", :lastname => "Bouvier", :birthdate => Date.parse("04-06-1962"))
+
+    next_yr = Year.create!(:year => this_yr.year+1)
+    assert_equal 2, Year.all.size
+
+    marge = Participant.find_by_id(p.id)
+    assert_equal 1, marge.years.size
+    assert marge.years.include?(this_yr)
+    assert !marge.years.include?(next_yr)
+
+    marge.lastname = "Simpson"
+    marge.save!
+    marge.reload
+    assert_equal 1, marge.years.size
+    assert marge.years.include?(this_yr)
+    assert !marge.years.include?(next_yr)
+    
   end
 end

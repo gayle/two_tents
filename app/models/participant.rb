@@ -7,8 +7,10 @@ class Participant < ActiveRecord::Base
   belongs_to :user
 
   before_destroy :validate_no_dependents
-  after_create :add_current_year
-
+  def after_initialize
+    add_current_year if self.new_record?
+  end
+  
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
@@ -210,8 +212,8 @@ class Participant < ActiveRecord::Base
   end
 
   def add_current_year
-    years ||= []
+    self.years ||= []
     current = Year.current
-    years << current if not years.include?(current)
+    self.years << current if not years.include?(current)
   end
 end
