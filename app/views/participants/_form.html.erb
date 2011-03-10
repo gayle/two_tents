@@ -1,3 +1,5 @@
+<% form_for(@participant) do |participant_form| %>
+
 <!-- Oh yes, I do hate all these tables. -->
 <table>
   <tr>
@@ -79,3 +81,9 @@
     <a class="less_info_link" style="display:none;" href="#" onclick=jQuery(".more_info").hide();jQuery(".more_info_link").show();jQuery(".less_info_link").hide();>Less Info</a>
 -->
 
+<% button_text = submit_button_text.present? ? submit_button_text : "Save" %>
+<p>
+  <%= participant_form.submit button_text %>
+</p>
+
+<% end %>

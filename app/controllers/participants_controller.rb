@@ -24,8 +24,7 @@ class ParticipantsController < ApplicationController
   def ajax_review_past_participant
     # TODO handle exceptions here
     @participant = Participant.find(params[:id])
-
-    render :text => "participant=#{@participant.lastname}"
+    render :partial => "form", :locals => {:submit_button_text => "Register person for #{Year.current.year}"}
   end
 
   # GET /participants/1

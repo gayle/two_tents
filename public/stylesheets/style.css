@@ -273,6 +273,10 @@ div.data-entry-form {
   display:none;
 }
 
+.ui-dialog #review_participant {
+    font: 0.75em/1.2 Arial,sans-serif;
+}
+
 table {
     border:2px solid  #ecf2f6;
     padding:3px;
