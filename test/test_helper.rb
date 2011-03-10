@@ -8,7 +8,8 @@ class ActiveSupport::TestCase
   require 'factory_girl'
 
   #TODO: Create a wildcard require to require factories/*
-  Dir[File.join(File.dirname(__FILE__), 'factories', '**', '*.rb')].each {|file| require file}
+  # 3/10/11 had to remove this or else got factory girl error saying things were already defined. So I guess we don't need this?
+  #Dir[File.join(File.dirname(__FILE__), 'factories', '**', '*.rb')].each {|file| require file}
 
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
