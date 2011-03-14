@@ -185,6 +185,13 @@ class Participant < ActiveRecord::Base
       "12 December"  => sort_by_birthday(participants.select { |p| p.birthdate.month == 12 })
     }
   end
+
+  def add_current_year
+    self.years ||= []
+    current = Year.current
+    self.years << current if not years.include?(current)
+  end
+
   private
 
   def self.sort_by_age(participants_in_group)
@@ -211,9 +218,4 @@ class Participant < ActiveRecord::Base
     end
   end
 
-  def add_current_year
-    self.years ||= []
-    current = Year.current
-    self.years << current if not years.include?(current)
-  end
 end
