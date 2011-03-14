@@ -14,8 +14,17 @@ class Family < ActiveRecord::Base
   validates_presence_of :familyname, :message =>"Family Name Can't be blank"
   validates_presence_of :participants, :message =>"Participants were not added"
 
-  named_scope :registered, :joins => :years, :conditions => "years.id = #{Year.current.id}"
-   
+# TODO make this a named scope instead
+#  named_scope :registered, :joins => :years, :joins => :participants, :conditions => "years.id = #{Year.current.id}"
+  def self.registered
+    Family.all.select{|f|
+      current_participants = f.participants.select{|p|
+        p.years.include? Year.current
+      }
+      current_participants.present?
+    }
+  end
+
   def familyname
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
