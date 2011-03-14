@@ -20,7 +20,15 @@ class Participant < ActiveRecord::Base
 #  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
   named_scope :not_admin, :conditions => ["lastname <> ? and lastname <> ?",'administrator','admin']
 
-  named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}", :order => "lastname ASC, firstname ASC"
+  # List of participants registered in the past AND are NOT currently registered.
+  # Participants registered for current year SHOULD NO LONGER show up in this list.
+  def self.past
+# TODO Fix the named scope to make it behave like the static method.  This one does not remove ones registered for current year from the past list.
+#  named_scope :past, :joins => :years, :conditions => "years.id <> #{Year.current.id}", :order => "lastname ASC, firstname ASC"
+    Participant.all.select {|p|
+      !p.years.include? Year.current and p.lastname!="administrator"and p.lastname!="admin"
+    }
+  end
 
   def participant_address
     address.present? ? address : family.family_address

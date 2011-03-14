@@ -2,7 +2,8 @@ class ParticipantsPastController < ApplicationController
   before_filter :login_required
 
   def index
-    @past_participants = Participant.past.not_admin :order => "lastname ASC, firstname ASC"
+    #@past_participants = Participant.past.not_admin :order => "lastname ASC, firstname ASC"
+    @past_participants = Participant.past.sort 
     @current_participants = Participant.current.not_admin :order => "lastname ASC, firstname ASC"
   end
 
