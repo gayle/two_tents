@@ -1,7 +1,8 @@
 class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
   def self.up
     # year_results = execute("SELECT * FROM years ORDER BY year ASC")
-    year_2010_id = execute("SELECT * FROM years WHERE year = '2010'")[0].id # year_results[0]["id"]
+    year_results = execute("SELECT * FROM years WHERE year = '2010'")
+    year_2010_id = year_results[0]["id"]
 
     create_table :families_years, :id => false do |t|
       t.integer :family_id
