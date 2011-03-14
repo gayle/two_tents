@@ -16,17 +16,6 @@ class ParticipantsController < ApplicationController
     end
   end
 
-  def participants_past
-    @past_participants = Participant.past.not_admin :order => "lastname ASC, firstname ASC"
-    @current_participants = Participant.current.not_admin :order => "lastname ASC, firstname ASC"
-  end
-
-  def ajax_review_past_participant
-    # TODO handle exceptions here
-    @participant = Participant.find(params[:id])
-    render :partial => "form", :locals => {:submit_button_text => "Register person for #{Year.current.year}"}
-  end
-
   # GET /participants/1
   # GET /participants/1.xml
   def show

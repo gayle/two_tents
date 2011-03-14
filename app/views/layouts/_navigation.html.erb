@@ -6,7 +6,7 @@
         <li><%= link_to 'Registered Families', families_url -%></li>
         <li><%= link_to 'Registered Participants', participants_url -%></li>
         <li><%= link_to 'Past Families', families_past_url -%></li>
-        <li><%= link_to 'Past Participants', participants_past_url -%></li>
+        <li><%= link_to 'Past Participants', url_for(:controller=>:participants_past, :action=>:index) -%></li>
         <li><%= link_to 'Staff', users_url -%></li>
         <li><%= link_to 'Years', edit_years_url -%></li>
       </ul>

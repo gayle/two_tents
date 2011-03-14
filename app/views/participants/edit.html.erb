@@ -11,7 +11,12 @@
             url_for(:controller => :users, :action => :new, :participant => @participant) %> |
 <% end %>
 
-<%= render :partial => "form", :locals => {:submit_button_text => "Update"} %>
+<% form_for(@participant) do |f| %>
+  <%= render :partial => f, :locals => {:participant_form => f} %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
 
 <%= link_to 'Show', @participant %> |
 <%= link_to 'Back', participants_path %>
