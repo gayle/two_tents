@@ -5,10 +5,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :participants_past
     admin.with_options :controller => 'participants_past' do |family|
       family.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
-      # TODO not sure why I need this.  Seems like if I just go to action :update from within participants_past/edit.html.erb
-      # [e.g. <% form_for(:participant, :url=>{:controller => :participants_past, :action=>:update, :participant_id => @participant.id}) do |f| %> ]
-      # that it should work in the natural rails way. Instead, get error saying there's no route matching action :update
-      family.update '/update_participants_past', :action => 'update'
     end
     admin.resources :families
     admin.with_options :controller => 'families' do |family|

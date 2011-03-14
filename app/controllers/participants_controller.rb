@@ -62,35 +62,37 @@ class ParticipantsController < ApplicationController
   def update
     @participant = Participant.find(params[:id])
     respond_to do |format|
-      if @participant.update_attributes(params[:participant])
-        AuditTrail.audit("Participant #{@participant.fullname} updated by #{current_user.login}", edit_participant_url(@participant))
-        flash[:notice] = 'Participants was successfully updated.'
-        format.html { redirect_to(participants_url) }
-        format.xml  { head :ok }
-# I don't think we're using this anymore?
-#        format.js   do
-#          flash.discard
-#          render(:update) do |page|
-#            element = "#{@participant.class}_#{@participant.id}_#{params[:participant].keys[0]}"
-#            page.replace_html(element,
-#                              :partial => 'flipflop',
-#                              :locals => {:p => @participant,
-#                                :type => params[:participant].keys[0] } )
-#          end
-#        end
-      else
-        flash[:error] = format_flash_error("Error updating #{@participant.fullname}",
-                                           "update(): #{@participant.errors.to_a.join(',')}")
+      begin
+        if @participant.update_attributes(params[:participant])
+          AuditTrail.audit("Participant #{@participant.fullname} updated by #{current_user.login}", edit_participant_url(@participant))
+          flash[:notice] = 'Participants was successfully updated.'
+          format.html { redirect_to(participants_url) }
+          format.xml  { head :ok }
+  # I don't think we're using this anymore?
+  #        format.js   do
+  #          flash.discard
+  #          render(:update) do |page|
+  #            element = "#{@participant.class}_#{@participant.id}_#{params[:participant].keys[0]}"
+  #            page.replace_html(element,
+  #                              :partial => 'flipflop',
+  #                              :locals => {:p => @participant,
+  #                                :type => params[:participant].keys[0] } )
+  #          end
+  #        end
+        else
+          flash[:error] = format_flash_error("Error updating #{@participant.fullname}",
+                                             "update(): #{@participant.errors.to_a.join(',')}")
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
+        end
+      rescue Exception => e
+        flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "update(): #{e.to_s}")
+        logger.error "ERROR updating participant \n#{@participant.inspect}"
+        logger.error e.backtrace.join("\n\t")
         format.html { render :action => "edit" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
       end
     end
-  rescue Exception => e
-    flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "update(): #{e.to_s}")
-    logger.error "ERROR updating participant \n#{@participant.inspect}"
-    logger.error e.backtrace.join("\n\t")
-    format.html { render :action => "edit" }
-    format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
   end
 
   # DELETE /participants/1

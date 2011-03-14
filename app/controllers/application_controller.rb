@@ -2,6 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include ApplicationHelper # Shouldn't have to do this. But at one point started getting errors in sublcasses of application controller that they didn't know about methods that re defined in application helper, and this fixed it.'
   # AuthenticatedSystem must be included for RoleRequirement, and is provided by installing acts_as_authenticates and running 'script/generate authenticated account user'.
   include AuthenticatedSystem
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
