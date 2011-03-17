@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :participants_past
     admin.with_options :controller => 'participants_past' do |family|
       family.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
+      family.unregister_past_participant '/unregister_past_participant/:id', :action => 'unregister_past_participant'
     end
     admin.resources :families
     admin.with_options :controller => 'families' do |family|

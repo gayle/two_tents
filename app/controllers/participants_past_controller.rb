@@ -14,10 +14,6 @@ class ParticipantsPastController < ApplicationController
   end
 
   def update
-    puts
-    puts
-    puts "DBG participants_past_update params=#{params.inspect}"
-    puts
     @participant = Participant.find(params[:id])
     respond_to do |format|
       begin
@@ -41,5 +37,26 @@ class ParticipantsPastController < ApplicationController
     end
   end
 
-
+  def unregister_past_participant
+    @participant = Participant.find(params[:id])
+    respond_to do |format|
+      begin
+        @participant.remove_current_year
+        if @participant.save
+          AuditTrail.audit("Participant #{@participant.fullname} un-registered by #{current_user.login}", edit_participant_url(@participant))
+          flash[:notice] = 'Participant was unregistered for current year'
+        else
+          flash[:error] = format_flash_error("Error un-registering #{@participant.fullname}",
+                                             "unregister_past_participant(): #{@participant.errors.to_a.join(',')}")
+          logger.error @participant.errors.to_a
+        end
+      rescue Exception => e
+        flash[:error] = format_flash_error("Error un-registerig #{@participant.fullname}",
+                                           "unregister_past_participant(): #{e.to_s} : #{e.backtrace[1]}")
+        logger.error "ERROR un-registering participant \n#{@participant.inspect}"
+        logger.error e.backtrace.join("\n\t")
+      end
+      format.html { redirect_to :action => "index" }
+    end
+  end
 end

@@ -200,6 +200,10 @@ class Participant < ActiveRecord::Base
     self.years << current if not years.include?(current)
   end
 
+  def remove_current_year
+    self.years.delete(Year.current)
+  end
+
   private
 
   def self.sort_by_age(participants_in_group)
