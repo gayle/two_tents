@@ -1,8 +1,8 @@
-<h1>All participants</h1>
-
+<h1>Participants</h1>
+<%= link_to 'Add new participant for current year', new_participant_path %>
+<p />
 <% if @past_participants.blank? and @current_participants.blank? %>
-  <p>No participants yet. Click the link below to create one.</p>
-  <%= link_to 'New Participant', new_participant_path %>
+  <p>No participants yet.</p>
 <% else %>
   <table id="past_info" class="past_info">
   <% if @past_participants.empty? %>
@@ -53,14 +53,24 @@
         <th></th>
         <th></th>
         <th>Current Participants</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <% @current_participants.each_with_index do |p, row| %>
         <tr class="<%= ContentHelper.rowstyle(row) %>">
-          <td><%=link_to("un-register", "#", :id => "unregister#{p.id}", :class => 'unregister', :participant => p.id) %></td>
+          <td><%=link_to("un-register", url_for(:action => :unregister_past_participant, :id=>p.id), :id => "unregister#{p.id}", :class => 'unregister', :participant => p.id) %></td>
           <td><%=h( row+1 ) %></td>
           <td><%=h p.list_name %></td>
+          <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+          <td><% if p.can_delete?
+                confirm_msg = p.only_member_of_associated_family? ?
+                  "This is the last person in '#{p.family.familyname}' family.
+                   Are you sure you want to delete the participant & the family?" : 'Are you sure?' %>
+             <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+           <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -90,5 +100,8 @@
             // prevent the default action, e.g., following a link
             return false;
         });
-    });    
+    });
 <% end -%>
+
+<p />
+<%= link_to 'Add new participant for current year', new_participant_path %>
