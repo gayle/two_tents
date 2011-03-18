@@ -1,0 +1,5 @@
+<% @families.each do |f| %>
+  <br />
+  <%= radio_button("family", "id", "#{f.id}") %>
+  <%= "#{f.familyname}" %>
+<% end %>

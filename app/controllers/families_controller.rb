@@ -55,9 +55,8 @@ class FamiliesController < ApplicationController
   # GET /families/1/edit
   def edit
     @family = Family.find(params[:id])
-    (@family.participants.size - 3).times do
-      @family.participants.build
-    end
+    # give an extra blank
+    @family.participants.build
   end
 
   def edit_add_to_family

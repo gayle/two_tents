@@ -30,9 +30,17 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    @participant = Participant.new 
+    @participant = Participant.new
+    @families = (Family.all || []).sort_by{ |f|  f.familyname  }
   end
 
+  def new_choose_family
+    puts "DBG params=#{params.inspect}"
+    @family = Family.find(params["family"]["id"])
+    @family.participants << Participant.new
+    redirect_to edit_family_path(@family)
+  end
+  
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
