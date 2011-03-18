@@ -60,7 +60,7 @@ class FamiliesController < ApplicationController
     end
   end
 
-  def edit_choose_family
+  def edit_add_to_family
     @participant = Participant.find(params[:participant])
     @families = Family.find(:all).sort_by { |f|
       f.familyname

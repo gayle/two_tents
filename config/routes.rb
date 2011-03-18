@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :families
     admin.with_options :controller => 'families' do |family|
       family.families_past '/families_past', :action => 'families_past'
-      family.edit_choose_family '/edit_choose_family', :action => 'edit_choose_family'
+      family.edit_choose_family '/edit_add_to_family', :action => 'edit_add_to_family'
       family.update_add_participant '/update_add_participant', :action => 'update_add_participant'
     end
 

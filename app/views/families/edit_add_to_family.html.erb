@@ -1,0 +1,6 @@
+<% form_tag(url_for(:action => :update_add_participant)) do %>
+    <%= hidden_field_tag "participant_id", @participant.id %>
+    <%= render :partial => 'family_choices', :locals => {:families => @families} %>
+    <br />
+    <%= submit_tag "OK" %>
+<% end %>
