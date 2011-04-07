@@ -5,7 +5,7 @@
     <% @participants_by_birth_month[month].each_with_index do |participant, i| %>
       <tr class="<%= ContentHelper.rowstyle(i) %><%= participant.birthday_during_camp? ? ' birthday-in-camp' : '' %>">
         <td>
-          <%= "#{participant.birthdate.day} #{participant.fullname}" %>
+          <%= "#{participant.birthdate.day} #{participant.fullname}" %> <%= "(has a birthday during camp!)" if participant.birthday_during_camp? %>
         </td>
       </tr>
     <% end %>

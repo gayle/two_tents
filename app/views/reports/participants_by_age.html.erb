@@ -7,6 +7,7 @@
         <td>
           <%= "#{i+1}. #{participant.fullname}" %>
           <% unless participant.hide_age? %><%= "(#{participant.display_age})" %><% end %>
+          <%= "(has a birthday during camp!)" if participant.birthday_during_camp? %>
         </td>
       </tr>
     <% end %>

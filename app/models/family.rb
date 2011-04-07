@@ -68,14 +68,14 @@ class Family < ActiveRecord::Base
   end
 
   def self.all_states
-    states = Family.all.collect { |f| f.states }.flatten.compact
+    states = Family.registered.collect { |f| f.states }.flatten.compact
   end
 
   # Usually a single family will be from only one state.  Occasionally that is
   # not the case.  We need to count them all.
   # A family with 1 member from Ohio, 2 members from Illinois, will add +1 to the count for
   # Illinois, and +1 to the count for Ohio. 
-  def self.count_by_state
+  def self.count_by_state()
     counts = {}
     all = all_states()
     all.uniq.each do |state|
