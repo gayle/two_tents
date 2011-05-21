@@ -4,11 +4,18 @@ class Participant < ActiveRecord::Base
 
   attr_accessor :remove_from_family
   before_validation :check_if_removed_from_family
+  before_validation :strip_whitespace
 
   def check_if_removed_from_family
     if self.remove_from_family == "1"
       self.family_id = nil
     end
+  end
+
+  def strip_whitespace
+    [ self.firstname, self.lastname, self.address, self.city, self.zip, self.homechurch,
+      self.phone, self.mobile, self.email, self.occupation, self.employer, self.school,
+      self.grade, self.trivia].each { |s| s.strip! }
   end
 
   has_and_belongs_to_many :years
