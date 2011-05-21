@@ -390,3 +390,18 @@ ul.actions_list {
   padding:10px;
   list-style-type:square;
 }
+a.icon {
+  background-position: left center;
+  background-repeat:no-repeat;
+  padding:3px 0 3px 20px;
+  margin: 0 5px 0 0;
+}
+a.icon.minus { background-image:url('/images/cross.png'); }
+a.icon.plus { background-image:url('/images/plus.png'); }
+
+a.action, a.action:hover, a.action:visited {
+  color: #00E;
+}
+.float-right {
+  float:right;
+}

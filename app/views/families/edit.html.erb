@@ -5,8 +5,8 @@
 
   <%= render :partial => f -%>
   <p>
-    <%= f.submit 'Update', :disable_with => "Updating..." %>
+    <%= f.submit 'Update', :disable_with => "Updating...", :class=>"button" %>
+    <%= link_to 'Back', families_path, :class=>"button" %>
   </p>
 <% end %>
 
-<%= link_to 'Back', families_path %>

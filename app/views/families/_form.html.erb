@@ -13,4 +13,6 @@
 <% form.fields_for :participants do |pfields| %>
   <%= render :partial => 'participant_fields', :locals => { :pfields => pfields } %>
 <% end -%>
-<%= link_to_add_participant_fields "Add Another", form %>
+<%= link_to_add_participant_fields "Add Another Family Member", form, :class=>"float-right icon plus action" %>
+<div class="clear"></div>
+<br/>
