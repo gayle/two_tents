@@ -6,7 +6,9 @@ class FamiliesController < ApplicationController
   # GET /families
   # GET /families.xml
   def index
-    @families = Family.registered.paginate :page => params[:page], :order => "familyname ASC"
+    @families = Family.registered.sort_by do |f|
+      f.familyname + f.main_contact_name
+    end.paginate( :page => params[:page] )
 
     respond_to do |format|
       format.html # index.html.erb
