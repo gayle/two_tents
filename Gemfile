@@ -16,6 +16,7 @@ group :test do
   gem 'sqlite3-ruby'
 end
 
+# bundle install --without production
 group :production do
   gem "pg"
 end
