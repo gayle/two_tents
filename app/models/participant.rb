@@ -13,9 +13,8 @@ class Participant < ActiveRecord::Base
 
   has_and_belongs_to_many :years
   belongs_to :family
-  belongs_to :user
+  belongs_to :user, :dependent => :destroy
 
-  before_destroy :validate_no_dependents
   def after_initialize
     add_current_year if self.new_record?
   end
@@ -127,11 +126,6 @@ class Participant < ActiveRecord::Base
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
     #errors.add(:participant, "is already in the system") if duplicate?
-  end
-  
-  def validate_no_dependents
-    errors.add_to_base "Cannot delete a participant who is a staff user. If you really wish to delete this participant, delete the staff user first." and
-      return false if self.user
   end
 
   def email_required_and_unique_if_staff
