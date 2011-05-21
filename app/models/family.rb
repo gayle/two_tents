@@ -69,11 +69,12 @@ class Family < ActiveRecord::Base
 
   def cities
     participants.collect { |p|
-      "#{p.participant_city.strip}, #{p.participant_state.strip}" }.uniq
+      arr = [p.participant_city, p.participant_state].compact
+      arr.join(",")}.uniq
   end
 
   def states
-    participants.collect { |p|  p.participant_state.upcase.strip }.uniq
+    participants.collect { |p|  p.participant_state.nil? ? "" : p.participant_state.upcase.strip }.uniq
   end
 
   def self.all_states
