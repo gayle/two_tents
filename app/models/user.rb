@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :admin_role
 
-  has_one :participant
+  has_one :participant, :dependent => :nullify
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
 #  delegate :fullname, :to => :participant  # Why isn't delegate working????
   accepts_nested_attributes_for :participant

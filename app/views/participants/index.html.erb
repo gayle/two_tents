@@ -24,7 +24,7 @@
       <td><% if p.can_delete?
                 confirm_msg = p.only_member_of_associated_family? ?
                   "This is the last person in '#{p.family.familyname}' family.
-                   Are you sure you want to delete the participant & the family?" : 'Are you sure?'
+                   Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?"
            %>
             <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
           <% end %>
