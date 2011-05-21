@@ -40,19 +40,28 @@ class Participant < ActiveRecord::Base
   end
 
   def participant_address
-    address.present? ? address : family.family_address
+    address || family.try(:family_address)
   end
 
   def participant_city
-    city.present? ? city : family.family_city
+    city || family.try(:family_city)
   end
 
   def participant_state
-    state.present? ? state : family.family_state
+    state || family.try(:family_state)
   end
 
   def participant_zip
-    zip.present? ? zip : family.family_zip
+    zip || family.try(:family_zip)
+  end
+
+  def full_address
+    addr = ""
+    addr << "#{participant_address}, " unless participant_address.blank?
+    addr << "#{participant_city}, " unless participant_city.blank?
+    addr << "#{participant_state} " unless participant_state.blank?
+    addr << participant_zip unless participant_zip.blank?
+    addr.rstrip.chomp(",")
   end
 
   def fullname

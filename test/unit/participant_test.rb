@@ -102,7 +102,7 @@ class ParticipantTest < ActiveSupport::TestCase
     this_yr = Year.current
     p = Participant.create!(:firstname => "Marge", :lastname => "Bouvier", :birthdate => Date.parse("04-06-1962"))
 
-    next_yr = Year.create!(:year => this_yr.year+1)
+    next_yr = Year.create!(:year => this_yr.year+1, :starts_on => 10.days.from_now, :ends_on => 30.days.from_now)
     assert_equal 2, Year.all.size
 
     marge = Participant.find_by_id(p.id)
@@ -116,6 +116,20 @@ class ParticipantTest < ActiveSupport::TestCase
     assert_equal 1, marge.years.size
     assert marge.years.include?(this_yr)
     assert !marge.years.include?(next_yr)
-    
+  end
+
+  def test_full_address_should_be_blank_if_all_necessary_fields_blank
+  end
+  def test_full_address_should_display_correctly_when_necessary_fields_are_missing
+    p = Participant.new
+    assert p.full_address.blank?
+    p.address = "123 Fake St."
+    assert_equal p.full_address, "123 Fake St."
+    p.city = "Columbus"
+    assert_equal p.full_address, "123 Fake St., Columbus"
+    p.state = "OH"
+    assert_equal p.full_address, "123 Fake St., Columbus, OH"
+    p.zip = "43215"
+    assert_equal p.full_address, "123 Fake St., Columbus, OH 43215"
   end
 end

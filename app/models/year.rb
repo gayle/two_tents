@@ -3,9 +3,7 @@ class Year < ActiveRecord::Base
   has_and_belongs_to_many :families
   has_and_belongs_to_many :participants
 
-  validates_presence_of :year
-  validates_presence_of :starts_on
-  validates_presence_of :ends_on
+  validates_presence_of :year, :starts_on, :ends_on
 
   # Always sort with most recent year first by default
   def <=> (other_year)
