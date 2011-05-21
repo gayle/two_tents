@@ -1,3 +1,5 @@
+# this is a temp comment
+
 class Family < ActiveRecord::Base
   include FamiliesHelper
 
