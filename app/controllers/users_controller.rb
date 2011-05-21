@@ -102,6 +102,12 @@ class UsersController < ApplicationController
 
   def change_password
     @user = User.find(params[:id])
+
+    if User.authenticate(@user.login, params[:current_password]).nil?
+      flash.now[:error] = "Current password incorrect"
+      return
+    end
+
     @user.update_attributes(params[:user])
     if @user.save
       flash[:success] = "Your password has been reset!"
