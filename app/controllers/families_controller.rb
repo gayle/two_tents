@@ -116,11 +116,27 @@ class FamiliesController < ApplicationController
 
   def update_add_participant
     @participant = Participant.find(params[:participant_id])
+
+    removing_main_contact = false
+    old_family = nil
+    if @participant.main_contact and !@participant.family.nil?
+      removing_main_contact = true
+      old_family = @participant.family
+    end
+
     @participant.main_contact = false
     @participant.save
+
     @family = Family.find(params[:family][:id])
     @family.participants ||= []
     @family.participants << @participant
+
+    if removing_main_contact
+      new_main_contact = old_family.participants.first
+      new_main_contact.main_contact = true
+      new_main_contact.save
+    end
+
     redirect_to participants_url
   rescue Exception => e
     render_showing_errors(:action => :edit_choose_family, :exception => e)
