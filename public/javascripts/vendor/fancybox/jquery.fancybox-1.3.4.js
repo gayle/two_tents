@@ -298,6 +298,11 @@
 			tmp.wrapInner('<div style="width:' + w + ';height:' + h + ';overflow: ' + (selectedOpts.scrolling == 'auto' ? 'auto' : (selectedOpts.scrolling == 'yes' ? 'scroll' : 'hidden')) + ';position:relative;"></div>');
 
 			selectedOpts.width = tmp.width();
+            //fix ie8 login box not displaying
+            if ( selectedOpts.width == 0) {
+
+				selectedOpts.width = 320;
+			}
 			selectedOpts.height = tmp.height();
 
 			_show();
