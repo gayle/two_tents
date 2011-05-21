@@ -42,8 +42,8 @@ module ApplicationHelper
     message = general_message
     if technical_message or validation_errors
       message << "<br />[TECHNICAL DETAILS:"
-      message << "#{technical_message}" if technical_message.present?
-      message << "<br />#{validation_errors}" if validation_errors.present?
+      message << "<br /> Tech message: #{technical_message.gsub(/\n/, "\n<br/>")}" if technical_message.present?
+      message << "<br /> Validation errors: <br />#{validation_errors.gsub(/\n/, "\n<br />")}" if validation_errors.present?
       message << "]"
     end
     message

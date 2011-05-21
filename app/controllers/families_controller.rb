@@ -176,6 +176,12 @@ class FamiliesController < ApplicationController
   end
 
   def error_list_for(family)
-    family.errors ? family.errors.to_a.join(', ') : ""
+	  #Errors array is a nested array that looks like this:
+		# Element with issues
+		# 	Issues for that element.
+		#This function turns the error into:
+		#	Element #1 with issues errors
+		#	Elenent #2 with issues errors
+		family.errors ? family.errors.collect{|element| element.join(" ") }.join("\n") : ""
   end
 end
