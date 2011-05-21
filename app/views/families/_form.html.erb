@@ -3,8 +3,9 @@
   <%= form.text_area :note, :cols => 105, :rows => 6 %>
 </p>
 <p>
-  <%= form.check_box :opt_out_of_photo_cd %>
-  <%= form.label :opt_out_of_photo_cd, "Check this box if family opted out of receiving the photo cd" %>
+  <%= form.label :number_of_photo_cds, "How many photo CD's would you like to order?" %>
+  <%= form.select :number_of_photo_cds, (0..30) %>
+  <span class="field_helper">(If family opts out of photo CD, set to 0)</span>
 </p>
 
 <h2>Family Members</h2>

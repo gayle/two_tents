@@ -311,6 +311,11 @@ table.field, tr.field, td.field {
     background-color: #EEEEEE;
 }
 
+span.field_helper {
+  font-style:italic;
+  color:#666;
+}
+
 table.past_info, table.current_info {
   display: inline;
 }
