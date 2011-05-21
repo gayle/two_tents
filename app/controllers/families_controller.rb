@@ -116,6 +116,8 @@ class FamiliesController < ApplicationController
 
   def update_add_participant
     @participant = Participant.find(params[:participant_id])
+    @participant.main_contact = false
+    @participant.save
     @family = Family.find(params[:family][:id])
     @family.participants ||= []
     @family.participants << @participant
