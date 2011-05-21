@@ -13,7 +13,7 @@ class Family < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :years
-  has_many :participants, :order => 'main_contact DESC, birthdate ASC'
+  has_many :participants, :order => 'main_contact DESC, birthdate ASC, lastname ASC, firstname ASC'
 
   accepts_nested_attributes_for :participants, :allow_destroy => true, :reject_if => proc { 
     |attributes| (attributes['firstname'].blank? || attributes['lastname'].blank?) && (attributes['main_contact'] != "1")
