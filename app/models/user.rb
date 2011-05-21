@@ -34,11 +34,6 @@ class User < ActiveRecord::Base
   validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :name,     :maximum => 100
 
-  validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
   validates_presence_of     :security_question
   validates_presence_of     :security_answer
 
@@ -46,10 +41,10 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible(:login, :email, :name, :password,
+  attr_accessible(:login, :name, :password,
                   :password_confirmation, :security_question,
-                  :security_answer, :cell_phone, :participant_attributes,
-                  :home_phone, :position)
+                  :security_answer, :participant_attributes,
+                  :position)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -67,8 +62,14 @@ class User < ActiveRecord::Base
     write_attribute :login, (value ? value.downcase : nil)
   end
 
+  def email
+    participant.try(:email)
+  end
+
   def email=(value)
-    write_attribute :email, (value ? value.downcase : nil)
+    if participant
+      participant.email = value ? value.downcase : nil
+    end
   end
 
   def administrator?

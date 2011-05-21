@@ -132,4 +132,25 @@ class ParticipantTest < ActiveSupport::TestCase
     p.zip = "43215"
     assert_equal p.full_address, "123 Fake St., Columbus, OH 43215"
   end
+
+  def test_email_is_required_if_staff_member
+    p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago)
+    assert p.valid?
+    p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
+    assert_equal p.valid?, false
+    p.email = "adam@test.com"
+    assert p.valid?
+  end
+
+  def test_email_uniqueness_if_staff_member
+    #Existing users
+    dup_p = Participant.new(:firstname=>"Dup", :lastname=>"Participant", :birthdate=>20.years.ago, :email => "dup12345@foo.com")
+    User.create(:login => "dupemail", :password=>"abcd1234", :password_confirmation=>"abcd1234", :participant => dup_p)
+
+    p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago, :email => "dup12345@foo.com")
+    p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
+    assert p.valid?, false
+    p.email = "adam1234@foo.com"
+    assert p.valid?
+  end
 end

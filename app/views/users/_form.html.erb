@@ -1,8 +1,10 @@
-<div class="data-entry">
-  <% form.fields_for :participant do |pfields| -%>
-    <%= render :partial => 'participants/form', :locals => {:participant_form => pfields} %>
-  <% end -%>
-</div>
+<%- if @user.new_record? %>
+  <div class="data-entry">
+    <% form.fields_for :participant do |pfields| -%>
+      <%= render :partial => 'participants/form', :locals => {:participant_form => pfields} %>
+    <% end -%>
+  </div>
+<% end -%>
 
 <div class="data-entry">
   <h4>Login Information:</h4>
@@ -57,30 +59,9 @@
         <br/>
         <%= label_tag 'position(s) on staff' %>
       </td>
-      <td>
-        <%= form.text_field :email %>
-        <br/>
-        <%= label_tag 'email', '* Email' %>
-      </td>
     </tr>
   </table>
-  <table>
-    <tr>
-      <td>
-        <%= form.text_field :home_phone %>
-        <br/>
-        <%= label_tag 'home phone' %>
-      </td>
-      <td>
-        <%= form.text_field :cell_phone %>
-        <br/>
-        <%= label_tag 'cell phone' %>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<div class="data-entry">
+  <br/>
   <%= label_tag 'Promote to Admin?' %>
   <%= form.check_box :admin_role  %>
 </div>
