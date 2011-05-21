@@ -89,12 +89,12 @@ class ParticipantsController < ApplicationController
   #        end
         else
           flash[:error] = format_flash_error("Error updating #{@participant.fullname}",
-                                             "participant update(): \n #{format_validation_errors(@participant.errors)}")
+                                             "update(): #{@participant.errors.to_a.join(',')}")
           format.html { render :action => "edit" }
           format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
         end
       rescue Exception => e
-        flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "participant update(): \n #{e.to_s}")
+        flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "update(): #{e.to_s}")
         logger.error "ERROR updating participant \n#{@participant.inspect}"
         logger.error e.backtrace.join("\n\t")
         format.html { render :action => "edit" }
