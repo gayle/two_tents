@@ -146,7 +146,7 @@ class FamiliesController < ApplicationController
   def render_showing_errors(params)
     general_message   = error_saving(@family)
     exception_message = got_exception(params[:exception])
-    validation_errors = error_list_for(@family)
+    validation_errors = format_validation_errors(@family.errors)
 
     flash[:error] = format_flash_error(general_message, exception_message, validation_errors)
     logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
@@ -175,13 +175,4 @@ class FamiliesController < ApplicationController
     msg
   end
 
-  def error_list_for(family)
-	  #Errors array is a nested array that looks like this:
-		# Element with issues
-		# 	Issues for that element.
-		#This function turns the error into:
-		#	Element #1 with issues errors
-		#	Elenent #2 with issues errors
-		family.errors ? family.errors.collect{|element| element.join(" ") }.join("\n") : ""
-  end
 end
