@@ -36,14 +36,6 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  def test_should_require_email
-    assert_no_difference 'User.count' do
-      u = Factory.build(:user, :email => nil)
-      u.save
-      assert u.errors.on(:email)
-    end
-  end
-
   def test_should_require_security_question
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :security_question => nil)
