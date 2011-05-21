@@ -4,8 +4,8 @@
   <%= form.error_messages %>
   <%= render :partial => form -%>
   <p/>
-  <%= form.submit 'Save' %>
-  <%= form.submit 'Save then create another' %>
+  <%= form.submit 'Save', :disable_with => "Saving..." %>
+  <%= form.submit 'Save then create another', :disable_with => "Saving..." %>
 <% end -%>
 <p/>
 <%= link_to 'Back', families_path %>
