@@ -96,6 +96,7 @@
             $.get(url, function(data) {
               $("#review_participant").html(data);
             });
+            $dialog.dialog({ width: 911, height: 485 });
             $dialog.dialog('open');
             // prevent the default action, e.g., following a link
             return false;

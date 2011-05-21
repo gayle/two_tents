@@ -1,5 +1,5 @@
 <h1>Review participant</h1>
-|
+
 <% form_for(:participant, :url=>{:controller => :participants_past, :action=>:update, :id => @participant.id}, :html => {:method => :put}) do |f| %>
   <%= render :partial => "participants/form", :locals => {:participant_form => f} %>
   <p>
