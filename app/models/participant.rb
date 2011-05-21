@@ -2,6 +2,15 @@ class Participant < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
 
+  attr_accessor :remove_from_family
+  before_validation :check_if_removed_from_family
+
+  def check_if_removed_from_family
+    if self.remove_from_family == "1"
+      self.family_id = nil
+    end
+  end
+
   has_and_belongs_to_many :years
   belongs_to :family
   belongs_to :user

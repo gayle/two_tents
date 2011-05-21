@@ -7,7 +7,7 @@
         <%= pfields.label "Click if this person is the main contact for this family." -%>
       </td>
       <td class="field" align="right">
-        <%= pfields.hidden_field :_destroy %>
+        <%= pfields.hidden_field :remove_from_family %>
         <%= link_to_function "Remove", "remove_fields(this)" %>
       </td>
     </tr>

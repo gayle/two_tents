@@ -1,5 +1,11 @@
 <h2>Notes</h2>
-<%= form.text_area :note, :cols => 105, :rows => 6 %>
+<p>
+  <%= form.text_area :note, :cols => 105, :rows => 6 %>
+</p>
+<p>
+  <%= form.check_box :opt_out_of_photo_cd %>
+  <%= form.label :opt_out_of_photo_cd, "Check this box if family opted out of receiving the photo cd" %>
+</p>
 
 <h2>Family Members</h2>
 
