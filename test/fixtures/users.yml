@@ -1,7 +1,6 @@
 admin:
   id: 1
   login: admin
-  email: annie@example.com
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   # activation_code: adminscode # only if you're activating new signups
@@ -13,7 +12,6 @@ admin:
 jim:
   id:                        2
   login:                     jim
-  email:                     jim@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at:                <%= 5.days.ago.to_s :db  %>
@@ -26,7 +24,6 @@ jim:
 carolyn:
   id:                        3
   login:                     carolyn
-  email:                     carolyn@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at:                <%= 5.days.ago.to_s :db  %>
@@ -39,7 +36,6 @@ carolyn:
 gayle:
   id: 4
   login: gayle
-  email: gayle@example.com
   salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 1.days.ago.to_s :db %>
@@ -50,7 +46,6 @@ gayle:
 sue:
   id: 5
   login: sue
-  email: sue@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>
@@ -61,7 +56,6 @@ sue:
 gary:
   id: 6
   login: gary
-  email: gary@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>
@@ -72,7 +66,6 @@ gary:
 michele:
   id: 7
   login: michele
-  email: michele@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>
@@ -83,7 +76,6 @@ michele:
 jeanine:
   id: 8
   login: jeanine
-  email: jeanine@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>
@@ -94,7 +86,6 @@ jeanine:
 quentin:
   id: 9
   login: quentin
-  email: quentin@example.com
   salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
   crypted_password:          4b3ab1cf376d944729c3941f9c332c8d35ef9aff # 'monkey'
   created_at: <%= 1.days.ago.to_s :db %>

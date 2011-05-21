@@ -355,3 +355,10 @@ div.audit p {
 tr.birthday-in-camp {
   font-weight: bold;
 }
+
+table.participant_table_holder {
+  border:none;
+}
+table.participant_table_holder td {
+  border:none;
+}
