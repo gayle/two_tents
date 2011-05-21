@@ -124,7 +124,7 @@ class ParticipantsController < ApplicationController
             if family_deleted
               AuditTrail.audit(
                       "Family #{family_name} removed by #{current_user.login} while deleting last family member #{@participant_to_delete.fullname}")
-              flash[:success] << ", and family #{family_name} also deleted"
+              flash[:success] = ", and family #{family_name} also deleted"
             else
               errors << @family_to_delete.errors.full_messages if @family_to_delete.errors
             end

@@ -16,12 +16,12 @@ module FamiliesHelper
     # maybe expand this to check for each attribute, is it blank or 0?
   end
 
-  def link_to_add_participant_fields(name, f)  
+  def link_to_add_participant_fields(name, f, link_options = {})  
     new_object = Participant.new  
     fields = f.fields_for(:participants, new_object, :child_index => "new_participants") do |builder|  
       render(:partial => 'participant_fields', :locals => { :pfields => builder })
     end  
-    link_to_function(name, h("add_fields(this, \"participants\", \"#{escape_javascript(fields)}\")"))  
+    link_to_function(name, h("add_fields(this, \"participants\", \"#{escape_javascript(fields)}\")"), link_options)  
   end
 
 
