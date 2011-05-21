@@ -1,6 +1,15 @@
 class Family < ActiveRecord::Base
   include FamiliesHelper
 
+  after_save :check_if_empty
+
+  def check_if_empty
+    self.reload
+    if self.participants.size == 0
+      self.destroy
+    end
+  end
+
   has_and_belongs_to_many :years
   has_many :participants, :order => 'main_contact DESC, birthdate ASC'
 
@@ -60,11 +69,12 @@ class Family < ActiveRecord::Base
 
   def cities
     participants.collect { |p|
-      "#{p.participant_city.strip}, #{p.participant_state.strip}" }.uniq
+      arr = [p.participant_city, p.participant_state].compact
+      arr.join(",")}.uniq
   end
 
   def states
-    participants.collect { |p|  p.participant_state.upcase.strip }.uniq
+    participants.collect { |p|  p.participant_state.nil? ? "" : p.participant_state.upcase.strip }.uniq
   end
 
   def self.all_states

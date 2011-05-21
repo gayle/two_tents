@@ -116,11 +116,27 @@ class FamiliesController < ApplicationController
 
   def update_add_participant
     @participant = Participant.find(params[:participant_id])
+
+    removing_main_contact = false
+    old_family = nil
+    if @participant.main_contact and !@participant.family.nil?
+      removing_main_contact = true
+      old_family = @participant.family
+    end
+
     @participant.main_contact = false
     @participant.save
+
     @family = Family.find(params[:family][:id])
     @family.participants ||= []
     @family.participants << @participant
+
+    if removing_main_contact
+      new_main_contact = old_family.participants.first
+      new_main_contact.main_contact = true
+      new_main_contact.save
+    end
+
     redirect_to participants_url
   rescue Exception => e
     render_showing_errors(:action => :edit_choose_family, :exception => e)
@@ -146,7 +162,7 @@ class FamiliesController < ApplicationController
   def render_showing_errors(params)
     general_message   = error_saving(@family)
     exception_message = got_exception(params[:exception])
-    validation_errors = error_list_for(@family)
+    validation_errors = format_validation_errors(@family.errors)
 
     flash[:error] = format_flash_error(general_message, exception_message, validation_errors)
     logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
@@ -175,13 +191,4 @@ class FamiliesController < ApplicationController
     msg
   end
 
-  def error_list_for(family)
-	  #Errors array is a nested array that looks like this:
-		# Element with issues
-		# 	Issues for that element.
-		#This function turns the error into:
-		#	Element #1 with issues errors
-		#	Elenent #2 with issues errors
-		family.errors ? family.errors.collect{|element| element.join(" ") }.join("\n") : ""
-  end
 end
