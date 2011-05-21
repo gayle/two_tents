@@ -4,7 +4,8 @@ Factory.define :family do |f|
 
   f.sequence(:participants) do
     p=[]
-    3.times { p << Factory(:participant) }
+    p << Factory(:participant, :main_contact => true)
+    2.times { p << Factory(:participant) }
     p
   end
 end
