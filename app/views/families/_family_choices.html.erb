@@ -1,22 +1,5 @@
-<% if @families.length == 0 %>
-  <p>There are currently no families</p>
-<% else %>
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Family</th>
-        <th>Main Contact</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @families.each do |f| %>
-        <tr>
-          <td><%= radio_button("family", "id", "#{f.id}") %></td>
-          <td><%= f.familyname %></td>
-          <td><%= f.main_contact_name %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% @families.each do |f| %>
+  <br />
+  <%= radio_button("family", "id", "#{f.id}") %>
+  <%= "#{f.familyname}" %>
 <% end %>
