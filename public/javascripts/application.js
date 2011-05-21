@@ -56,6 +56,8 @@ jQuery(function($){
       }
     }
   });
+
+  $("input.button, a.button").button();
 });
 
 function remove_fields(link) {  

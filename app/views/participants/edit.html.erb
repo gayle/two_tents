@@ -1,29 +1,32 @@
 <h1>Editing participants</h1>
 
-<% if @participant.family %>
-  Family: <%= @participant.family.familyname %>
-<% else %>
-  Not currently in a family
-<% end %>
-<br />
-|
-<%= link_to existing_family_text,
-            url_for(:controller => :families, :action => :edit_add_to_family, :participant => @participant) %> |
-
-<%= link_to new_family_text,
-            url_for(:controller => :families, :action => :new, :participant => @participant) %> |
-
-<% if not @participant.staff? %>
-<%= link_to 'Add This Person To Staff',
-            url_for(:controller => :users, :action => :new, :participant => @participant) %> |
-<% end %>
+<div class="bounded_zone">
+  <% if @participant.family %>
+    <h4>Family: <%= @participant.family.familyname %></h4>
+  <% else %>
+    <b>Not currently in a family</b>
+  <% end %>
+  <%= link_to existing_family_text,
+    url_for(:controller => :families, :action => :edit_add_to_family, :participant => @participant),
+    :class=>"action_link" %>
+    |
+    <%= link_to new_family_text,
+    url_for(:controller => :families, :action => :new, :participant => @participant),
+    :class=>"action_link" %>
+</div>
 
 <% form_for(@participant) do |f| %>
-  <%= render :partial => f, :locals => {:participant_form => f} %>
+  <div class="bounded_zone">
+    <%= render :partial => f, :locals => {:participant_form => f} %>
+  </div>
+  <% if not @participant.staff? %>
+    <div class="bounded_zone">
+      <%= link_to 'Add This Person To Staff',
+        url_for(:controller => :users, :action => :new, :participant => @participant) %>
+    </div>
+  <% end %>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Update', :class=>"button" %>
+    <%= link_to "Cancel", participants_path, :class=>"button" %>
   </p>
 <% end %>
-
-<%= link_to 'Show', @participant %> |
-<%= link_to 'Back', participants_path %>

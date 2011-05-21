@@ -307,6 +307,27 @@ tr.odd {
     background-color: #ecf2f6;
 }
 
+.bounded_zone {
+  width:90%;
+  background-color:#eee;
+  margin:10px 10px 10px 0;
+  padding:10px;
+}
+.bounded_zone ul {
+  margin:0;
+  list-style-type:square;
+  padding-left:15px;
+}
+.bounded_zone h4 {
+  margin-bottom:0;
+  display:inline;
+  margin-right:15px;
+  font-size:18px;
+}
+.bounded_zone a.action_link {
+  font-size:12px;
+  font-style:italic;
+}
 table.field, tr.field, td.field {
     background-color: #EEEEEE;
 }
@@ -361,4 +382,11 @@ table.participant_table_holder {
 }
 table.participant_table_holder td {
   border:none;
+}
+
+ul.actions_list {
+  width:90%;
+  background-color:#eee;
+  padding:10px;
+  list-style-type:square;
 }
