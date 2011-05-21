@@ -1,9 +1,16 @@
 <h1>Editing participants</h1>
+
+<% if @participant.family %>
+  Family: <%= @participant.family.familyname %>
+<% else %>
+  Not currently in a family
+<% end %>
+<br />
 |
-<%= link_to 'Add This Person To An Existing Family',
+<%= link_to existing_family_text,
             url_for(:controller => :families, :action => :edit_add_to_family, :participant => @participant) %> |
 
-<%= link_to 'Add This Person To A New Family',
+<%= link_to new_family_text,
             url_for(:controller => :families, :action => :new, :participant => @participant) %> |
 
 <% if not @participant.staff? %>
