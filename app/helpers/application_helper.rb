@@ -38,15 +38,15 @@ module ApplicationHelper
     "homepage" if controller.controller_name == 'landing' && controller.action_name == 'index'
   end
 
-	def format_validation_errors (validation_errors=nil) 
-	  #Errors array is a nested array that looks like this:
-		# Element with issues
-		# 	Issues for that element.
-		#This function turns the error into:
-		#	Element #1 with issues errors
-		#	Elenent #2 with issues errors
-		validation_errors ? validation_errors.to_a.collect{|element| element.join(" ") }.join("\n") : ""
-	end
+  def format_validation_errors (validation_errors=nil) 
+    #Errors array is a nested array that looks like this:
+    # Element with issues
+    # 	Issues for that element.
+    #This function turns the error into:
+    #	Element #1 with issues errors
+    #	Elenent #2 with issues errors
+    validation_errors ? validation_errors.to_a.collect{|element| element.join(" ") }.join("\n") : ""
+  end
 
   def format_flash_error(general_message, technical_message=nil, validation_errors=nil)
     message = general_message

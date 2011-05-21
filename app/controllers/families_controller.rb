@@ -164,7 +164,7 @@ class FamiliesController < ApplicationController
     exception_message = got_exception(params[:exception])
     validation_errors = format_validation_errors(@family.errors)
 
-    flash[:error] = format_flash_error(general_message, exception_message, validation_errors)
+    flash.now[:error] = format_flash_error(general_message, exception_message, validation_errors)
     logger.error "#{general_message}\n ERRORS: #{validation_errors.inspect}] \n BACKTRACE:"
     logger.error "EXCEPTION: #{exception_message}\n BACTRACE: #{params[:exception].backtrace.join("\n\t")}" if params[:exception]
 
@@ -174,7 +174,7 @@ class FamiliesController < ApplicationController
   def error_saving(family)
     "There was a problem saving the family '#{family.familyname}'"
   end
-  
+
   def got_exception(exception)
     msg = ""
     if exception
