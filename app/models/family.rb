@@ -1,6 +1,15 @@
 class Family < ActiveRecord::Base
   include FamiliesHelper
 
+  after_save :check_if_empty
+
+  def check_if_empty
+    self.reload
+    if self.participants.size == 0
+      self.destroy
+    end
+  end
+
   has_and_belongs_to_many :years
   has_many :participants, :order => 'main_contact DESC, birthdate ASC'
 
