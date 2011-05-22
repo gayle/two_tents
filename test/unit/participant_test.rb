@@ -193,12 +193,6 @@ class ParticipantTest < ActiveSupport::TestCase
     assert_equal 'trivia', p.trivia
   end
 
-  def test_birthdate_string
-    p = Participant.new()
-    p.birthdate_string="11-29-1986"
-    assert_equal "11/29/1986", p.birthdate_string
-  end
-
   def test_birthday_during_camp
     y = Year.create!(:year => "#{Date.today.year}",
                      :starts_on => 3.days.from_now,
@@ -227,5 +221,24 @@ class ParticipantTest < ActiveSupport::TestCase
     assert !p.hide_age?
     p = Participant.new(:birthdate => 3.years.ago)
     assert !p.hide_age?
+  end
+
+  def test_add_current_year
+    p = Participant.new
+    p.add_current_year
+    assert_equal 1, p.years.size
+
+    #Can't add doubles
+    p.add_current_year
+    assert_equal 1, p.years.size
+  end
+
+  def remove_current_year
+    p = Participant.new
+    #Shouldn't crash if it doesn't have this year already
+    p.remove_current_year
+    p.add_current_year
+    p.remove_current_year
+    assert_equal 0, p.years.size
   end
 end
