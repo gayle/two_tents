@@ -147,29 +147,6 @@ class ParticipantTest < ActiveSupport::TestCase
     assert_equal "123 Fake St., Columbus, OH 43215", p.full_address
   end
 
-  def test_email_is_required_if_staff_member
-    p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago)
-    assert p.valid?
-    p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
-    assert !p.valid?
-    p.email = "adam@test.com"
-    assert p.valid?
-  end
-
-  def test_email_uniqueness_if_staff_member
-    #Existing users
-    dup_p = Participant.create(:firstname=>"Dup", :lastname=>"Participant", :birthdate=>20.years.ago, :email => "dup12345@foo.com")
-
-    u = User.create(:login => "dupemail", :password=>"abcd1234", :password_confirmation=>"abcd1234", :participant => dup_p,
-                 :security_question => "question", :security_answer => "answer")
-
-    p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago, :email => "dup12345@foo.com")
-    p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
-    assert !p.valid?
-    p.email = "adam1234@foo.com"
-    assert p.valid?
-  end
-
   def test_participant_input_trimmed
     p = Participant.new(:firstname => ' firstname ', :lastname => ' lastname ',
                         :address => ' address ', :city => ' city ', :zip => ' 12345 ',
