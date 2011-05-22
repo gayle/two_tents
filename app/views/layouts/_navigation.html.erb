@@ -16,6 +16,7 @@
         <li><%= link_to 'Registrations by Age', url_for(:controller => :reports, :action => :participants_by_age) -%></li>
         <li><%= link_to 'Families by State/City', url_for(:controller => :reports, :action => :families_by_state) -%></li>
         <li><%= link_to 'Birthdays by Month', url_for(:controller => :reports, :action => :birthdays_by_month) -%></li>
+        <li><%= link_to 'List of CDs', url_for(:controller => :reports, :action => :list_of_cds) -%></li>
       </ul>
     </li>
     <% if current_user %>

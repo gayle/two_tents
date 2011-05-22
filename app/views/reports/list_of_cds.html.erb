@@ -1,0 +1,15 @@
+<h1>List of CDs</h1>
+<table>
+  <tr>
+    <th>Number of CD's</th>
+    <th>Family Name (Contact Name)</th>
+    <th>Family Address</th>
+  </tr>
+  <% @families_with_photo_cds.each do |family| %>
+  <tr>
+    <td> <%= family.number_of_photo_cds %> </td>
+    <td> <%= "#{family.familyname} (#{family.main_contact.firstname})" %> </td>
+    <td> <%= family.full_address %> </td>
+  </tr>
+  <% end %>
+</table>

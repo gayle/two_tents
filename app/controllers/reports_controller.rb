@@ -17,4 +17,8 @@ class ReportsController < ApplicationController
   def birthdays_by_month
     @participants_by_birth_month = Participant.group_by_birth_month
   end
+
+  def list_of_cds
+    @families_with_photo_cds = Family.all_with_cds
+  end
 end

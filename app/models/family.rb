@@ -40,6 +40,15 @@ class Family < ActiveRecord::Base
     participants.collect { |p| p.lastname }.uniq.join(" and ")
   end
 
+  def full_address
+    addr = ""
+    addr << "#{family_address}, " unless family_address.blank?
+    addr << "#{family_city}, " unless family_city.blank?
+    addr << "#{family_state} " unless family_state.blank?
+    addr << family_zip unless family_zip.blank?
+    addr.rstrip.chomp(",")
+  end
+
   def family_address
     main_contact ? main_contact.address : "unknown"
   end
@@ -81,6 +90,10 @@ class Family < ActiveRecord::Base
 
   def self.all_states
     states = Family.registered.collect { |f| f.states }.flatten.compact
+  end
+
+  def self.all_with_cds
+    Family.all.select { |f| f.number_of_photo_cds > 0 }
   end
 
   # Usually a single family will be from only one state.  Occasionally that is
