@@ -182,34 +182,6 @@ class Participant < ActiveRecord::Base
 #    Participant.all.select { |p| p.main_contact? }
 #  end
 #
-  def self.group_by_age_old
-    participants = Participant.registered
-    young_children = participants.select { |p| p.age <= 5 }
-    children = participants.select       { |p| p.age >= 6  and p.age <= 11 }
-    youth = participants.select          { |p| p.age >= 12 and p.age <= 17 }
-    adults = participants.select         { |p| p.age >= 18 }
-
-    # Use 2-digit numbers so it sorts groups by age
-    { "Age 05 and under" => sort_by_age(young_children),
-      "Age 06 to 11" => sort_by_age(children),
-      "Age 12 to 17" => sort_by_age(youth),
-      "Age 18 and over" => sort_by_name(adults) }
-  end
-
-  def self.group_by_age
-    h = Hash.new
-    age_groups = AgeGroup.all.sort_by { |ag| ag.min }
-    age_groups.each do |ag|
-      participants = select_participants_by_age_group(ag.min, ag.max)
-      if ag.sortby == "name"
-        h[ag.text] = sort_by_name(participants)
-      else
-        h[ag.text] = sort_by_age(participants)
-      end
-    end
-    h
-  end
-
   def self.group_by_birth_month
     participants = Participant.registered
     # Use 2-digit month so it sorts chronologically by month
@@ -239,12 +211,6 @@ class Participant < ActiveRecord::Base
   end
 
   private
-
-  def self.select_participants_by_age_group(min, max)
-    Participant.registered.select do |p|
-      p.age >= min and p.age <= max
-    end
-  end
 
   def self.sort_by_age(participants_in_group)
     participants_in_group.sort_by do |p|
