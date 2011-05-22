@@ -15,7 +15,7 @@ class Participant < ActiveRecord::Base
   def strip_whitespace
     [ self.firstname, self.lastname, self.address, self.city, self.zip, self.homechurch,
       self.phone, self.mobile, self.email, self.occupation, self.employer, self.school,
-      self.grade, self.trivia].each { |s| s.strip! }
+      self.grade, self.trivia].each { |s| s.strip! if s.present? }
   end
 
   has_and_belongs_to_many :years
@@ -25,8 +25,6 @@ class Participant < ActiveRecord::Base
   def after_initialize
     add_current_year if self.new_record?
   end
-
-  validate :email_required_and_unique_if_staff
 
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
@@ -133,16 +131,6 @@ class Participant < ActiveRecord::Base
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
     #errors.add(:participant, "is already in the system") if duplicate?
-  end
-
-  def email_required_and_unique_if_staff
-    if self.user.present?
-      if self.email.blank?
-        errors.add(:email, "is required for staff members")
-      elsif Participant.count(:conditions => ["user_id IS NOT NULL AND email = ? AND id <> ?", self.email, self.id]) > 0
-        errors.add(:email, "must be unique for staff members")
-      end
-    end
   end
 
   def staff?
