@@ -27,8 +27,6 @@ class Participant < ActiveRecord::Base
     add_current_year if self.new_record?
   end
 
-  validate :email_required_and_unique_if_staff
-
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
@@ -134,17 +132,6 @@ class Participant < ActiveRecord::Base
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
     #errors.add(:participant, "is already in the system") if duplicate?
-  end
-
-  def email_required_and_unique_if_staff
-    if self.user.present?
-      if self.email.blank?
-        errors.add(:email, "is required for staff members")
-      #elsif Participant.count(:conditions => ["user_id IS NOT NULL AND email = ? AND id <> ?", self.email, self.id]) > 0
-      elsif email_already_exists?
-        errors.add(:email, "must be unique for staff members")
-      end
-    end
   end
 
   def staff?
