@@ -6,12 +6,26 @@ class User < ActiveRecord::Base
   # You may wish to modify it to suit your need
   has_and_belongs_to_many :roles
 
-  attr_accessor :admin_role
+#  attr_accessor :admin_role
 
   has_one :participant, :dependent => :nullify
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."
 #  delegate :fullname, :to => :participant  # Why isn't delegate working????
   accepts_nested_attributes_for :participant
+
+  def admin_role?
+    return has_role?("admin")
+  end
+
+  def admin_role=(role_flag)
+    admin_role = Role.find_or_create_by_name(:name => "admin")
+    if role_flag == "1" && !self.roles.include?(admin_role) 
+      self.roles << admin_role
+    end
+    if role_flag == "0" && self.roles.include?(admin_role)
+      self.roles.delete(admin_role)
+    end
+  end
 
   # has_role? simply needs to return true or false whether a user has a role or not.
   # It may be a good idea to have "admin" roles return true always
@@ -44,7 +58,7 @@ class User < ActiveRecord::Base
   attr_accessible(:login, :name, :password,
                   :password_confirmation, :security_question,
                   :security_answer, :participant_attributes,
-                  :position)
+                  :position, :admin_role)
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
@@ -73,7 +87,7 @@ class User < ActiveRecord::Base
   end
 
   def administrator?
-    login == "administrator" or login == "admin"
+    login == "administrator" or login == "admin" or has_role?("admin") 
   end
 
   def authorized_for_listing?(param_id)
