@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
+    admin.resources :age_groups
+
     admin.resources :participants
     admin.with_options :controller => 'participants' do |participant|
       participant.new_choose_family 'new_choose_family/:id', :action => 'new_choose_family'
