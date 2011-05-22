@@ -1,5 +1,5 @@
 <h1>Participants</h1>
-<%= link_to 'Add new participant for current year', new_participant_path %>
+<%= link_to 'Add new participant for current year', new_participant_path, :class => "icon plus action" %>
 <p />
 <% if @past_participants.blank? and @current_participants.blank? %>
   <p>No participants yet.</p>
@@ -108,4 +108,4 @@
 <% end -%>
 
 <p />
-<%= link_to 'Add new participant for current year', new_participant_path, :class => 'button' %>
+<%= link_to 'Add new participant for current year', new_participant_path, :class => 'icon plus action' %>
