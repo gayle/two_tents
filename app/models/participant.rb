@@ -16,7 +16,7 @@ class Participant < ActiveRecord::Base
   def strip_whitespace
     [ self.firstname, self.lastname, self.address, self.city, self.zip, self.homechurch,
       self.phone, self.mobile, self.email, self.occupation, self.employer, self.school,
-      self.grade, self.trivia].each { |s| s.strip! if !s.nil? }
+      self.grade, self.trivia].each { |s| s.strip! if s.present? }
   end
 
   has_and_belongs_to_many :years
