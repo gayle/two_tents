@@ -51,7 +51,7 @@ class ParticipantsController < ApplicationController
     @family.participants << Participant.new
     redirect_to edit_family_path(@family)
   end
-  
+
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
@@ -127,6 +127,29 @@ class ParticipantsController < ApplicationController
         logger.error e.backtrace.join("\n\t")
         format.html { render :action => "edit" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_register
+    @participant = Participant.find(params[:id])
+    respond_to do |format|
+      begin
+        @participant.add_current_year
+        if @participant.update_attributes(params[:participant])
+          AuditTrail.audit("Participant #{@participant.fullname} updated by #{current_user.login}", edit_participant_url(@participant))
+          flash[:notice] = 'Participants was successfully updated.'
+        else
+          flash[:error] = format_flash_error("Error re-registering #{@participant.fullname}",
+                                             "update(): \n#{format_validation_errors(@participant.errors)}")
+          logger.error e.backtrace.join("\n\t")
+        end
+        format.html { redirect_to :action => "index" }
+      rescue Exception => e
+        flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "past participant update(): \n#{e.to_s} : #{e.backtrace[1]}")
+        logger.error "ERROR updating participant \n#{@participant.inspect}"
+        logger.error e.backtrace.join("\n\t")
+        format.html { render :action => "index" }
       end
     end
   end

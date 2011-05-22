@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
       participant.review '/review', :action => 'review'
       participant.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
       participant.unregister_past_participant '/unregister_past_participant/:id', :action => 'unregister_past_participant'
+      participant.update_register '/update_register/:id', :action => 'update_register'
     end
 
     admin.resources :families
