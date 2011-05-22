@@ -1,6 +1,7 @@
 class Participant < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
+  include ParticipantsHelper
 
   attr_accessor :remove_from_family
   before_validation :check_if_removed_from_family
@@ -134,15 +135,6 @@ class Participant < ActiveRecord::Base
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
     #errors.add(:participant, "is already in the system") if duplicate?
   end
-
-  def email_already_exists?
-    duplicates = Participant.all.select do |p|
-        p.email == self.email and
-        p.id != self.id
-    end
-    duplicates.size > 0
-  end
-
 
   def email_required_and_unique_if_staff
     if self.user.present?
