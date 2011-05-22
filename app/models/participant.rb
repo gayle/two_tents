@@ -211,12 +211,14 @@ class Participant < ActiveRecord::Base
 
   def self.group_by_age
     h = Hash.new
-    participants = Participant.registered
     age_groups = AgeGroup.all.sort_by { |ag| ag.min }
     age_groups.each do |ag|
-      h[ag.text] = sort_by_age( participants.select { |p|
-                                   p.age >= ag.min and p.age <= ag.max
-                                })
+      participants = select_participants_by_age_group(ag.min, ag.max)
+      if ag.sortby == "name"
+        h[ag.text] = sort_by_name(participants)
+      else
+        h[ag.text] = sort_by_age(participants)
+      end
     end
     h
   end
@@ -250,6 +252,12 @@ class Participant < ActiveRecord::Base
   end
 
   private
+
+  def self.select_participants_by_age_group(min, max)
+    Participant.registered.select do |p|
+      p.age >= min and p.age <= max
+    end
+  end
 
   def self.sort_by_age(participants_in_group)
     participants_in_group.sort_by do |p|
