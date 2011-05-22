@@ -28,7 +28,7 @@ class Participant < ActiveRecord::Base
   end
 
   # at least validate presence fields used directly or indirectlyr for sorting
-  validates_presence_of :lastname, :firstname, :birthdate
+  validates_presence_of :lastname, :firstname, :birthdate, :birthdate_string
 
   named_scope :main_contact, :conditions => { :main_contact => true }
 
@@ -86,6 +86,7 @@ class Participant < ActiveRecord::Base
   def birthdate_string=(bd_str)
     self.birthdate = Date.parse(bd_str)
   rescue ArgumentError
+    self.birthdate = ""
     @birthdate_invalid = true
   end
 
