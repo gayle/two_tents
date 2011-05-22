@@ -198,4 +198,20 @@ class ParticipantTest < ActiveSupport::TestCase
     p.birthdate_string="11-29-1986"
     assert_equal "11/29/1986", p.birthdate_string
   end
+
+  def test_birthday_during_camp
+    y = Year.create!(:year => "#{Date.today.year}",
+                     :starts_on => 3.days.from_now,
+                     :ends_on => 7.days.from_now)
+    p = Participant.new(:birthdate => 5.days.from_now - 1.year)
+    assert p.birthday_during_camp?
+  end
+
+  def test_birthday_during_camp
+    y = Year.create!(:year => "#{Date.today.year}",
+                     :starts_on => 3.days.from_now,
+                     :ends_on => 7.days.from_now)
+    p = Participant.new(:birthdate => 11.days.from_now - 1.year)
+    assert !p.birthday_during_camp?
+  end
 end
