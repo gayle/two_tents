@@ -1,19 +1,6 @@
 class ParticipantsController < ApplicationController
   before_filter :login_required
 
-  def registered_participants
-    begin
-      @participants = Participant.current.paginate :all, :page => params[:page], :order => "lastname ASC, firstname ASC"
-    rescue Exception => e
-      flash[:error] = format_flash_error("We're sorry, but something went wrong.", e.to_s)
-    end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @participants }
-    end
-  end
-
   def ajax_review_past_participant
     # TODO handle exceptions here
     @participant = Participant.find(params[:id])
