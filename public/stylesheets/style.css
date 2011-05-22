@@ -329,7 +329,17 @@ tr.odd {
   font-style:italic;
 }
 table.field, tr.field, td.field {
-    background-color: #EEEEEE;
+  background-color: #EEEEEE;
+}
+
+.fieldWithErrors label {
+  font-weight: bold;
+  border-color: #FBC2C4;
+}
+
+.fieldWithErrors input,
+.fieldWithErrors textarea {
+  border: 2px solid #ff0000;
 }
 
 span.field_helper {

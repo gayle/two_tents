@@ -131,7 +131,6 @@ class Participant < ActiveRecord::Base
 
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
-    #errors.add(:participant, "is already in the system") if duplicate?
   end
 
   def staff?
