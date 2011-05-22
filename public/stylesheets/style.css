@@ -415,3 +415,6 @@ a.action, a.action:hover, a.action:visited {
 .float-right {
   float:right;
 }
+.age_group {
+  margin: 10px 0;
+}
