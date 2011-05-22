@@ -14,31 +14,31 @@
   </thead>
   <tbody>
 
-  <%= will_paginate @participants -%><br/>
-  <% @participants.each_with_index do |p, row| %>
-    <% form_for p do |form|%>
-    <tr class="<%= ContentHelper.rowstyle(row) %>">
-      <td><%=h( row+1 + @participants.offset ) %></td>
-  	  <td><%=h p.list_name %></td>
-      <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
-      <td><% if p.can_delete?
-                confirm_msg = p.only_member_of_associated_family? ?
-                  "This is the last person in '#{p.family.familyname}' family.
-                   Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?"
-           %>
-            <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
-          <% end %>
-      </td>
-	  <!--
-      <td><%= form.check_box :health -%></td>
-      <td><%= form.check_box :liability -%></td>
-      -->
-      </tr>
+    <%= will_paginate @participants -%><br/>
+    <% @participants.each_with_index do |p, row| %>
+      <% form_for p do |form|%>
+        <tr class="<%= ContentHelper.rowstyle(row) %>">
+          <td><%=h( row+1 + @participants.offset ) %></td>
+          <td><%=h p.list_name %></td>
+          <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+          <td> 
+            <% if p.can_delete?
+                  confirm_msg = p.only_member_of_associated_family? ?  "This is the last person in '#{p.family.familyname}' family.
+                  Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?"
+            %>
+              <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+            <% end %>
+          </td>
+          <!--
+          <td><%= form.check_box :health -%></td>
+          <td><%= form.check_box :liability -%></td>
+          -->
+        </tr>
+      <% end %>
     <% end %>
-  <% end %>
   </tbody>
 </table>
 <%= will_paginate @participants -%>
 <br />
 
-<%= link_to 'Add new participant', new_participant_path %>
+<%= link_to 'Add new participant', new_participant_path, :class => 'button'  %>
