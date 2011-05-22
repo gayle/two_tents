@@ -17,7 +17,7 @@ class ParticipantsController < ApplicationController
   def ajax_review_past_participant
     # TODO handle exceptions here
     @participant = Participant.find(params[:id])
-    render :action => "edit"
+    render :action => "review"
   end
 
   # GET /participants
