@@ -1,0 +1,11 @@
+This is the source code repository for the Rails app that drives http://familycamp.heroku.com/
+
+The website for the Northwest Plains District Family Camp
+
+Most development was done at GiveCamp
+
+http://www.givecamp.org
+
+http://www.columbusgivecamp.org/
+
+See the Wiki pages for how to set up your development environment to build this project.
