@@ -171,7 +171,7 @@ class Participant < ActiveRecord::Base
   end
 
   def hide_age?
-    age >= 18  
+    age >= 18
   end
 
   def registered_for_year?(year)

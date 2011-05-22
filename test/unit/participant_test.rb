@@ -214,4 +214,18 @@ class ParticipantTest < ActiveSupport::TestCase
     p = Participant.new(:birthdate => 11.days.from_now - 1.year)
     assert !p.birthday_during_camp?
   end
+
+  def test_age_hidden_for_adult
+    p = Participant.new(:birthdate => Year.current.starts_on - 18.years)
+    assert p.hide_age?
+    p = Participant.new(:birthdate => 43.years.ago)
+    assert p.hide_age?
+  end
+
+  def test_age_not_hidden_for_kids
+    p = Participant.new(:birthdate => Year.current.starts_on - 17.years)
+    assert !p.hide_age?
+    p = Participant.new(:birthdate => 3.years.ago)
+    assert !p.hide_age?
+  end
 end
