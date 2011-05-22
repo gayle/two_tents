@@ -135,11 +135,21 @@ class Participant < ActiveRecord::Base
     #errors.add(:participant, "is already in the system") if duplicate?
   end
 
+  def email_already_exists?
+    duplicates = Participant.all.select do |p|
+        p.email == self.email and
+        p.id != self.id
+    end
+    duplicates.size > 0
+  end
+
+
   def email_required_and_unique_if_staff
     if self.user.present?
       if self.email.blank?
         errors.add(:email, "is required for staff members")
-      elsif Participant.count(:conditions => ["user_id IS NOT NULL AND email = ? AND id <> ?", self.email, self.id]) > 0
+      #elsif Participant.count(:conditions => ["user_id IS NOT NULL AND email = ? AND id <> ?", self.email, self.id]) > 0
+      elsif email_already_exists?
         errors.add(:email, "must be unique for staff members")
       end
     end

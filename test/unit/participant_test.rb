@@ -51,6 +51,13 @@ class ParticipantTest < ActiveSupport::TestCase
     assert p.errors.on(:lastname)
   end
 
+  def test_birthdate_should_not_be_nil
+    p = Factory.build(:participant, :birthdate => nil)
+    p.save
+
+    assert p.errors.on(:birthdate)
+  end
+
   def test_participant_cannot_be_destroyed_if_it_belongs_to_a_user
     u = Factory(:user)
     u.destroy
@@ -119,38 +126,76 @@ class ParticipantTest < ActiveSupport::TestCase
   end
 
   def test_full_address_should_be_blank_if_all_necessary_fields_blank
+    p = Participant.new
+    p.address = ""
+    p.city = ""
+    p.state = ""
+    p.zip = ""
+    assert p.full_address.blank?
   end
+
   def test_full_address_should_display_correctly_when_necessary_fields_are_missing
     p = Participant.new
     assert p.full_address.blank?
     p.address = "123 Fake St."
-    assert_equal p.full_address, "123 Fake St."
+    assert_equal "123 Fake St.", p.full_address
     p.city = "Columbus"
-    assert_equal p.full_address, "123 Fake St., Columbus"
+    assert_equal "123 Fake St., Columbus", p.full_address
     p.state = "OH"
-    assert_equal p.full_address, "123 Fake St., Columbus, OH"
+    assert_equal "123 Fake St., Columbus, OH", p.full_address
     p.zip = "43215"
-    assert_equal p.full_address, "123 Fake St., Columbus, OH 43215"
+    assert_equal "123 Fake St., Columbus, OH 43215", p.full_address
   end
 
   def test_email_is_required_if_staff_member
     p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago)
     assert p.valid?
     p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
-    assert_equal p.valid?, false
+    assert !p.valid?
     p.email = "adam@test.com"
     assert p.valid?
   end
 
   def test_email_uniqueness_if_staff_member
     #Existing users
-    dup_p = Participant.new(:firstname=>"Dup", :lastname=>"Participant", :birthdate=>20.years.ago, :email => "dup12345@foo.com")
-    User.create(:login => "dupemail", :password=>"abcd1234", :password_confirmation=>"abcd1234", :participant => dup_p)
+    dup_p = Participant.create(:firstname=>"Dup", :lastname=>"Participant", :birthdate=>20.years.ago, :email => "dup12345@foo.com")
+
+    u = User.create(:login => "dupemail", :password=>"abcd1234", :password_confirmation=>"abcd1234", :participant => dup_p,
+                 :security_question => "question", :security_answer => "answer")
 
     p = Participant.new(:firstname=>"Adam", :lastname=>"Albrecht", :birthdate=>25.years.ago, :email => "dup12345@foo.com")
     p.user = User.new(:login => "aalbrecht", :password=>"adam1234", :password_confirmation=>"adam1234")
-    assert p.valid?, false
+    assert !p.valid?
     p.email = "adam1234@foo.com"
     assert p.valid?
+  end
+
+  def test_participant_input_trimmed
+    p = Participant.new(:firstname => ' firstname ', :lastname => ' lastname ',
+                        :address => ' address ', :city => ' city ', :zip => ' 12345 ',
+                        :homechurch => ' homechurch ', :phone => ' 1231231234 ',
+                        :mobile => ' 1231231234 ', :email => ' e@mail.com ',
+                        :occupation => ' occupation ', :employer => ' employer ',
+                        :school => ' school ', :grade => ' 11 ', :trivia => ' trivia ')
+    p.save
+    assert_equal 'firstname', p.firstname
+    assert_equal 'lastname', p.lastname
+    assert_equal 'city', p.city
+    assert_equal '12345', p.zip
+    assert_equal 'homechurch', p.homechurch
+    assert_equal '1231231234', p.phone
+    assert_equal '1231231234', p.mobile
+    assert_equal 'e@mail.com', p.email
+    assert_equal 'occupation', p.occupation
+    assert_equal 'employer', p.employer
+    assert_equal 'school', p.school
+    assert_equal '11', p.grade
+    assert_equal 'trivia', p.trivia
+  end
+
+  def test_birthdate_string
+    p = Participant.new()
+    p.birthdate_string="11-29-1986"
+    assert_equal "11/29/1986", p.birthdate_string
   end
 end
