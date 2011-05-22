@@ -63,7 +63,7 @@
   </table>
   <% if current_user.administrator? %>
     <br/>
-    <%= label_tag 'Promote to Admin?' %>
-    <%= form.check_box :admin_role  %>
+    <%= label_tag 'Admin staff?' %>
+    <%= form.check_box :admin_role?  %>
   <% end %>
 </div>
