@@ -20,10 +20,11 @@
     <%= render :partial => f, :locals => {:participant_form => f} %>
   </div>
 
-  <div class="bounded_zone">
+  <div class="bounded-zone float-right">
   <% if not @participant.staff? %>
       <%= link_to 'Add This Person To Staff',
-        url_for(:controller => :users, :action => :new, :participant => @participant) %>
+        url_for(:controller => :users, :action => :new, :participant => @participant),
+        :class => "float-right icon plus action" %>
   <% else %>
     <b>This person is also a staff member.</b>
   <% end %>
