@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
-    admin.resources :age_groups
+    admin.resources :age_groups, :collection => {:edit_all => :get, :update_all => :post}
 
     admin.resources :participants
     admin.with_options :controller => 'participants' do |participant|
