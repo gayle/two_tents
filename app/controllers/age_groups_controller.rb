@@ -8,7 +8,7 @@ class AgeGroupsController < ApplicationController
   end
 
   def edit_all
-    @age_groups = AgeGroup.all
+    @age_groups = AgeGroup.all(:order => "min ASC")
     @age_groups << AgeGroup.new(:min => 0, :max => 5, :text => "Age 0 to 5") if @age_groups.empty?
   end
 
@@ -22,7 +22,9 @@ class AgeGroupsController < ApplicationController
       if (params.has_key?("min-#{i}"))
         a.min = params["min-#{i}"].to_i
         a.max = params["max-#{i}"].to_i
+        a.max = 999 if a.max >= 99
         a.text = params["text-#{i}"]
+        a.sortby = params["sortby-#{i}"]
         age_groups << a
       end
       i+=1

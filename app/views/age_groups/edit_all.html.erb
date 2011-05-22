@@ -4,11 +4,13 @@
     <% @age_groups.each_with_index do |age_group, i| %>
       <div class="age_group">
         <label>Min:</label>
-        <%= select_tag "min-#{i}", options_from_collection_for_select((0..99), :to_s, :to_s, age_group.min.to_s), :id=>nil, :class=>"min_input" %>
+        <%= select_tag "min-#{i}", options_from_collection_for_select((0..99), :to_s, :to_s, age_group.display_min), :id=>nil, :class=>"min_input" %>
         <label>Max:</label>
-        <%= select_tag "max-#{i}", options_from_collection_for_select((0..99), :to_s, :to_s, age_group.max.to_s), :id=>nil, :class=>"max_input" %>
+        <%= select_tag "max-#{i}", options_from_collection_for_select((0..99), :to_s, :to_s, age_group.display_max), :id=>nil, :class=>"max_input" %>
         <label>Description:</label>
         <%= text_field_tag "text-#{i}", age_group.text, :class=>"text_input" %>
+        <label>Sort By:</label>
+        <%= select_tag "sortby-#{i}", options_from_collection_for_select(AgeGroup::SORT_BY_OPTIONS, :to_s, :to_s, age_group.sortby), :id=>nil, :class=>"sortby_input" %>
         <% if i > 0 %>
           <%= link_to "Delete", "#", :class=>"delete_age_group_link icon minus" %>
         <% end %>
@@ -35,6 +37,8 @@
   <%= select_tag "max-X", options_from_collection_for_select((0..99), :to_s, :to_s), :id=>nil, :class=>"max_input" %>
   <label>Description:</label>
   <%= text_field_tag "text-X", nil, :class=>"text_input" %>
+  <label>Sort By:</label>
+  <%= select_tag "sortby-X", options_from_collection_for_select(AgeGroup::SORT_BY_OPTIONS, :to_s, :to_s, "age"), :id=>nil, :class=>"sortby_input" %>
   <%= link_to "Delete", "#", :class=>"delete_age_group_link icon minus" %>
 </div>
 <script type="text/javascript">
