@@ -19,12 +19,16 @@
   <div class="bounded_zone">
     <%= render :partial => f, :locals => {:participant_form => f} %>
   </div>
+
+  <div class="bounded_zone">
   <% if not @participant.staff? %>
-    <div class="bounded_zone">
       <%= link_to 'Add This Person To Staff',
         url_for(:controller => :users, :action => :new, :participant => @participant) %>
-    </div>
+  <% else %>
+    <b>This person is also a staff member.</b>
   <% end %>
+  </div>
+
   <p>
     <%= f.submit 'Update', :class=>"button" %>
     <%= link_to "Cancel", participants_path, :class=>"button" %>
