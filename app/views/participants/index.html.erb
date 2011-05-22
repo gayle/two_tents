@@ -1,44 +1,111 @@
-<h1>Listing participants</h1>
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Name</th>
-      <th></th>
-      <th></th>
-      <!--
-      <th>Health Form</th>
-      <th>Liability Form</th>
-      -->
-    </tr>
-  </thead>
-  <tbody>
-
-    <%= will_paginate @participants -%><br/>
-    <% @participants.each_with_index do |p, row| %>
-      <% form_for p do |form|%>
-        <tr class="<%= ContentHelper.rowstyle(row) %>">
-          <td><%=h( row+1 + @participants.offset ) %></td>
-          <td><%=h p.list_name %></td>
-          <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
-          <td> 
-            <% if p.can_delete?
-                  confirm_msg = p.only_member_of_associated_family? ?  "This is the last person in '#{p.family.familyname}' family.
-                  Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?"
-            %>
-              <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
-            <% end %>
-          </td>
-          <!--
-          <td><%= form.check_box :health -%></td>
-          <td><%= form.check_box :liability -%></td>
-          -->
+<h1>Participants</h1>
+<%= link_to 'Add new participant for current year', new_participant_path %>
+<p />
+<% if @past_participants.blank? and @current_participants.blank? %>
+  <p>No participants yet.</p>
+<% else %>
+  <table class="participant_table_holder"><tr><td>
+    <table id="past_info" class="past_info">
+    <% if @past_participants.empty? %>
+      <thead>
+        <tr><th>No more past participants to choose from.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><%= link_to 'New Participant', new_participant_path %></td></tr>
+      </tbody>
+    <% else %> 
+      <thead>
+        <tr>
+          <th></th>
+          <th>Past Participants</th>
+          <th></th>
+          <th></th>
+          <th></th>
         </tr>
-      <% end %>
+      </thead>
+      <tbody>
+        <% @past_participants.each_with_index do |p, row| %>
+          <tr class="<%= ContentHelper.rowstyle(row) %>">
+            <td><%=h( row+1 ) %></td>
+            <td><%=h p.list_name %></td>
+            <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+            <td><% if p.can_delete?
+                  confirm_msg = p.only_member_of_associated_family? ?
+                    "This is the last person in '#{p.family.familyname}' family.
+                     Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?" %>
+               <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+             <% end %>
+            </td>
+            <td><%=link_to("register", "#", :id => "register#{p.id}", :class => 'register', :participant => p.id) -%></td>
+          </tr>
+        <% end %>
+      </tbody>
     <% end %>
-  </tbody>
-</table>
-<%= will_paginate @participants -%>
-<br />
+    </table>
+  </td>
+  <td>
+    <table id="current_info" class="current_info">
+    <% if @current_participants.empty? %>
+      <thead>
+        <tr><th>No participants are registered for <%= Year.current.year %> yet.</th></tr>
+      </thead>
+    <% else %>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>Current Participants</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @current_participants.each_with_index do |p, row| %>
+          <tr class="<%= ContentHelper.rowstyle(row) %>">
+            <td><%=link_to("un-register", url_for(:action => :unregister_past_participant, :id=>p.id), :id => "unregister#{p.id}", :class => 'unregister', :participant => p.id) %></td>
+            <td><%=h( row+1 ) %></td>
+            <td><%=h p.list_name %></td>
+            <td><%= link_to 'Edit', edit_participant_path(p), :class => 'edit' %></td>
+            <td><% if p.can_delete?
+                  confirm_msg = p.only_member_of_associated_family? ?
+                    "This is the last person in '#{p.family.familyname}' family.
+                     Are you sure you want to delete the participant & the family?" : "#{p.user_id ? 'This will also delete the associated staff member. ' : ''}Are you sure?" %>
+               <%= link_to 'Destroy', p, :confirm => "#{confirm_msg}", :method => :delete, :class => 'delete' %>
+             <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+    </table>
+  </td></tr></table>
 
-<%= link_to 'Add new participant', new_participant_path, :class => 'button'  %>
+<% end %>
+
+<% javascript_tag do -%>
+    var i=0;
+    $(document).ready(function() {
+        var $dialog = $('<div id="review_participant"></div>')
+            .dialog({
+                autoOpen: false,
+                modal: true,
+                title: 'Review Participant',
+                width: 800,
+                height:300,
+            });
+
+        $('.register').click(function() {
+            url = '<%= url_for :action => "ajax_review_past_participant" %>?id='+$(this).attr('participant');
+            $.get(url, function(data) {
+              $("#review_participant").html(data);
+            });
+            $dialog.dialog({ width: 911, height: 485 });
+            $dialog.dialog('open');
+            // prevent the default action, e.g., following a link
+            return false;
+        });
+    });
+<% end -%>
+
+<p />
+<%= link_to 'Add new participant for current year', new_participant_path, :class => 'button' %>
