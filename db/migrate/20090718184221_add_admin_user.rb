@@ -1,19 +1,13 @@
 class AddAdminUser < ActiveRecord::Migration
   def self.up
-    p = Participant.new(:lastname => "administrator", 
-                        :firstname => "administrator")
-    p.save
-    u = User.new(:login => "administrator", 
-                 :password => "administrator", 
-                 :password_confirmation => "administrator", 
-                 :email => "administrator@example.com")
-    u.participant = p
-    u.save_without_validation!
+    execute %{INSERT INTO participants (lastname, firstname)
+                          values ('administrator', 'administrator')}
+    execute %{INSERT INTO users (login, crypted_password, email)
+                          values ('administrator', 'administrator', 'administrator@example.com')}
   end
 
   def self.down
-    User.find(:first, :conditions => {:login => "administrator"}).destroy
-    Participant.find(:first, 
-                     :conditions => {:lastname => "administrator"}).destroy
+    execute %{DELETE FROM participants WHERE (lastname = 'administrator' and firstname = 'administrator')}
+    execute %{DELETE FROM users WHERE (login = 'administrator') }
   end
 end

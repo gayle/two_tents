@@ -2,12 +2,8 @@ class AddSecurityQuestionToUsers < ActiveRecord::Migration
   def self.up
     add_column :users, :security_question, :string
     add_column :users, :security_answer, :string
-    
-    User.all.each do |u|
-      u.security_question = "Dads middle name?"
-      u.security_answer = "Pops"
-      u.save
-    end
+    execute %{UPDATE users SET security_question='Dads middle name?' where security_question IS NULL}
+    execute %{UPDATE users SET security_answer='Pops' where security_question IS NULL}
   end
 
   def self.down
