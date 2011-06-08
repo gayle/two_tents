@@ -200,6 +200,52 @@ class ParticipantTest < ActiveSupport::TestCase
     assert !p.hide_age?
   end
 
+#  # TODO fix this, it passes individually, but not when running "rake"
+#  def test_group_by_grade_should_include_18_and_under_with_or_without_grade_field_populated
+#    start_of_camp = Year.current.starts_on
+#    six_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tommy",
+#                                              :birthdate => start_of_camp-6.years, :grade => "1st grade")
+#    six_year_old_with_grade.save!
+#    six_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timmy",
+#                                                 :birthdate => start_of_camp-6.years)
+#    six_year_old_without_grade.save!
+#    eighteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tom",
+#                                                   :birthdate => start_of_camp-18.years, :grade => "12th")
+#    eighteen_year_old_with_grade.save!
+#    eighteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Tim",
+#                                                      :birthdate => start_of_camp-18.years)
+#    eighteen_year_old_without_grade.save!
+#
+#    participants_by_grade = Participant.group_by_grade
+#
+#    assert (participants_by_grade["elementary"].include? six_year_old_with_grade),
+#                                               "#{participants_by_grade["elementary"].inspect} \n should have included \n #{six_year_old_with_grade.inspect}"
+#    assert (participants_by_grade["elementary"].include? six_year_old_without_grade),
+#                                               "#{participants_by_grade["elementary"].inspect} \n should have included \n #{six_year_old_without_grade.inspect}"
+#    assert (participants_by_grade["high_school"].include? eighteen_year_old_with_grade)
+#    assert (participants_by_grade["high_school"].include? eighteen_year_old_without_grade)
+#  end
+
+#  # TODO fix this, it passes individually, but not when running "rake"
+#  def test_group_by_grade_should_include_over_18_if_grade_field_populated
+#    puts "\n\n-----------------------------"
+#    start_of_camp = Year.current.starts_on
+#    nineteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Thomas",
+#                                                   :birthdate => start_of_camp-19.years, :grade => "sophomore in college")
+#    nineteen_year_old_with_grade.save!
+#    nineteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timothy",
+#                                                      :birthdate => start_of_camp-19.years)
+#    nineteen_year_old_without_grade.save!
+#
+#    participants_by_grade = Participant.group_by_grade
+#
+#    assert (participants_by_grade["other"].include? nineteen_year_old_with_grade),
+#                                                   "#{participants_by_grade["other"].inspect} \n should have included \n #{nineteen_year_old_with_grade.inspect}"
+#    assert !(participants_by_grade["other"].include? nineteen_year_old_without_grade),
+#                                                   "#{participants_by_grade["other"].inspect} \n should have included \n #{nineteen_year_old_without_grade.inspect}"
+#    puts "-----------------------------\n\n"
+#  end
+
   def test_add_current_year
     p = Participant.new
     p.add_current_year

@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.with_options :controller => 'reports' do |report|
       report.participants_by_age '/participants_by_age', :action => 'participants_by_age'
+      report.participants_by_age '/participants_by_grade', :action => 'participants_by_grade'
       report.families_by_state '/families_by_state', :action => 'families_by_state'
       report.birthdays_by_month '/birthdays_by_month', :action => 'birthdays_by_month'
       report.list_of_cds '/list_of_cds', :action => 'list_of_cds'

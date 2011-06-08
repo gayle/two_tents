@@ -210,6 +210,30 @@ class Participant < ActiveRecord::Base
     h
   end
 
+  def self.group_by_grade
+    participants = Participant.registered
+    puts participants.inspect
+    pre_k = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(pre-k|pre k)/i) : (p.age <= 4)
+    }
+    elementary = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(^kindergarten|1st|first|2nd|second|3rd|third|4th|fourth|5th|fifth)/i) : (p.age >= 5 and p.age <= 11)
+    }
+    middle_school = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?) : (p.age >= 12 and p.age <= 14)
+    }
+    high_school = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?) : (p.age >= 15 and p.age <= 18)
+    }
+    other = (pre_k - participants - elementary - middle_school - high_school).reject { |p| p.grade.blank? }
+
+    { "1: pre-k" => sort_by_age(pre_k),
+      "2: elementary" => sort_by_grade(elementary),
+      "3: middle_school" => sort_by_age(middle_school),
+      "4: high_school" => sort_by_grade(high_school),
+      "5: other" => sort_by_name(other) }
+  end
+
   def self.group_by_birth_month
     participants = Participant.registered
     # Use 2-digit month so it sorts chronologically by month
@@ -250,6 +274,14 @@ class Participant < ActiveRecord::Base
     participants_in_group.sort_by do |p|
       [-p.age, p.lastname, p.firstname]
     end
+  end
+
+  def self.sort_by_grade(participants_in_group)
+    participants_in_group.sort_by do |p|
+      sort_this = p.grade || ""
+      [sort_this, p.age]
+    end
+    # TODO take into account that kindergarten is less than 1st.  And Fifth is greater than Second
   end
 
   def self.sort_by_name(participants_in_group)
