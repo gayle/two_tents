@@ -1,6 +1,6 @@
 <h1>Registrations by Age</h1>
 <table>
-  <% @participants_by_age.keys.reverse.each do |key| %>
+  <% @participants_by_age.keys.sort.each do |key| %>
     <tr>
       <th class="wide"><%= key %></th>
       <th class="wide">Address</th>
