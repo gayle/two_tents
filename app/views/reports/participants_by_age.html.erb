@@ -1,11 +1,11 @@
 <h1>Registrations by Age</h1>
 <table>
-  <% @participants_by_age.keys.sort.each do |key| %>
-    <tr>
-      <th class="wide"><%= key %></th>
+  <% @age_groups.each do |age_group| %>
+      <tr>
+      <th class="wide"><%= age_group.text %></th>
       <th class="wide">Address</th>
     </tr>
-    <% @participants_by_age[key].each_with_index do |participant, i| %>
+    <% age_group.get_participants.each_with_index do |participant, i| %>
       <tr class="<%= ContentHelper.rowstyle(i) %><%= participant.birthday_during_camp? ? ' birthday-in-camp' : '' %>">
         <td>
           <%= "#{i+1}. #{participant.fullname}" %>
