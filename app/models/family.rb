@@ -27,10 +27,10 @@ class Family < ActiveRecord::Base
 
 # TODO make this a named scope instead
 #  named_scope :registered, :joins => :years, :joins => :participants, :conditions => "years.id = #{Year.current.id}"
-  def self.registered
+  def self.registered(year=Year.current)
     Family.all.select{|f|
       current_participants = f.participants.select{|p|
-        p.years.include? Year.current
+        p.years.include? year
       }
       current_participants.present?
     }
@@ -92,8 +92,8 @@ class Family < ActiveRecord::Base
     states = Family.registered.collect { |f| f.states }.flatten.compact
   end
 
-  def self.all_with_cds
-    Family.all.select { |f| f.number_of_photo_cds > 0 }
+  def self.all_with_cds(year=Year.current)
+    Family.registered(year).select { |f| f.number_of_photo_cds > 0 }
   end
 
   # Usually a single family will be from only one state.  Occasionally that is
