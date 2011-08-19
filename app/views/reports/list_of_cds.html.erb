@@ -1,12 +1,15 @@
 <h1>List of CDs</h1>
+<p><%= @total_cds %> total CDs need to be made, for <%= @families_with_photo_cds.size %> families</p>
 <table>
   <tr>
-    <th>Number of CD's</th>
+    <th></th>
+    <th># of CD's</th>
     <th>Family Name (Contact Name)</th>
     <th>Family Address</th>
   </tr>
-  <% @families_with_photo_cds.each do |family| %>
+  <% @families_with_photo_cds.each_with_index do |family, i| %>
   <tr>
+    <td> <%= (i+1) %> </td>
     <td> <%= family.number_of_photo_cds %> </td>
     <td> <%= "#{family.familyname} (#{family.main_contact_name})" %> </td>
     <td> <%= family.full_address %> </td>
