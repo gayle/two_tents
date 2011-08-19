@@ -8,7 +8,7 @@
   <% @families_with_photo_cds.each do |family| %>
   <tr>
     <td> <%= family.number_of_photo_cds %> </td>
-    <td> <%= "#{family.familyname} (#{family.main_contact.firstname})" %> </td>
+    <td> <%= "#{family.familyname} (#{family.main_contact_name})" %> </td>
     <td> <%= family.full_address %> </td>
   </tr>
   <% end %>
