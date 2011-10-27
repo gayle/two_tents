@@ -2,12 +2,7 @@ class AddSecurityQuestionToUsers < ActiveRecord::Migration
   def self.up
     add_column :users, :security_question, :string
     add_column :users, :security_answer, :string
-    
-    User.all.each do |u|
-      u.security_question = "Dads middle name?"
-      u.security_answer = "Pops"
-      u.save
-    end
+    execute %{INSERT INTO users (security_question, security_answer) values ('Dads middle name?','Pops')}
   end
 
   def self.down
