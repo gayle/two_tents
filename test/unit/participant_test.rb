@@ -3,6 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ParticipantTest < ActiveSupport::TestCase
   def setup
     @camp_start = Date.new(2010,7,21)
+    Year.create!(:year=>"#{@camp_start.year}",
+                 :starts_on => "#{@camp_start.strftime("%m/%d/%Y")}",
+                 :ends_on   => "#{(@camp_start+5.days).strftime("%m/%d/%Y")}")
     9.times { Factory(:user) }
     9.times { Factory(:participant) }
   end
@@ -175,15 +178,12 @@ class ParticipantTest < ActiveSupport::TestCase
                      :starts_on => 3.days.from_now,
                      :ends_on => 7.days.from_now)
     p = Participant.new(:birthdate => 5.days.from_now - 1.year)
-    assert p.birthday_during_camp?
+    assert p.birthday_during_camp?, "Participant with birthdate '#{p.birthdate}' does not occur during camp year #{Year.current}"
   end
 
-  def test_birthday_during_camp
-    y = Year.create!(:year => "#{Date.today.year}",
-                     :starts_on => 3.days.from_now,
-                     :ends_on => 7.days.from_now)
-    p = Participant.new(:birthdate => 11.days.from_now - 1.year)
-    assert !p.birthday_during_camp?
+  def test_birthday_not_during_camp
+    p = Participant.new(:birthdate => @camp_start - 1.day)
+    assert !p.birthday_during_camp?, "Participant with birthdate '#{p.birthdate}' does not occur during camp year #{Year.current}"
   end
 
   def test_age_hidden_for_adult

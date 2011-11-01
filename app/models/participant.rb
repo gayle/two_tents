@@ -125,9 +125,9 @@ class Participant < ActiveRecord::Base
 
   def birthday_during_camp?
     return false if birthdate.blank?
-    conf = Year.current
-    current_year_birthday = Date.new(conf.starts_on.year, birthdate.month, birthdate.day)
-    conf.starts_on <= current_year_birthday && current_year_birthday <= conf.ends_on
+    camp_event_year = Year.current
+    current_year_birthday = Date.new(camp_event_year.starts_on.year, birthdate.month, birthdate.day)
+    camp_event_year.starts_on <= current_year_birthday && current_year_birthday <= camp_event_year.ends_on
   end
 
   def validate
