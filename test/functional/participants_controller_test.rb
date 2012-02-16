@@ -12,7 +12,8 @@ class ParticipantsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:participants)
+    assert_not_nil assigns(:past_participants)
+    assert_not_nil assigns(:current_participants)
   end
 
   test "should get new" do

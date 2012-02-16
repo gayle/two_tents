@@ -9,3 +9,4 @@ db/backups
 .heroku
 id_rsa*
 config/setup_load_paths.rb
+*.sqlite3*

@@ -2,33 +2,35 @@
 
 <% if @families.blank? %>
   <p>No families yet. Click the link below to create one.</p>
-
 <% else %>
-<table>
-  <tr>
-    <th></th>
-    <th>Family Name</th>
-    <th>Contact Person</th>
-    <th></th>
-    <th></th>
-  </tr>
+  <%= link_to 'New family', new_family_path, :class => 'icon plus action' %>
+  <p />
 
-<% @families.each_with_index do |family, row| %>
-  <% form_for family do |form| -%>
-  <tr class="<%= ContentHelper.rowstyle(row) %>">
-    <td><%= h( row+1 + @families.offset ) -%></td>
-    <td><%= family.familyname -%></td>
-    <td><%= family.main_contact_name -%></td> 
-<!--    <td><%= form.check_box :infosheet -%></td> -->
-<!--    <td><%= form.submit 'Update' -%></td> -->
-    <!--<td><%= link_to 'Show', family_path(family) -%>-->
-    <td><%= link_to 'Edit', edit_family_path(family), :class => 'edit' %></td>
-    <td><%= link_to 'Destroy', family, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %></td>
-  </tr>
-  <% end -%>
-<% end %>
-</table>
-<%= will_paginate @families -%>
-<br />
-<% end %>
-<%= link_to 'New family', new_family_path, :class => 'button' %>
+  <table>
+    <tr>
+      <th></th>
+      <th>Family Name</th>
+      <th>Contact Person</th>
+      <th></th>
+      <th></th>
+    </tr>
+
+    <% @families.each_with_index do |family, row| %>
+      <% form_for family do |form| -%>
+        <tr class="<%= ContentHelper.rowstyle(row) %>">
+          <td><%= h( row+1 + @families.offset ) -%></td>
+          <td><%= family.familyname -%></td>
+          <td><%= family.main_contact_name -%></td> 
+          <!--    <td><%= form.check_box :infosheet -%></td> -->
+          <!--    <td><%= form.submit 'Update' -%></td> -->
+          <!--<td><%= link_to 'Show', family_path(family) -%>-->
+            <td><%= link_to 'Edit', edit_family_path(family), :class => 'edit' %></td>
+            <td><%= link_to 'Destroy', family, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %></td>
+          </tr>
+        <% end -%>
+      <% end %>
+    </table>
+    <%= will_paginate @families -%>
+    <br />
+  <% end %>
+  <%= link_to 'New family', new_family_path, :class => 'icon plus action' %>

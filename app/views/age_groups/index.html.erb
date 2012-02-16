@@ -1,0 +1,17 @@
+<h1>AgeGroups#index</h1>
+<p>Find me in app/views/age_groups/index.html.erb</p>
+
+<% @age_groups.each do |a| %>
+   <%= a.min %>
+   <%= a.max %>
+   <%= a.text %>
+<% end %>
+
+<% form_for @age_groups do |group| %>
+   <%= render( :partial => 'fields', :locals => { :group => group } ) %>
+   <p>
+   <p>
+   <%= link_to_add_age_group "Add Another Age Group", group, :class=>"float-right icon plus action" %>
+   <%= group.submit 'Update', :disable_with => "Updating...", :class=>"button" %>
+   <%= link_to 'Back', age_groups_path, :class=>"button" %>
+<% end %>

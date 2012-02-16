@@ -1,19 +1,17 @@
 class ParticipantsController < ApplicationController
   before_filter :login_required
-  
+
+  def ajax_review_past_participant
+    # TODO handle exceptions here
+    @participant = Participant.find(params[:id])
+    render :action => "review"
+  end
+
   # GET /participants
   # GET /participants.xml
   def index
-    begin
-      @participants = Participant.current.paginate :all, :page => params[:page], :order => "lastname ASC, firstname ASC"
-    rescue Exception => e
-      flash[:error] = format_flash_error("We're sorry, but something went wrong.", e.to_s)
-    end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @participants }
-    end
+    @past_participants = Participant.past.sort 
+    @current_participants = Participant.current.not_admin :order => "lastname ASC, firstname ASC"
   end
 
   # GET /participants/1
@@ -40,9 +38,14 @@ class ParticipantsController < ApplicationController
     @family.participants << Participant.new
     redirect_to edit_family_path(@family)
   end
-  
+
   # GET /participants/1/edit
   def edit
+    @participant = Participant.find(params[:id])
+  end
+
+  # GET /participants/1/review
+  def review
     @participant = Participant.find(params[:id])
   end
 
@@ -65,6 +68,29 @@ class ParticipantsController < ApplicationController
     end
   end
 
+  def unregister_past_participant
+    @participant = Participant.find(params[:id])
+    respond_to do |format|
+      begin
+        @participant.remove_current_year
+        if @participant.save
+          AuditTrail.audit("Participant #{@participant.fullname} un-registered by #{current_user.login}", edit_participant_url(@participant))
+          flash[:notice] = 'Participant was unregistered for current year'
+        else
+          flash[:error] = format_flash_error("Error un-registering #{@participant.fullname}",
+                                             "unregister_past_participant(): #{@participant.errors.to_a.join(',')}")
+          logger.error @participant.errors.to_a
+        end
+      rescue Exception => e
+        flash[:error] = format_flash_error("Error un-registerig #{@participant.fullname}",
+                                           "unregister_past_participant(): #{e.to_s} : #{e.backtrace[1]}")
+        logger.error "ERROR un-registering participant \n#{@participant.inspect}"
+        logger.error e.backtrace.join("\n\t")
+      end
+      format.html { redirect_to :action => "index" }
+    end
+  end
+
   # PUT /participants/1
   # PUT /participants/1.xml
   def update
@@ -76,17 +102,6 @@ class ParticipantsController < ApplicationController
           flash[:notice] = 'Participants was successfully updated.'
           format.html { redirect_to(participants_url) }
           format.xml  { head :ok }
-  # I don't think we're using this anymore?
-  #        format.js   do
-  #          flash.discard
-  #          render(:update) do |page|
-  #            element = "#{@participant.class}_#{@participant.id}_#{params[:participant].keys[0]}"
-  #            page.replace_html(element,
-  #                              :partial => 'flipflop',
-  #                              :locals => {:p => @participant,
-  #                                :type => params[:participant].keys[0] } )
-  #          end
-  #        end
         else
           flash[:error] = format_flash_error("Error updating #{@participant.fullname}",
                                              "participant update(): \n #{format_validation_errors(@participant.errors)}")
@@ -99,6 +114,29 @@ class ParticipantsController < ApplicationController
         logger.error e.backtrace.join("\n\t")
         format.html { render :action => "edit" }
         format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_register
+    @participant = Participant.find(params[:id])
+    respond_to do |format|
+      begin
+        @participant.add_current_year
+        if @participant.update_attributes(params[:participant])
+          AuditTrail.audit("Participant #{@participant.fullname} updated by #{current_user.login}", edit_participant_url(@participant))
+          flash[:notice] = 'Participants was successfully updated.'
+        else
+          flash[:error] = format_flash_error("Error re-registering #{@participant.fullname}",
+                                             "update(): \n#{format_validation_errors(@participant.errors)}")
+          logger.error e.backtrace.join("\n\t")
+        end
+        format.html { redirect_to :action => "index" }
+      rescue Exception => e
+        flash[:error] = format_flash_error("Error updating #{@participant.fullname}", "past participant update(): \n#{e.to_s} : #{e.backtrace[1]}")
+        logger.error "ERROR updating participant \n#{@participant.inspect}"
+        logger.error e.backtrace.join("\n\t")
+        format.html { render :action => "index" }
       end
     end
   end

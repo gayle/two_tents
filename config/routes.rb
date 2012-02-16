@@ -1,15 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
+    admin.resources :age_groups, :collection => {:edit_all => :get, :update_all => :post}
+
     admin.resources :participants
     admin.with_options :controller => 'participants' do |participant|
       participant.new_choose_family 'new_choose_family/:id', :action => 'new_choose_family'
+      participant.review '/review', :action => 'review'
+      participant.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
+      participant.unregister_past_participant '/unregister_past_participant/:id', :action => 'unregister_past_participant'
+      participant.update_register '/update_register/:id', :action => 'update_register'
     end
 
-    admin.resources :participants_past
-    admin.with_options :controller => 'participants_past' do |family|
-      family.ajax_review_past_participant '/ajax_review_past_participant/:id', :action => 'ajax_review_past_participant'
-      family.unregister_past_participant '/unregister_past_participant/:id', :action => 'unregister_past_participant'
-    end
     admin.resources :families
     admin.with_options :controller => 'families' do |family|
       family.families_past '/families_past', :action => 'families_past'
@@ -19,8 +20,10 @@ ActionController::Routing::Routes.draw do |map|
 
     admin.with_options :controller => 'reports' do |report|
       report.participants_by_age '/participants_by_age', :action => 'participants_by_age'
+      report.participants_by_age '/participants_by_grade', :action => 'participants_by_grade'
       report.families_by_state '/families_by_state', :action => 'families_by_state'
       report.birthdays_by_month '/birthdays_by_month', :action => 'birthdays_by_month'
+      report.list_of_cds '/list_of_cds', :action => 'list_of_cds'
     end
 
     admin.with_options :controller => 'years' do |year|

@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     @user.roles << Role.find_or_create_by_name(:name => "admin") if params[:user][:admin_role] == '1'
     @user.attributes = params[:user]
     if @user.save
-      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", user_url(@user))
+      AuditTrail.audit("User '#{@user.participant.fullname}' (#{@user.login}) created by user #{current_user.login}", edit_user_url(@user))
       flash[:notice] = "'#{@user.participant.fullname}' (#{@user.login}) is now registered as #{@user.roles.collect { |x| x.name }.join(', ')}"
       redirect_to :action => 'index'
     else

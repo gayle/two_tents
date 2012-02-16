@@ -28,7 +28,7 @@ class Participant < ActiveRecord::Base
   end
 
   # at least validate presence fields used directly or indirectlyr for sorting
-  validates_presence_of :lastname, :firstname, :birthdate
+  validates_presence_of :lastname, :firstname, :birthdate, :birthdate_string
 
   named_scope :main_contact, :conditions => { :main_contact => true }
 
@@ -86,6 +86,7 @@ class Participant < ActiveRecord::Base
   def birthdate_string=(bd_str)
     self.birthdate = Date.parse(bd_str)
   rescue ArgumentError
+    self.birthdate = ""
     @birthdate_invalid = true
   end
 
@@ -124,14 +125,13 @@ class Participant < ActiveRecord::Base
 
   def birthday_during_camp?
     return false if birthdate.blank?
-    conf = Year.current
-    current_year_birthday = Date.new(conf.starts_on.year, birthdate.month, birthdate.day)
-    conf.starts_on <= current_year_birthday && current_year_birthday <= conf.ends_on
+    camp_event_year = Year.current
+    current_year_birthday = Date.new(camp_event_year.starts_on.year, birthdate.month, birthdate.day)
+    camp_event_year.starts_on <= current_year_birthday && current_year_birthday <= camp_event_year.ends_on
   end
 
   def validate
     errors.add(:birthdate, "is invalid") if @birthdate_invalid
-    #errors.add(:participant, "is already in the system") if duplicate?
   end
 
   def staff?
@@ -182,7 +182,7 @@ class Participant < ActiveRecord::Base
 #    Participant.all.select { |p| p.main_contact? }
 #  end
 #
-  def self.group_by_age
+  def self.group_by_age_old
     participants = Participant.registered
     young_children = participants.select { |p| p.age <= 5 }
     children = participants.select       { |p| p.age >= 6  and p.age <= 11 }
@@ -194,6 +194,44 @@ class Participant < ActiveRecord::Base
       "Age 06 to 11" => sort_by_age(children),
       "Age 12 to 17" => sort_by_age(youth),
       "Age 18 and over" => sort_by_name(adults) }
+  end
+
+  def self.group_by_age
+    h = Hash.new
+    age_groups = AgeGroup.all.sort_by { |ag| ag.min }
+    age_groups.each do |ag|
+      participants = select_participants_by_age_group(ag.min, ag.max)
+      if ag.sortby == "name"
+        h[ag.text] = sort_by_name(participants)
+      else
+        h[ag.text] = sort_by_age(participants)
+      end
+    end
+    h
+  end
+
+  def self.group_by_grade
+    participants = Participant.registered
+    puts participants.inspect
+    pre_k = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(pre-k|pre k)/i) : (p.age <= 4)
+    }
+    elementary = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(^kindergarten|1st|first|2nd|second|3rd|third|4th|fourth|5th|fifth)/i) : (p.age >= 5 and p.age <= 11)
+    }
+    middle_school = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?) : (p.age >= 12 and p.age <= 14)
+    }
+    high_school = participants.select {|p|
+      p.grade.present? ? (p.grade.match /(9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?) : (p.age >= 15 and p.age <= 18)
+    }
+    other = (pre_k - participants - elementary - middle_school - high_school).reject { |p| p.grade.blank? }
+
+    { "1: pre-k" => sort_by_age(pre_k),
+      "2: elementary" => sort_by_grade(elementary),
+      "3: middle_school" => sort_by_age(middle_school),
+      "4: high_school" => sort_by_grade(high_school),
+      "5: other" => sort_by_name(other) }
   end
 
   def self.group_by_birth_month
@@ -226,10 +264,24 @@ class Participant < ActiveRecord::Base
 
   private
 
+  def self.select_participants_by_age_group(min, max)
+    Participant.registered.select do |p|
+      p.age >= min and p.age <= max
+    end
+  end
+
   def self.sort_by_age(participants_in_group)
     participants_in_group.sort_by do |p|
       [-p.age, p.lastname, p.firstname]
     end
+  end
+
+  def self.sort_by_grade(participants_in_group)
+    participants_in_group.sort_by do |p|
+      sort_this = p.grade || ""
+      [sort_this, p.age]
+    end
+    # TODO take into account that kindergarten is less than 1st.  And Fifth is greater than Second
   end
 
   def self.sort_by_name(participants_in_group)
