@@ -18,7 +18,7 @@ GEM
     factory_girl (2.5.2)
       activesupport (>= 2.3.9)
     ffi (1.0.11)
-    hoe (2.13.1)
+    hoe (2.12.2)
       rake (~> 0.8)
     hoptoad_notifier (2.3.2)
       activesupport
@@ -70,6 +70,7 @@ PLATFORMS
 
 DEPENDENCIES
   factory_girl
+  hoe (= 2.12.2)
   hoptoad_notifier (= 2.3.2)
   pg (= 0.10.0)
   rails (= 2.3.9)
