@@ -27,5 +27,6 @@ class ReportsController < ApplicationController
 
   def list_of_cds
     @families_with_photo_cds = Family.all_with_cds
+    @total_cds = @families_with_photo_cds.collect {|f| f.number_of_photo_cds}.reduce(:+)
   end
 end
