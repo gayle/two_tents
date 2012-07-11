@@ -200,51 +200,236 @@ class ParticipantTest < ActiveSupport::TestCase
     assert !p.hide_age?
   end
 
-#  # TODO fix this, it passes individually, but not when running "rake"
-#  def test_group_by_grade_should_include_18_and_under_with_or_without_grade_field_populated
-#    start_of_camp = Year.current.starts_on
-#    six_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tommy",
-#                                              :birthdate => start_of_camp-6.years, :grade => "1st grade")
-#    six_year_old_with_grade.save!
-#    six_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timmy",
-#                                                 :birthdate => start_of_camp-6.years)
-#    six_year_old_without_grade.save!
-#    eighteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tom",
-#                                                   :birthdate => start_of_camp-18.years, :grade => "12th")
-#    eighteen_year_old_with_grade.save!
-#    eighteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Tim",
-#                                                      :birthdate => start_of_camp-18.years)
-#    eighteen_year_old_without_grade.save!
-#
-#    participants_by_grade = Participant.group_by_grade
-#
-#    assert (participants_by_grade["elementary"].include? six_year_old_with_grade),
-#                                               "#{participants_by_grade["elementary"].inspect} \n should have included \n #{six_year_old_with_grade.inspect}"
-#    assert (participants_by_grade["elementary"].include? six_year_old_without_grade),
-#                                               "#{participants_by_grade["elementary"].inspect} \n should have included \n #{six_year_old_without_grade.inspect}"
-#    assert (participants_by_grade["high_school"].include? eighteen_year_old_with_grade)
-#    assert (participants_by_grade["high_school"].include? eighteen_year_old_without_grade)
-#  end
+  def test_group_by_grade_should_include_16_and_under_with_or_without_grade_field_populated
+    start_of_camp = Year.current.starts_on
+    six_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tommy",
+                                              :birthdate => start_of_camp-6.years, :grade => "1st grade")
+    six_year_old_with_grade.save!
 
-#  # TODO fix this, it passes individually, but not when running "rake"
-#  def test_group_by_grade_should_include_over_18_if_grade_field_populated
-#    puts "\n\n-----------------------------"
-#    start_of_camp = Year.current.starts_on
-#    nineteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Thomas",
-#                                                   :birthdate => start_of_camp-19.years, :grade => "sophomore in college")
-#    nineteen_year_old_with_grade.save!
-#    nineteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timothy",
-#                                                      :birthdate => start_of_camp-19.years)
-#    nineteen_year_old_without_grade.save!
-#
-#    participants_by_grade = Participant.group_by_grade
-#
-#    assert (participants_by_grade["other"].include? nineteen_year_old_with_grade),
-#                                                   "#{participants_by_grade["other"].inspect} \n should have included \n #{nineteen_year_old_with_grade.inspect}"
-#    assert !(participants_by_grade["other"].include? nineteen_year_old_without_grade),
-#                                                   "#{participants_by_grade["other"].inspect} \n should have included \n #{nineteen_year_old_without_grade.inspect}"
-#    puts "-----------------------------\n\n"
-#  end
+    six_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timmy",
+                                                 :birthdate => start_of_camp-6.years)
+    six_year_old_without_grade.save!
+    sixteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Tom",
+                                                   :birthdate => start_of_camp-16.years, :grade => "12th")
+    sixteen_year_old_with_grade.save!
+    sixteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Tim",
+                                                      :birthdate => start_of_camp-16.years)
+    sixteen_year_old_without_grade.save!
+
+    participants_by_grade = Participant.group_by_grade
+
+    high_school_group = participants_by_grade["6: high_school"]
+    assert_false high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    younger_elementary_group = participants_by_grade["3: younger_elementary"]
+    assert_false younger_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    older_elementary_group = participants_by_grade["4: older_elementary"]
+    assert_false older_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    # TODO What about this situation? Should we be accounting for age in kids that should have a grade?
+    assert (participants_by_grade["2: elementary"].include? six_year_old_with_grade),
+                                               "#{participants_by_grade["2: elementary"].inspect} \n should have included \n #{six_year_old_with_grade.inspect}"
+    assert (participants_by_grade["2: elementary"].include? six_year_old_without_grade),
+                                               "#{participants_by_grade["2: elementary"].inspect} \n should have included \n #{six_year_old_without_grade.inspect}"
+    assert (participants_by_grade["4: high_school"].include? sixteen_year_old_with_grade),
+                                               "#{participants_by_grade["4: high_school"].inspect} \n should have included \n #{sixteen_year_old_with_grade.inspect}"
+    assert (participants_by_grade["4: high_school"].include? sixteen_year_old_without_grade),
+                                               "#{participants_by_grade["4: high_school"].inspect} \n should have included \n #{sixteen_year_old_with_grade.inspect}"
+  end
+
+  def test_group_by_grade_should_not_include_17_if_grade_field_not_populated
+    start_of_camp = Year.current.starts_on
+    seventeen_year_old_still_in_high_school = Participant.new(:lastname => "Tester", :firstname => "Tom",
+                                                    :birthdate => start_of_camp-17.years, :grade => "12th")
+    seventeen_year_old_still_in_high_school.save!
+    seventeen_year_old_graduated_from_high_school = Participant.new(:lastname => "Tester", :firstname => "Tim",
+                                                       :birthdate => start_of_camp-17.years)
+    seventeen_year_old_graduated_from_high_school.save!
+
+    participants_by_grade = Participant.group_by_grade
+
+    high_school_group = participants_by_grade["6: high_school"]
+    assert_false high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !(high_school_group.include? seventeen_year_old_graduated_from_high_school),
+           "#{high_school_group.inspect} \n should NOT have included \n #{seventeen_year_old_graduated_from_high_school.inspect}"
+    assert (high_school_group.include? seventeen_year_old_still_in_high_school),
+           "#{high_school_group.inspect} \n should have included \n #{seventeen_year_old_still_in_high_school.inspect}"
+  end
+
+  def test_group_by_grade_should_include_over_18_if_grade_field_populated
+    start_of_camp = Year.current.starts_on
+    eighteen_year_old_with_grade = Participant.new(:lastname => "Tester", :firstname => "Thomas",
+                                                   :birthdate => start_of_camp-18.years, :grade => "senior")
+    eighteen_year_old_with_grade.save!
+    eighteen_year_old_without_grade = Participant.new(:lastname => "Tester", :firstname => "Timothy",
+                                                      :birthdate => start_of_camp-18.years)
+    eighteen_year_old_without_grade.save!
+
+    participants_by_grade = Participant.group_by_grade
+    other_group = participants_by_grade["7: other"]
+    assert_false other_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert (other_group.include? eighteen_year_old_with_grade),
+           "#{other_group.inspect} \n should have included \n #{eighteen_year_old_with_grade.inspect}"
+    assert !(other_group.include? eighteen_year_old_without_grade),
+           "#{other_group.inspect} \n should have included \n #{eighteen_year_old_without_grade.inspect}"
+  end
+
+  def test_group_by_grade_should_include_age_0_to_2_in_child_care_group
+    start_of_camp = Year.current.starts_on
+    zero_year_old = Participant.new(:lastname => "Zero", :firstname => "A", :birthdate => start_of_camp-18.days)
+    zero_year_old.save!
+    one_year_old = Participant.new(:lastname => "One", :firstname => "B", :birthdate => start_of_camp-1.year)
+    one_year_old.save!
+    two_year_old = Participant.new(:lastname => "Two", :firstname => "C", :birthdate => start_of_camp-2.years)
+    two_year_old.save!
+    three_year_old = Participant.new(:lastname => "Two", :firstname => "C", :birthdate => start_of_camp-3.years)
+    three_year_old.save!
+
+    participants_by_grade = Participant.group_by_grade
+    child_care_group = participants_by_grade["1: child_care"]
+    assert_false child_care_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert (child_care_group.include? zero_year_old),
+           "#{child_care_group.inspect} \n should have included \n #{zero_year_old.inspect}"
+    assert (child_care_group.include? one_year_old),
+           "#{child_care_group.inspect} \n should have included \n #{one_year_old.inspect}"
+    assert (child_care_group.include? two_year_old),
+           "#{child_care_group.inspect} \n should have included \n #{two_year_old.inspect}"
+    assert !(child_care_group.include? three_year_old),
+           "#{child_care_group.inspect} \n should NOT have included \n #{three_year_old.inspect}"
+  end
+
+  def test_group_by_grade_should_include_age_3_to_5_going_into_kindergarten_in_pre_k_group
+    start_of_camp = Year.current.starts_on
+
+    two_year_old = Participant.new(:lastname => "Two", :firstname => "A", :birthdate => start_of_camp-2.years, :grade => "pre-k")
+    two_year_old.save!
+    three_year_old = Participant.new(:lastname => "Three", :firstname => "B", :birthdate => start_of_camp-3.years, :grade => "pre-k")
+    three_year_old.save!
+    four_year_old = Participant.new(:lastname => "Four", :firstname => "C", :birthdate => start_of_camp-4.years, :grade => "pre-k")
+    four_year_old.save!
+    five_year_old = Participant.new(:lastname => "Five", :firstname => "D", :birthdate => start_of_camp-5.years, :grade => "pre-k")
+    five_year_old.save!
+    six_year_old_going_into_kindergarten = Participant.new(:lastname => "Six", :firstname => "K", :birthdate => start_of_camp-6.years, :grade => "kindergarten")
+    six_year_old_going_into_kindergarten.save!
+    six_year_old_going_into_first_grade = Participant.new(:lastname => "Six", :firstname => "1st", :birthdate => start_of_camp-6.years, :grade => "1st")
+    six_year_old_going_into_first_grade.save!
+
+    participants_by_grade = Participant.group_by_grade
+    pre_k_group = participants_by_grade["2: pre_k"]
+    assert_false pre_k_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert !(pre_k_group.include? two_year_old),
+           "#{pre_k_group.inspect} \n should NOT have included \n #{two_year_old.inspect}"
+    assert (pre_k_group.include? three_year_old),
+           "#{pre_k_group.inspect} \n should have included \n #{three_year_old.inspect}"
+    assert (pre_k_group.include? four_year_old),
+           "#{pre_k_group.inspect} \n should have included \n #{four_year_old.inspect}"
+    assert (pre_k_group.include? five_year_old),
+           "#{pre_k_group.inspect} \n should have included \n #{five_year_old.inspect}"
+    assert (pre_k_group.include? six_year_old_going_into_kindergarten),
+           "#{pre_k_group.inspect} \n should have included \n #{six_year_old_going_into_kindergarten.inspect}"
+    assert !(pre_k_group.include? six_year_old_going_into_first_grade),
+           "#{pre_k_group.inspect} \n should NOT have included \n #{six_year_old_going_into_first_grade.inspect}"
+  end
+
+  def test_group_by_grade_should_include_first_and_second_grade_in_younger_elementary_group
+    start_of_camp = Year.current.starts_on
+    kindergartener = Participant.create!(:lastname => "Kay", :firstname => "A", :birthdate => start_of_camp-5.years, :grade => "Kindergarten")
+    first_grader = Participant.create!(:lastname => "First", :firstname => "B", :birthdate => start_of_camp-6.years, :grade => "1st")
+    second_grader = Participant.create!(:lastname => "Second", :firstname => "C", :birthdate => start_of_camp-7.years, :grade => "2nd")
+    third_grader = Participant.create!(:lastname => "Third", :firstname => "D", :birthdate => start_of_camp-8.years, :grade => "3rd")
+
+    participants_by_grade = Participant.group_by_grade
+    younger_elementary_group = participants_by_grade["3: younger_elementary"]
+    assert_false younger_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert !(younger_elementary_group.include? kindergartener),
+           "#{younger_elementary_group.inspect} \n should NOT have included \n #{kindergartener.inspect}"
+    assert (younger_elementary_group.include? first_grader),
+           "#{younger_elementary_group.inspect} \n should have included \n #{first_grader.inspect}"
+    assert (younger_elementary_group.include? second_grader),
+           "#{younger_elementary_group.inspect} \n should have included \n #{second_grader.inspect}"
+    assert !(younger_elementary_group.include? third_grader),
+           "#{younger_elementary_group.inspect} \n should NOT have included \n #{third_grader.inspect}"
+  end
+
+  def test_group_by_grade_should_include_third_and_fourth_grade_in_older_elemetary_group
+    start_of_camp = Year.current.starts_on
+    second_grader = Participant.create!(:lastname => "Second", :firstname => "A", :birthdate => start_of_camp-7.years, :grade => "2nd")
+    third_grader = Participant.create!(:lastname => "Third", :firstname => "B", :birthdate => start_of_camp-8.years, :grade => "3rd")
+    fourth_grader = Participant.create!(:lastname => "Fourth", :firstname => "C", :birthdate => start_of_camp-9.years, :grade => "4th")
+    fifth_grader = Participant.create!(:lastname => "Fifth", :firstname => "D", :birthdate => start_of_camp-10.years, :grade => "5th")
+
+    participants_by_grade = Participant.group_by_grade
+    older_elementary_group = participants_by_grade["4: older_elementary"]
+    assert_false older_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert !(older_elementary_group.include? second_grader),
+           "#{older_elementary_group.inspect} \n should NOT have included \n #{second_grader.inspect}"
+    assert (older_elementary_group.include? third_grader),
+           "#{older_elementary_group.inspect} \n should have included \n #{third_grader.inspect}"
+    assert (older_elementary_group.include? fourth_grader),
+           "#{older_elementary_group.inspect} \n should have included \n #{fourth_grader.inspect}"
+    assert !(older_elementary_group.include? fifth_grader),
+           "#{older_elementary_group.inspect} \n should NOT have included \n #{fifth_grader.inspect}"
+  end
+
+  def test_group_by_grade_should_include_fifth_to_eighth_grade_in_middle_school_group
+    start_of_camp = Year.current.starts_on
+
+    fourth_grader = Participant.create!(:lastname => "Fourth", :firstname => "D", :birthdate => start_of_camp-9.years, :grade => "4th")
+    fifth_grader = Participant.create!(:lastname => "Fifth", :firstname => "D", :birthdate => start_of_camp-10.years, :grade => "5th")
+    sixth_grader = Participant.create!(:lastname => "Sixth", :firstname => "D", :birthdate => start_of_camp-11.years, :grade => "6th")
+    seventh_grader = Participant.create!(:lastname => "Seventh", :firstname => "D", :birthdate => start_of_camp-12.years, :grade => "7th")
+    eighth_grader = Participant.create!(:lastname => "Eighth", :firstname => "D", :birthdate => start_of_camp-13.years, :grade => "8th")
+    ninth_grader = Participant.create!(:lastname => "Ninth", :firstname => "D", :birthdate => start_of_camp-14.years, :grade => "9th")
+
+    participants_by_grade = Participant.group_by_grade
+    middle_school_group = participants_by_grade["5: middle_school"]
+    assert_false middle_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert !(middle_school_group.include? fourth_grader),
+           "#{middle_school_group.inspect} \n should NOT have included \n #{fourth_grader.inspect}"
+    assert (middle_school_group.include? fifth_grader),
+           "#{middle_school_group.inspect} \n should have included \n #{fifth_grader.inspect}"
+    assert (middle_school_group.include? sixth_grader),
+           "#{middle_school_group.inspect} \n should have included \n #{sixth_grader.inspect}"
+    assert (middle_school_group.include? seventh_grader),
+           "#{middle_school_group.inspect} \n should have included \n #{seventh_grader.inspect}"
+    assert (middle_school_group.include? eighth_grader),
+           "#{middle_school_group.inspect} \n should have included \n #{eighth_grader.inspect}"
+    assert !(middle_school_group.include? ninth_grader),
+           "#{middle_school_group.inspect} \n should NOT have included \n #{ninth_grader.inspect}"
+  end
+
+  def test_group_by_grade_should_include_ninth_to_twelth_grade_in_high_school_group
+    start_of_camp = Year.current.starts_on
+
+    eighth_grader = Participant.create!(:lastname => "Eighth", :firstname => "D", :birthdate => start_of_camp-13.years, :grade => "8th")
+    ninth_grader = Participant.create!(:lastname => "Ninth", :firstname => "D", :birthdate => start_of_camp-14.years, :grade => "9th")
+    tenth_grader = Participant.create!(:lastname => "Tenth", :firstname => "D", :birthdate => start_of_camp-15.years, :grade => "10th")
+    eleventh_grader = Participant.create!(:lastname => "Eleventh", :firstname => "D", :birthdate => start_of_camp-16.years, :grade => "11th")
+    twelfth_grader = Participant.create!(:lastname => "Twelfth", :firstname => "D", :birthdate => start_of_camp-17.years, :grade => "12th")
+    graduate = Participant.create!(:lastname => "Grad", :firstname => "D", :birthdate => start_of_camp-18.years)
+
+    participants_by_grade = Participant.group_by_grade
+    high_school_group = participants_by_grade["6: high_school"]
+    assert_false high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+
+    assert !(high_school_group.include? eighth_grader),
+           "#{high_school_group.inspect} \n should NOT have included \n #{eighth_grader.inspect}"
+    assert (high_school_group.include? ninth_grader),
+           "#{high_school_group.inspect} \n should have included \n #{ninth_grader.inspect}"
+    assert (high_school_group.include? tenth_grader),
+           "#{high_school_group.inspect} \n should have included \n #{tenth_grader.inspect}"
+    assert (high_school_group.include? eleventh_grader),
+           "#{high_school_group.inspect} \n should have included \n #{eleventh_grader.inspect}"
+    assert (high_school_group.include? twelfth_grader),
+           "#{high_school_group.inspect} \n should have included \n #{twelfth_grader.inspect}"
+    assert !(high_school_group.include? graduate),
+           "#{high_school_group.inspect} \n should NOT have included \n #{graduate.inspect}"
+  end
 
   def test_add_current_year
     p = Participant.new

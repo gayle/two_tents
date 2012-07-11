@@ -33,7 +33,7 @@ class Participant < ActiveRecord::Base
   named_scope :main_contact, :conditions => { :main_contact => true }
 
   named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}", :order => "lastname ASC, firstname ASC"
-#  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
+  #  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
   named_scope :not_admin, :conditions => ["lastname <> ? and lastname <> ?",'administrator','admin']
 
   # List of participants registered in the past AND are NOT currently registered.
@@ -212,26 +212,36 @@ class Participant < ActiveRecord::Base
 
   def self.group_by_grade
     participants = Participant.registered
-    puts participants.inspect
-    pre_k = participants.select {|p|
-      p.grade.present? ? (p.grade.match /(pre-k|pre k)/i) : (p.age <= 4)
+
+    child_care = participants.select {|p|
+      p.age <= 2
     }
-    elementary = participants.select {|p|
-      p.grade.present? ? (p.grade.match /(^kindergarten|1st|first|2nd|second|3rd|third|4th|fourth|5th|fifth)/i) : (p.age >= 5 and p.age <= 11)
+    pre_k = participants.select {|p|
+      (p.grade.match /(kindergarten)/i) or (p.age >= 3 and p.age <= 5)
+    }
+    younger_elementary = participants.select {|p|
+      p.grade.match /(^1st|first|2nd|second)/i if p.grade.present?
+    }
+    older_elementary = participants.select {|p|
+      p.grade.match /(^3rd|third|4th|fourth)/i if p.grade.present?
     }
     middle_school = participants.select {|p|
-      p.grade.present? ? (p.grade.match /(6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?) : (p.age >= 12 and p.age <= 14)
+      p.grade.match /(^5th|fifth|6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?
     }
     high_school = participants.select {|p|
-      p.grade.present? ? (p.grade.match /(9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?) : (p.age >= 15 and p.age <= 18)
+      p.grade.match /(^9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?
     }
-    other = (pre_k - participants - elementary - middle_school - high_school).reject { |p| p.grade.blank? }
+    other = (participants - child_care - pre_k - younger_elementary - older_elementary - middle_school - high_school).reject { |p| p.grade.blank? }
 
-    { "1: pre-k" => sort_by_age(pre_k),
-      "2: elementary" => sort_by_grade(elementary),
-      "3: middle_school" => sort_by_age(middle_school),
-      "4: high_school" => sort_by_grade(high_school),
-      "5: other" => sort_by_name(other) }
+    #o Pre-School 3 yrs – 5 years old going into Kintergarten
+
+    { "1: child_care" => sort_by_age(pre_k),
+      "2: pre_k" => sort_by_age(pre_k),
+      "3: younger_elementary" => sort_by_grade(younger_elementary),
+      "4: older_elementary" => sort_by_grade(older_elementary),
+      "5: middle_school" => sort_by_age(middle_school),
+      "6: high_school" => sort_by_grade(high_school),
+      "7: other" => sort_by_name(other) }
   end
 
   def self.group_by_birth_month
