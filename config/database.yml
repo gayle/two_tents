@@ -3,6 +3,9 @@
 development:
   adapter: sqlite3
   database: db/development.sqlite3
+# This didn't work b/c I couldn't install the "pg" gem.
+#  adapter: postgresql
+#  database: two_tents_development
   pool: 5
   timeout: 5000
 
