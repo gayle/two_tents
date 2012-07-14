@@ -75,7 +75,7 @@ class Family < ActiveRecord::Base
   end
 
   def main_contact_name
-    main_contact.firstname rescue "unknown"
+    main_contact.firstname rescue "no main contact for this family"
   end
 
   def cities

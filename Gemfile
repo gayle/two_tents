@@ -16,6 +16,7 @@ group :test do
   gem 'factory_girl'
   gem 'sqlite3-ruby'
   gem 'watir' #, "2.0.1"
+  gem 'ffi', '1.0.11'
 end
 
 # bundle install --without production
