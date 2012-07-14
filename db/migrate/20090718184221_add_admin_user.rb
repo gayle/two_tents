@@ -1,8 +1,7 @@
 class AddAdminUser < ActiveRecord::Migration
   def self.up
     execute %{INSERT INTO participants (lastname, firstname) values ('administrator','administrator')}
-    results = execute %{SELECT id FROM participants ORDER BY id DESC}
-    most_recent_participant_id = results.first
+    p = Participant.find(:first)
 
     # NOTE: Previous insert into participants was changed from previous version where it was using Participant.new.
     # This should not use the modal here, either.  But User doesn't actually have a "password" or "password_confirmation"
@@ -12,7 +11,7 @@ class AddAdminUser < ActiveRecord::Migration
                  :password => "administrator",
                  :password_confirmation => "administrator",
                  :email => "administrator@example.com")
-    u.participant_id = most_recent_participant_id
+    u.participant = p
     u.save_without_validation!
   end
 
