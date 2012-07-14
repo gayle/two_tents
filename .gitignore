@@ -10,3 +10,4 @@ db/backups
 id_rsa*
 config/setup_load_paths.rb
 *.sqlite3*
+.bundle/
