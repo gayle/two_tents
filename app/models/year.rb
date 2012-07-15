@@ -11,6 +11,7 @@ class Year < ActiveRecord::Base
   end
 
   def self.current
+                                        # this OR could be dangerous for tests not expecting it.  Is there a better way?
     find(:first, :order => "year DESC") || Year.create!(:year=>"#{Date.today.year}",
                                                         :starts_on => "#{Date.today.strftime("%m/%d/%Y")}",
                                                         :ends_on   => "#{(Date.today+1.year).strftime("%m/%d/%Y")}")

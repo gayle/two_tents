@@ -32,7 +32,13 @@ class Participant < ActiveRecord::Base
 
   named_scope :main_contact, :conditions => { :main_contact => true }
 
-  named_scope :current, :joins => :years, :conditions => "years.id = #{Year.current.id}", :order => "lastname ASC, firstname ASC"
+  # TODO Fix the named scope to behave like the static method.  But it's like the named scope gets set in stone before
+  # the test's setup (where it's creating a year) even gets a chance to run, so the current year's not defined yet.
+  # named_scope :current, :joins => :years, :conditions => ["years.id = ?", Year.current.id], :order => "lastname ASC, firstname ASC"
+  def self.current
+    Participant.all.select {|p| p.registered_for_current_year? }
+  end
+
   #  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
   named_scope :not_admin, :conditions => ["lastname <> ? and lastname <> ?",'administrator','admin']
 
@@ -171,7 +177,8 @@ class Participant < ActiveRecord::Base
   end
 
   def self.registered
-    self.current.not_admin
+    #self.current.not_admin #Named scopes were behaving badly.
+    current.reject {|p| p.lastname == 'administrator' or p.lastname == 'admin'}
   end
   
   def self.find_non_staff_participants
@@ -217,7 +224,7 @@ class Participant < ActiveRecord::Base
       p.age <= 2
     }
     pre_k = participants.select {|p|
-      (p.grade.match /(kindergarten)/i) or (p.age >= 3 and p.age <= 5)
+      (p.age >= 3 and p.age <= 5) or (p.grade.match /(kindergarten)/i if p.grade.present?)
     }
     younger_elementary = participants.select {|p|
       p.grade.match /(^1st|first|2nd|second)/i if p.grade.present?
@@ -233,9 +240,7 @@ class Participant < ActiveRecord::Base
     }
     other = (participants - child_care - pre_k - younger_elementary - older_elementary - middle_school - high_school).reject { |p| p.grade.blank? }
 
-    #o Pre-School 3 yrs – 5 years old going into Kintergarten
-
-    { "1: child_care" => sort_by_age(pre_k),
+    { "1: child_care" => sort_by_age(child_care),
       "2: pre_k" => sort_by_age(pre_k),
       "3: younger_elementary" => sort_by_grade(younger_elementary),
       "4: older_elementary" => sort_by_grade(older_elementary),
@@ -265,7 +270,7 @@ class Participant < ActiveRecord::Base
   def add_current_year
     self.years ||= []
     current = Year.current
-    self.years << current if not years.include?(current)
+    self.years << current if not self.years.include?(current)
   end
 
   def remove_current_year
