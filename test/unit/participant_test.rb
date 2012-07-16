@@ -3,13 +3,11 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ParticipantTest < ActiveSupport::TestCase
   def setup
     @camp_start = Date.new(2010,7,21)
-    Rails.logger.fatal("\n\n\n\n\n\n\n\n\n\n CREATING NEW YEAR #{@camp_start}--")
     Year.create!(:year=>"#{@camp_start.year}",
                  :starts_on => "#{@camp_start.strftime("%m/%d/%Y")}",
                  :ends_on   => "#{(@camp_start+5.days).strftime("%m/%d/%Y")}")
     9.times { Factory(:user) }
     9.times { Factory(:participant) }
-    Rails.logger.fatal("\n\n--")
   end
 
   def test_current
