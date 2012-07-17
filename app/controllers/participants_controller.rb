@@ -11,7 +11,7 @@ class ParticipantsController < ApplicationController
   # GET /participants.xml
   def index
     @past_participants = Participant.past.sort 
-    @current_participants = Participant.current.not_admin :order => "lastname ASC, firstname ASC"
+    @current_participants = Participant.registered.sort
   end
 
   # GET /participants/1
