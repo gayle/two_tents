@@ -46,28 +46,64 @@ class AgeGroupTest < ActiveSupport::TestCase
   end
 
   def test_get_participant_sorting
-    six_year_old_CW = Participant.new(:lastname => "Why", :firstname => "C", :birthdate => @start_of_camp-6.years)
-    six_year_old_CW.save!
+    six_year_old_CU = Participant.new(:lastname => "Underwood", :firstname => "C", :birthdate => @start_of_camp-6.years)
+    six_year_old_CU.save!
     seven_year_old_AZ = Participant.new(:lastname => "Zee", :firstname => "A", :birthdate => @start_of_camp-7.years)
     seven_year_old_AZ.save!
-    seven_year_old_BW = Participant.new(:lastname => "Why", :firstname => "B", :birthdate => @start_of_camp-7.years)
-    seven_year_old_BW .save!
+    seven_year_old_BU = Participant.new(:lastname => "Underwood", :firstname => "B", :birthdate => @start_of_camp-7.years)
+    seven_year_old_BU .save!
     seven_year_old_BZ = Participant.new(:lastname => "Zee", :firstname => "B", :birthdate => @start_of_camp-7.years)
     seven_year_old_BZ .save!
 
     assert_equal "age", @six_to_eleven.sortby
     participants = @six_to_eleven.get_participants
-    assert participants[0] == six_year_old_CW, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[1] == seven_year_old_BW, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[2] == seven_year_old_AZ, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[3] == seven_year_old_BZ, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
+    assert_position_of_participant_in_list(0, six_year_old_CU, participants)
+    assert_position_of_participant_in_list(1, seven_year_old_BU, participants)
+    assert_position_of_participant_in_list(2, seven_year_old_AZ, participants)
+    assert_position_of_participant_in_list(3, seven_year_old_BZ, participants)
 
     @six_to_eleven.sortby="name"
     @six_to_eleven.save!
     participants = @six_to_eleven.get_participants
-    assert participants[0] == seven_year_old_BW, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[1] == six_year_old_CW, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[2] == seven_year_old_AZ, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
-    assert participants[3] == seven_year_old_BZ, "List not sorted right: \n#{participants.collect{|p|p.inspect}.join("\n---\n")}"
+    assert_position_of_participant_in_list(0, seven_year_old_BU, participants)
+    assert_position_of_participant_in_list(1, six_year_old_CU, participants)
+    assert_position_of_participant_in_list(2, seven_year_old_AZ, participants)
+    assert_position_of_participant_in_list(3, seven_year_old_BZ, participants)
+  end
+
+  def test_get_participant_sorting_under_5_years_old_group
+    # There was a problem sorting the under 5 group, which shows up as "X months old" up to age 2.  Then shows "X years old
+    twenty_month_old_AX = Participant.create!(:lastname => "Xavier", :firstname => "A", :birthdate => @start_of_camp-20.months)
+    two_year_old_BZ = Participant.create!(:lastname => "Zee", :firstname => "B", :birthdate => @start_of_camp-2.years)
+    three_year_old_CU = Participant.create!(:lastname => "Underwood", :firstname => "C", :birthdate => @start_of_camp-3.years)
+    sixteen_month_old_DW = Participant.create!(:lastname => "West", :firstname => "D", :birthdate => @start_of_camp-16.months)
+    twelve_month_old_EY = Participant.create!(:lastname => "York", :firstname => "E", :birthdate => @start_of_camp-12.months)
+    eight_month_old_FV = Participant.create!(:lastname => "Vincent", :firstname => "F", :birthdate => @start_of_camp-8.months)
+
+    assert_equal "age", @zero_to_five.sortby
+    participants = @zero_to_five.get_participants
+    assert_position_of_participant_in_list(0, eight_month_old_FV, participants)
+    assert_position_of_participant_in_list(1, twelve_month_old_EY, participants)
+    assert_position_of_participant_in_list(2, sixteen_month_old_DW, participants)
+    assert_position_of_participant_in_list(3, twenty_month_old_AX, participants)
+    assert_position_of_participant_in_list(4, two_year_old_BZ, participants)
+    assert_position_of_participant_in_list(5, three_year_old_CU, participants)
+
+    @zero_to_five.sortby="name"
+    @zero_to_five.save!
+    participants = @zero_to_five.get_participants
+    assert_position_of_participant_in_list(0, three_year_old_CU, participants)
+    assert_position_of_participant_in_list(1, eight_month_old_FV, participants)
+    assert_position_of_participant_in_list(2, sixteen_month_old_DW, participants)
+    assert_position_of_participant_in_list(3, twenty_month_old_AX, participants)
+    assert_position_of_participant_in_list(4, twelve_month_old_EY, participants)
+    assert_position_of_participant_in_list(5, two_year_old_BZ, participants)
+  end
+
+  private
+
+  def assert_position_of_participant_in_list(array_index, participant, list)
+    assert list[array_index] == participant,
+           "List not sorted right: \n#{list.collect{|p| "(#{p.fullname} - age #{p.display_age}) #{p.inspect}"}.join("\n---\n")}"
   end
 end

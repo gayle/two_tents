@@ -22,6 +22,8 @@ class AgeGroup < ActiveRecord::Base
       participants.sort! {|p1, p2|
         (p1.lastname <=> p2.lastname).nonzero? || (p1.firstname <=> p2.firstname)
       }
+    else
+      Rails.logger.warn "not sorting.  sortby=#{sortby}"
     end
     return participants
   end
