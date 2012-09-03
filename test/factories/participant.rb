@@ -18,3 +18,18 @@ Factory.define :participant do |p|
   p.sequence(:trivia) { |n| "I really do have #{n} ponies" }
 end
 
+Factory.define :zero_year_old, :class=>'participant' do |p|
+  p.lastname "Jones"
+  p.firstname "Zero"
+  p.birthdate
+end
+
+#start_of_camp = Year.current.starts_on
+#zero_year_old = Participant.new(:lastname => "Zero", :firstname => "A", :birthdate => start_of_camp-18.days)
+#zero_year_old.save!
+#one_year_old = Participant.new(:lastname => "One", :firstname => "B", :birthdate => start_of_camp-1.year)
+#one_year_old.save!
+#two_year_old = Participant.new(:lastname => "Two", :firstname => "C", :birthdate => start_of_camp-2.years)
+#two_year_old.save!
+#three_year_old = Participant.new(:lastname => "Two", :firstname => "C", :birthdate => start_of_camp-3.years)
+#three_year_old.save!
