@@ -4,6 +4,6 @@ class AddDietaryRestrictionsToParticipant < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :dietary_restrictions
+    remove_column :participants, :dietary_restrictions
   end
 end
