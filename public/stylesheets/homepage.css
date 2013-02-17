@@ -8,6 +8,10 @@ h1, h2, h3, h4 {
   font-family:"ChunkFiveRegular", serif;
 }
 
+h3, h4 {
+  margin-bottom: 1ex;
+}
+
 #messages {
   display:none;
 }
@@ -143,6 +147,7 @@ h1 a, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active, h1 a:focus {
   padding:0.35em 0.5em 0.25em;
   margin-top:0.5em;
   margin-left:10px;
+  border:1px solid #000;
 }
 
 div.images img {
@@ -157,7 +162,7 @@ div.section {
 }
 
 div.row {
-  margin-bottom:40px;
+  margin-bottom:20px;
 }
 
 .quote {
