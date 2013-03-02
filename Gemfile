@@ -7,7 +7,7 @@ gem "rake", "0.8.7"
 gem "will_paginate", "~> 2.3.15"
 gem "hoptoad_notifier", "2.3.2"  # Perhaps this should be in a :production group?
 gem 'pg', '0.14.1'
-gem 'win32-process', "0.6.5"
+gem 'win32-process', "0.6.5", :platforms => [:mswin, :mingw]
 
 group :development do
   #gem "hoe", "2.12.2" # Didn't have this specified specifically before, but having trouble deploying to heroku b/c of this gem
