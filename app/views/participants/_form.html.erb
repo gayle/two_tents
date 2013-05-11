@@ -46,10 +46,9 @@
       <%= participant_form.text_field :email, :size => 63 -%><br /><%= participant_form.label "Email" -%>
     </td>
   </tr>
-
 </table>
-<table>
 
+<table>
   <tr>
     <td class="field">
       <%= participant_form.text_field :occupation, :size => 26 -%><br /><%= participant_form.label "Occupation" -%>
@@ -64,12 +63,15 @@
       <%= participant_form.text_field :grade, :size => 17 -%><br /><%= participant_form.label "Grade level (in Fall)" -%>
     </td>
   </tr>
-
 </table>
+
 <table>
   <tr><td class="field">
     <%= participant_form.text_area :dietary_restrictions, :cols => 96, :rows => 2 -%><br /><%= participant_form.label "Dietary restrictions" -%>
   </td></tr>
+</table>
+
+<table>
   <tr><td class="field">
     <%= participant_form.text_area :trivia, :cols => 96, :rows => 2 -%><br /><%= participant_form.label "2-3 interesting facts about this person" -%>
   </td></tr>
