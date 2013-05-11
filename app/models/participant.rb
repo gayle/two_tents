@@ -52,6 +52,12 @@ class Participant < ActiveRecord::Base
     }
   end
 
+  def self.all_with_dietary_restrictions
+    Participant.all.select {|p|
+      p.dietary_restrictions.present?
+    }
+  end
+
   def participant_address
     address || family.try(:family_address)
   end

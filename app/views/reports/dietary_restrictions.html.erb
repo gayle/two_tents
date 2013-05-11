@@ -1,0 +1,17 @@
+<h1>Dietary Restrictions</h1>
+<table>
+    <tr>
+      <th>Name</th>
+      <th class="wide">Dietary Restriction</th>
+    </tr>
+    <% @participants.each_with_index do |participant, i| %>
+      <tr class="<%= ContentHelper.rowstyle(i) %>">
+        <td>
+          <%= "#{i+1}. #{participant.fullname}" %>
+        </td>
+        <td>
+          <%= "#{participant.dietary_restrictions}" %>
+        </td>
+      </tr>
+    <% end %>
+</table>

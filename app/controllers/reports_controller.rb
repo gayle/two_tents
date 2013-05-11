@@ -30,4 +30,8 @@ class ReportsController < ApplicationController
     @families_without_cds = Family.registered - @families_with_photo_cds
     @total_cds = @families_with_photo_cds.collect {|f| f.number_of_photo_cds}.reduce(:+)
   end
+
+  def dietary_restrictions
+    @participants = Participant.all_with_dietary_restrictions
+  end
 end
