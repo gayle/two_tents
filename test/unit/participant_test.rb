@@ -29,7 +29,7 @@ class ParticipantTest < ActiveSupport::TestCase
     current_participants = Participant.current
     assert current_participants.include?(repeat_participant), "#{repeat_participant.inspect} should have been included in\n#{current_participants.inspect}"
     assert current_participants.include?(current_participant), "#{current_participant.inspect} should have been included in\n#{current_participants.inspect}"
-    assert_false current_participants.include?(past_participant), "#{past_participant.inspect} should NOT have been included in\n#{current_participants.inspect}"
+    assert !current_participants.include?(past_participant), "#{past_participant.inspect} should NOT have been included in\n#{current_participants.inspect}"
   end
 
   def test_past
@@ -49,9 +49,9 @@ class ParticipantTest < ActiveSupport::TestCase
     repeat_participant.save!
 
     past_participants = Participant.past
-    assert_false past_participants.include?(repeat_participant), "#{repeat_participant.inspect} should NOT have been included in\n#{past_participants.inspect}"
+    assert !past_participants.include?(repeat_participant), "#{repeat_participant.inspect} should NOT have been included in\n#{past_participants.inspect}"
     assert past_participants.include?(past_participant), "#{past_participant.inspect} should have been included in\n#{past_participants.inspect}"
-    assert_false past_participants.include?(current_participant), "#{current_participant.inspect} should NOT have been included in\n#{past_participants.inspect}"
+    assert !past_participants.include?(current_participant), "#{current_participant.inspect} should NOT have been included in\n#{past_participants.inspect}"
   end
 
   def test_should_be_able_to_decide_not_to_be_staff
@@ -270,11 +270,11 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     high_school_group = participants_by_grade["6: high_school"]
-    assert_false high_school_group.blank?, "high school group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !high_school_group.blank?, "high school group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
     younger_elementary_group = participants_by_grade["3: younger_elementary"]
-    assert_false younger_elementary_group.blank?, "younger elementary group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !younger_elementary_group.blank?, "younger elementary group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
     child_care_group = participants_by_grade["1: child_care"]
-    assert_false child_care_group.blank?, "child care group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !child_care_group.blank?, "child care group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert (child_care_group.include? baby_without_grade),
                "#{child_care_group.inspect} \n should have included \n #{baby_without_grade.inspect}"
@@ -303,7 +303,7 @@ class ParticipantTest < ActiveSupport::TestCase
     participants_by_grade = Participant.group_by_grade
 
     high_school_group = participants_by_grade["6: high_school"]
-    assert_false high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
     assert !(high_school_group.include? seventeen_year_old_graduated_from_high_school),
            "#{high_school_group.inspect} \n should NOT have included \n #{seventeen_year_old_graduated_from_high_school.inspect}"
     assert (high_school_group.include? seventeen_year_old_still_in_high_school),
@@ -321,7 +321,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     other_group = participants_by_grade["7: other"]
-    assert_false other_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !other_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert (other_group.include? eighteen_year_old_with_grade),
            "#{other_group.inspect} \n should have included \n #{eighteen_year_old_with_grade.inspect}"
@@ -342,7 +342,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     child_care_group = participants_by_grade["1: child_care"]
-    assert_false child_care_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !child_care_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert (child_care_group.include? zero_year_old),
            "#{child_care_group.inspect} \n should have included \n #{zero_year_old.inspect}"
@@ -372,7 +372,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     pre_k_group = participants_by_grade["2: pre_k"]
-    assert_false pre_k_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !pre_k_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert !(pre_k_group.include? two_year_old),
            "#{pre_k_group.inspect} \n should NOT have included \n #{two_year_old.inspect}"
@@ -397,7 +397,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     younger_elementary_group = participants_by_grade["3: younger_elementary"]
-    assert_false younger_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !younger_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert !(younger_elementary_group.include? kindergartener),
            "#{younger_elementary_group.inspect} \n should NOT have included \n #{kindergartener.inspect}"
@@ -418,7 +418,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     older_elementary_group = participants_by_grade["4: older_elementary"]
-    assert_false older_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !older_elementary_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert !(older_elementary_group.include? second_grader),
            "#{older_elementary_group.inspect} \n should NOT have included \n #{second_grader.inspect}"
@@ -442,7 +442,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     middle_school_group = participants_by_grade["5: middle_school"]
-    assert_false middle_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !middle_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert !(middle_school_group.include? fourth_grader),
            "#{middle_school_group.inspect} \n should NOT have included \n #{fourth_grader.inspect}"
@@ -470,7 +470,7 @@ class ParticipantTest < ActiveSupport::TestCase
 
     participants_by_grade = Participant.group_by_grade
     high_school_group = participants_by_grade["6: high_school"]
-    assert_false high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
+    assert !high_school_group.blank?, "Group should not be blank.\nparticipants_by_grade is:\n#{participants_by_grade.inspect}"
 
     assert !(high_school_group.include? eighth_grader),
            "#{high_school_group.inspect} \n should NOT have included \n #{eighth_grader.inspect}"

@@ -2,7 +2,7 @@ class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
   def self.up
     # year_results = execute("SELECT * FROM years ORDER BY year ASC")
     year_results = execute("SELECT * FROM years WHERE year = '2010'")
-    if year_results.blank?
+    if year_results.to_a.blank?
       execute %{INSERT INTO years (year) VALUES ('2010')}
       year_results = execute("SELECT * FROM years WHERE year = '2010'")
     end
