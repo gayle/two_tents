@@ -1,4 +1,16 @@
-ActionController::Routing::Routes.draw do |map|
+# This is what "rake rails:upgrade:routes" gave me:
+#TwoTents::Application.routes.draw do
+#  match 'path_prefixadmin' => '#index', :as => :with_options
+#  resources :contacts, :only => [:new, :create]
+#  resource :session
+#  match 'controllersessions' => '#index', :as => :with_options
+#  match 'controllerusers' => '#index', :as => :with_options
+#  match '/' => 'content#index'
+#  match ':action' => 'content#index'
+#end
+
+#ActionController::Routing::Routes.draw do |map|
+TwoTents::Application.routes.draw do |map|
   map.with_options :path_prefix => 'admin' do |admin|
     admin.resources :age_groups, :collection => {:edit_all => :get, :update_all => :post}
 
