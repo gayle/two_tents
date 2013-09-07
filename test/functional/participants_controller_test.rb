@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ParticipantsControllerTest < ActionController::TestCase
-  include AuthenticatedTestHelper
-
   fixtures :users
 
   def setup

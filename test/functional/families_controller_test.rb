@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class FamiliesControllerTest < ActionController::TestCase
-  include AuthenticatedTestHelper
 
 #  fixtures :users, :families, :participants
 
