@@ -34,5 +34,8 @@ module TwoTents
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
     # config.i18n.default_locale = :de
 
+    # Scrub sensitive parameters from your log
+    config.filter_parameters << :password
+
   end
 end
