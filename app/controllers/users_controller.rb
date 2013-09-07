@@ -3,9 +3,6 @@ class UsersController < ApplicationController
 
   before_filter :login_required, :except => [:reset_login, :enter_login, :answer_question, :change_password]
 
-#  require_role "user", :for_all_except => [:reset_login, :enter_login, :answer_question, :change_password]
-#    require_role "admin", :for => [:update, :edit], :unless => "current_user.authorized_for_listing?(params[:id])"
-
   def new
     @user = User.new
     if params[:participant]
