@@ -30,7 +30,7 @@ class Participant < ActiveRecord::Base
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate, :birthdate_string
 
-  named_scope :main_contact, :conditions => { :main_contact => true }
+  scope :main_contact, :conditions => { :main_contact => true }
 
   # TODO Fix the named scope to behave like the static method.  But it's like the named scope gets set in stone before
   # the test's setup (where it's creating a year) even gets a chance to run, so the current year's not defined yet.
@@ -38,9 +38,6 @@ class Participant < ActiveRecord::Base
   def self.current
     Participant.all.select {|p| p.registered_for_current_year? }
   end
-
-  #  named_scope :not_admin, :joins => "LEFT OUTER JOIN users ON users.id", :conditions => "users.login = \"gayle\""
-  named_scope :not_admin, :conditions => ["lastname <> ? and lastname <> ?",'administrator','admin']
 
   # List of participants registered in the past AND are NOT currently registered.
   # Participants registered for current year SHOULD NO LONGER show up in this list.
@@ -183,7 +180,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.registered
-    #self.current.not_admin #Named scopes were behaving badly.
+    #Named scopes were behaving badly, made static method instead.
     current.reject {|p| p.lastname == 'administrator' or p.lastname == 'admin'}
   end
   
