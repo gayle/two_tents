@@ -4,8 +4,11 @@ require 'rails/test_help'
 require 'factory_girl'
 
 class ActiveSupport::TestCase
-
-  #  include AuthenticatedTestHelper
+    if !$FACTORIES_INITIALIZED
+      $FACTORIES_INITIALIZED = true
+      # https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md
+      FactoryGirl.find_definitions
+    end
 
   # Was using transactional fixtures before.  Do I still need to do this?
   #   self.use_transactional_fixtures = true
