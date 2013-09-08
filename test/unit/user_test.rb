@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead.
-  # Then, you can remove it from this and the functional test.
-  include AuthenticatedTestHelper
-
   def test_should_create_user
     assert_difference 'User.count' do
       user = Factory(:user)
@@ -16,7 +12,7 @@ class UserTest < ActiveSupport::TestCase
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :login => nil)
       u.save
-      assert u.errors.on(:login)
+      assert u.errors.get(:login)
     end
   end
 
@@ -24,7 +20,7 @@ class UserTest < ActiveSupport::TestCase
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :password => nil)
       u.save
-      assert u.errors.on(:password)
+      assert u.errors.get(:password)
     end
   end
 
@@ -32,7 +28,7 @@ class UserTest < ActiveSupport::TestCase
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :password_confirmation => nil)
       u.save
-      assert u.errors.on(:password_confirmation)
+      assert u.errors.get(:password_confirmation)
     end
   end
 
@@ -40,7 +36,7 @@ class UserTest < ActiveSupport::TestCase
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :security_question => nil)
       u.save
-      assert u.errors.on(:security_question)
+      assert u.errors.get(:security_question)
     end
   end
 
@@ -48,7 +44,7 @@ class UserTest < ActiveSupport::TestCase
     assert_no_difference 'User.count' do
       u = Factory.build(:user, :security_answer => nil)
       u.save
-      assert u.errors.on(:security_answer)
+      assert u.errors.get(:security_answer)
     end
   end
 
