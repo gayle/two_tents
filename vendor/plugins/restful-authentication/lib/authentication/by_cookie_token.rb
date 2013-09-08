@@ -1,3 +1,7 @@
+## Error with the method save(false).  Doesn't work with Rails 3.
+# http://stackoverflow.com/questions/7166382/nomethoderror-undefined-method-for-falsefalseclass
+# Changed to save(:validation => false)
+
 # -*- coding: utf-8 -*-
 module Authentication
   module ByCookieToken
@@ -36,14 +40,14 @@ module Authentication
       def remember_me_until(time)
         self.remember_token_expires_at = time
         self.remember_token            = self.class.make_token
-        save(false)
+        save(:validation => false)
       end
 
       # refresh token (keeping same expires_at) if it exists
       def refresh_token
         if remember_token?
           self.remember_token = self.class.make_token 
-          save(false)      
+          save(:validation => false)
         end
       end
 
@@ -55,7 +59,7 @@ module Authentication
       def forget_me
         self.remember_token_expires_at = nil
         self.remember_token            = nil
-        save(false)
+        save(:validation => false)
       end
     end # instance methods
   end
