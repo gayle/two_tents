@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
 #  attr_accessor :admin_role
+  attr_accessible :email
 
   has_one :participant, :dependent => :nullify
   validates_presence_of :participant, :message => "must be picked from the drop-down.  Please choose one from the list, or create a new one."

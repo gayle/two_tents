@@ -1,6 +1,6 @@
 <h1>Add a new staff person</h1>
 
-<%= error_messages_for :user %>
+<%= error_messages_for @user %>
 
 <% form_for @user, :html => {:multipart => true} do |form| -%>
   <%= render :partial => form, :locals => { :show_password => true } %>

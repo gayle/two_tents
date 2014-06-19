@@ -22,7 +22,7 @@ class UsersControllerTest < ActionController::TestCase
   def test_should_require_login_on_signup
     assert_no_difference 'User.count' do
       create_user(:login => nil)
-      assert assigns(:user).errors.on(:login)
+      assert assigns(:user).errors[:login]
       assert_response :success
     end
   end
@@ -30,7 +30,8 @@ class UsersControllerTest < ActionController::TestCase
   def test_should_require_password_on_signup
     assert_no_difference 'User.count' do
       create_user(:password => nil)
-      assert assigns(:user).errors.on(:password)
+#      require 'pry'; binding.pry
+      assert assigns(:user).errors[:password]
       assert_response :success
     end
   end
@@ -38,13 +39,14 @@ class UsersControllerTest < ActionController::TestCase
   def test_should_require_password_confirmation_on_signup
     assert_no_difference 'User.count' do
       create_user(:password_confirmation => nil)
-      assert assigns(:user).errors.on(:password_confirmation)
+      assert assigns(:user).errors[:password_confirmation]
       assert_response :success
     end
   end
 
   def test_should_allow_edit
-    user = User.find(:first)
+    #user = User.find(:first)
+    user = Factory(:user)
     get :edit, :id => user.id
     participants = assigns :participants
     assert_equal(true, participants.include?(user.participant))

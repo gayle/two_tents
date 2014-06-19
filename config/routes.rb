@@ -11,6 +11,64 @@
 
 #ActionController::Routing::Routes.draw do |map|
 TwoTents::Application.routes.draw do # |map|
+  resources :content
+  resources :contacts
+  resources :dashboard
+  resources :users
+
+
+  #RAILS 2: map.connect ':action', :controller => 'content'
+  #match "/content" => "content#index"  # NOPE this isn't even right.
+  #  get '/content/:action' # NOPE this doesn't work.  Tests don't even run when I have this:
+  match ':controller/:action'  # Isn't this too generic?  Isn't this already done on line 72?
+
+  ###################################################
+  # EXAMPLES FROM RSAM
+  #Rails 2
+  #map.connect   'exclusions/load_exclusion_popup', :controller => 'exclusions', :action => 'load_exclusion_popup'
+  #Rails 3
+  #match "exclusions/load_exclusion_popup" => "exclusions#load_exclusion_popup"
+  #
+  #
+  #
+  #Rails 2
+  #map.connect        'dcr_master_access/retrieve_access',
+  #                   :controller => 'dcr_master_access',
+  #                   :action => 'retrieve_access'
+  #Rails 3
+  #match        'dcr_master_access/retrieve_access', to: 'dcr_master_access#retrieve_access'
+  #
+  #
+  #
+  #Rails 2
+  #map.connect 'e/:sid.:format',
+  #            :controller => "users",
+  #            :action => "show"
+  #Rails 3
+  #match 'e/:sid.:format', to: "users#show"
+  #
+  #
+  #
+  #Rails2
+  #map.connect ':controller/:action/:id.:format'
+  #map.connect ':controller/:action/:id'
+  #map.connect ':controller/:action'
+  #map.connect ':controller/:action.:format'
+  #Rails3
+  #match ':controller/:action/:id.:format'
+  #match ':controller/:action/:id'
+  #match ':controller/:action'
+  #match ':controller/:action.:format'
+  ######################################################
+
+
+  #map.root :controller => 'content', :action => 'index'
+
+
+
+
+
+  root:to => 'content#index'
   match '/:controller(/:action(/:id))'
 
   #map.with_options :path_prefix => 'admin' do |admin|

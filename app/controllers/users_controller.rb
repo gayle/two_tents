@@ -44,6 +44,7 @@ class UsersController < ApplicationController
 
   def edit
     @participants = Participant.find_non_staff_participants
+    require 'pry'; binding.pry
     @participants << @user.participant
   end
 
