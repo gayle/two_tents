@@ -1,5 +1,0 @@
-Time::DATE_FORMATS[:slashed] = "%m/%d/%Y"
-Time::DATE_FORMATS[:default] = "%m/%d/%Y %I:%M%p"
-Time::DATE_FORMATS[:ampm_time] = "%I:%M%p"
-Date::DATE_FORMATS[:default] = "%m/%d/%Y"
-Date::DATE_FORMATS[:slashed] = "%m/%d/%Y"

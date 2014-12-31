@@ -1,8 +1,0 @@
-<h1>Security Question</h1>
-
-<% form_for @user, :url => answer_question_user_path(@user), :html => { :method => :post } do |form| %>
-  <p><%= form.label :security_answer, @user.security_question %><br/>
-  <%= form.text_field :security_answer %></p>
-
-  <%= submit_tag 'Next' %>
-<% end %>
