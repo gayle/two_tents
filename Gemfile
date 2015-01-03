@@ -11,6 +11,12 @@ gem 'pg', '~> 0.18.0.pre20141117110243' # http://stackoverflow.com/questions/260
                                         # http://stackoverflow.com/questions/27321017/active-support-dependencies-rb247-require-cannot-load-such-file-2-1-pg-ex
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw] # https://github.com/tzinfo/tzinfo/wiki/Resolving-TZInfo::DataSourceNotFound-Errors
+
+group :test do
+  gem 'rspec-rails'
+end
+
+
 #?? gem 'win32-process', :platforms => [:mswin, :mingw]
 
 ## Use sqlite3 as the database for Active Record
