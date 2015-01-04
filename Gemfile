@@ -14,6 +14,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw] # https://github.com/
 
 group :development, :test do
   gem 'database_cleaner', '1.3.0'
+  gem 'pry', '0.10.1'
+  gem 'factory_girl_rails', '4.5.0'
   gem 'rspec-rails'
 end
 
