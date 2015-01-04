@@ -13,6 +13,7 @@ gem 'pg', '~> 0.18.0.pre20141117110243' # http://stackoverflow.com/questions/260
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw] # https://github.com/tzinfo/tzinfo/wiki/Resolving-TZInfo::DataSourceNotFound-Errors
 
 group :development, :test do
+  gem 'database_cleaner', '1.3.0'
   gem 'rspec-rails'
 end
 

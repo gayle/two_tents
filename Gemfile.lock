@@ -29,6 +29,7 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     builder (3.2.2)
+    database_cleaner (1.3.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     hike (1.2.3)
@@ -96,6 +97,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  database_cleaner (= 1.3.0)
   pg (~> 0.18.0.pre20141117110243)
   rails (= 4.1.8)
   rspec-rails
