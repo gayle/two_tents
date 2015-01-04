@@ -6,8 +6,8 @@
 * Database creation
   ** Install postgres
   ** change database.yml to match your databases
-  ** run `rake db:setup` to create database, and load schema.rb
-  ** run `rake db:setup test` to create test database, and load schema.rb
+  ** run `rake db:setup` to create database, and load schema.rb, and load seeds.rb
+  ** run `rake db:setup test` to create test database, and load schema and seeds
 
 * Database initialization
   ** TBD
