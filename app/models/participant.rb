@@ -10,7 +10,7 @@ class Participant < ActiveRecord::Base
 
   after_initialize :add_current_year
 
-  scope :non_admins, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
+  scope :not_admin, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
 
   scope :current, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
