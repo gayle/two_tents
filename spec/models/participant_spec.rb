@@ -33,4 +33,14 @@ RSpec.describe Participant, :type => :model do
     FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
     expect(Participant.first.list_name).to eq "Apple, Adam"
   end
+
+  it "should be able to exclude admins" do
+    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Admin")
+    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Administrator")
+    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+
+    expect(Participant.count).to eq 3
+    expect(Participant.non_admins.count).to eq 1
+    expect(Participant.first.full_name).to eq "Adam Apple"
+  end
 end

@@ -10,6 +10,7 @@ class Participant < ActiveRecord::Base
 
   after_initialize :add_current_year
 
+  scope :non_admins, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
   # TODO add named scope called 'registered'
 
   def <=>(other_participant)
