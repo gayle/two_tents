@@ -51,15 +51,31 @@ RSpec.describe Participant, :type => :model do
     adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
     bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
     chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
-    bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
-    bill.save!
+    #bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
+    #bill.save!
 
-    expect(Participant.not_admin.current).to include adam
-    expect(Participant.not_admin.current).to include chad
-    expect(Participant.not_admin.current).not_to include bill
+    expect(Participant.not_admin.registered).to include adam
+    expect(Participant.not_admin.registered).to include chad
+    expect(Participant.not_admin.registered).not_to include bill
   end
 
-  # Not really sure I need this.
-  # it "should be able to list past participants"
+  it "should be able to list past participants that are not registered this year" do
+    this_year = FactoryGirl.create(:year, year: 2015)
+    last_year = FactoryGirl.create(:year, year: 2014)
+
+    aa = FactoryGirl.create(:participant, firstname: "A", lastname: "Admin")
+    ad = FactoryGirl.create(:participant, firstname: "A", lastname: "Administrator")
+    adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
+    bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
+    chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
+    #bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
+    #bill.save!
+
+    expect(Participant.not_admin.not_registered).not_to include aa
+    expect(Participant.not_admin.not_registered).not_to include ad
+    expect(Participant.not_admin.not_registered).not_to include adam
+    expect(Participant.not_admin.not_registered).to include bill
+    expect(Participant.not_admin.not_registered).not_to include chad
+  end
 
 end

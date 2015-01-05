@@ -8,16 +8,29 @@ class Participant < ActiveRecord::Base
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
-  after_initialize :add_current_year
+  # Copied this over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
+  #after_initialize :add_current_year
 
   scope :not_admin, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
 
-  scope :current, -> { joins(:years).where('years.id = ?', Year.current.id) }
+  scope :registered, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
-  # Not sure we need this.  If we do, add a spec for it.
-  #scope :past, -> { joins(:years).where('years.id <> ?', Year.current.id) }
+  # Couldn't get the scope to work.  It just returned anyone who had been registered in a past year ever,
+  # but I need it to exclude ones who are registered currently.
+  #scope :not_registered, -> { joins(:years).where('years.id <> ?', Year.current.id) }
+  # QUERY NEEDS TO LOOK LIKE THIS:
+    #  SELECT participants.id, lastname, firstname, years.id, years.year
+    #  FROM "participants"
+    #  INNER JOIN "participants_years" ON "participants_years"."participant_id" = "participants"."id"
+    #  INNER JOIN "years" ON "years"."id" = "participants_years"."year_id"
+    #  WHERE firstname <> 'administrator' and lastname <> 'Admin'
+    #  AND (years.id <> 5) -- 5 is 2015
+    #  -- AND SOMETHING THAT SAYS IF THE PERSON IS REGISTERED FOR THIS YEAR THEN DON"T INCLUDE THIS ROW
+    #  ORDER BY lastname, firstname
 
-  # TODO add named scope called 'registered'
+  def self.not_registered
+    (Participant.all - Participant.registered).reject{|p| p.lastname.upcase == "ADMINISTRATOR" or p.lastname.upcase == "ADMIN"}
+  end
 
   def <=>(other_participant)
     list_name <=> other_participant.list_name
