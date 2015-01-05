@@ -41,6 +41,25 @@ RSpec.describe Participant, :type => :model do
 
     expect(Participant.count).to eq 3
     expect(Participant.non_admins.count).to eq 1
-    expect(Participant.first.full_name).to eq "Adam Apple"
+    expect(Participant.non_admins.first.full_name).to eq "Adam Apple"
   end
+
+  it "should be able to list current participants" do
+    this_year = FactoryGirl.create(:year, year: 2015)
+    last_year = FactoryGirl.create(:year, year: 2014)
+
+    adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
+    bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
+    chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
+    bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
+    bill.save!
+
+    expect(Participant.non_admins.current).to include adam
+    expect(Participant.non_admins.current).to include chad
+    expect(Participant.non_admins.current).not_to include bill
+  end
+
+  # Not really sure I need this.
+  # it "should be able to list past participants"
+
 end

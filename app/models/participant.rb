@@ -11,6 +11,12 @@ class Participant < ActiveRecord::Base
   after_initialize :add_current_year
 
   scope :non_admins, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
+
+  scope :current, -> { joins(:years).where('years.id = ?', Year.current.id) }
+
+  # Not sure we need this.  If we do, add a spec for it.
+  #scope :past, -> { joins(:years).where('years.id <> ?', Year.current.id) }
+
   # TODO add named scope called 'registered'
 
   def <=>(other_participant)
