@@ -1,13 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Participant, :type => :model do
-  it "should add current year to new records if not specified" do
-    year = FactoryGirl.create(:year)
-    participant = Participant.new(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
-    expect(participant.years).not_to be_empty
-    expect(participant.years.size).to eq 1
-    expect(participant.years).to include year
-  end
+  # Copied after_initialize over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
+  #it "should add current year to new records if not specified" do
+  #  year = FactoryGirl.create(:year)
+  #  participant = Participant.new(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
+  #  expect(participant.years).not_to be_empty
+  #  expect(participant.years.size).to eq 1
+  #  expect(participant.years).to include year
+  #end
 
   it "should not blow up if no current year available" do
     participant = Participant.new(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
