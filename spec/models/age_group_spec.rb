@@ -57,5 +57,22 @@ RSpec.describe AgeGroup, :type => :model do
       expect(@zero_to_five.participants).to include registered_zero_year_old
       expect(@zero_to_five.participants).not_to include unregistered_zero_year_old
     end
+
+    it "should sort within age groups" do
+      initialize_year
+      @zero_to_five_by_age  = FactoryGirl.create(:age_group, :min=>0, :max=>5, :sortby=>"age")
+      @zero_to_five_by_name = FactoryGirl.create(:age_group, :min=>0, :max=>5, :sortby=>"name")
+
+      FactoryGirl.create(:participant, :lastname => "Jones", :firstname => "B", :birthdate => @start_of_camp-18.days).register #18 day old
+      FactoryGirl.create(:participant, :lastname => "Adams", :firstname => "Z", :birthdate => @start_of_camp-16.days).register #16 day old
+      FactoryGirl.create(:participant, :lastname => "Jones", :firstname => "D", :birthdate => @start_of_camp-17.days).register #17 days old
+      # make sure multiple people have the same birthdate so we test secondary sorting
+      FactoryGirl.create(:participant, :lastname => "Jones", :firstname => "C", :birthdate => @start_of_camp-15.days).register #15 days old
+      FactoryGirl.create(:participant, :lastname => "Adams", :firstname => "X", :birthdate => @start_of_camp-15.days).register #15 days old
+      FactoryGirl.create(:participant, :lastname => "Jones", :firstname => "A", :birthdate => @start_of_camp-15.days).register #15 days old
+
+      expect(@zero_to_five_by_age.participants.map {|p| p.list_name}).to eq ["Adams, X", "Jones, A", "Jones, C", "Adams, Z", "Jones, D", "Jones, B"]
+      expect(@zero_to_five_by_name.participants.map{|p| p.list_name}).to eq ["Adams, X", "Adams, Z", "Jones, A", "Jones, B", "Jones, C", "Jones, D"]
+    end
   end
 end
