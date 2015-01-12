@@ -11,7 +11,7 @@ class Participant < ActiveRecord::Base
   # Copied this over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
   #after_initialize :add_current_year
 
-  scope :not_admin, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
+  #scope :not_admin, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
 
   scope :registered, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
