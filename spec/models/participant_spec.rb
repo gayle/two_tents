@@ -35,16 +35,6 @@ RSpec.describe Participant, :type => :model do
     expect(Participant.first.list_name).to eq "Apple, Adam"
   end
 
-  it "should be able to exclude admins" do
-    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Admin")
-    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Administrator")
-    FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
-
-    expect(Participant.count).to eq 3
-    expect(Participant.not_admin.count).to eq 1
-    expect(Participant.not_admin.first.full_name).to eq "Adam Apple"
-  end
-
   it "should be able to list current participants" do
     this_year = FactoryGirl.create(:year, year: 2015)
     last_year = FactoryGirl.create(:year, year: 2014)
@@ -64,16 +54,12 @@ RSpec.describe Participant, :type => :model do
     this_year = FactoryGirl.create(:year, year: 2015)
     last_year = FactoryGirl.create(:year, year: 2014)
 
-    aa = FactoryGirl.create(:participant, firstname: "A", lastname: "Admin")
-    ad = FactoryGirl.create(:participant, firstname: "A", lastname: "Administrator")
     adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
     bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
     chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
     #bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
     #bill.save!
 
-    expect(Participant.not_admin.not_registered).not_to include aa
-    expect(Participant.not_admin.not_registered).not_to include ad
     expect(Participant.not_admin.not_registered).not_to include adam
     expect(Participant.not_admin.not_registered).to include bill
     expect(Participant.not_admin.not_registered).not_to include chad

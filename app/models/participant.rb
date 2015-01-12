@@ -29,7 +29,7 @@ class Participant < ActiveRecord::Base
     #  ORDER BY lastname, firstname
 
   def self.not_registered
-    (Participant.all - Participant.registered).reject{|p| p.lastname.upcase == "ADMINISTRATOR" or p.lastname.upcase == "ADMIN"}
+    Participant.all - Participant.registered
   end
 
   def <=>(other_participant)
