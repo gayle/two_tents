@@ -76,4 +76,37 @@ RSpec.describe Participant, :type => :model do
       expect(Participant.first.list_name).to eq "Apple, Adam"
     end
   end
+
+  context "#register" do
+    it "should register for current year" do
+      this_year = FactoryGirl.create(:year, year: 2015)
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+      expect(adam.years).not_to include this_year
+
+      adam.register
+
+      expect(adam.years).to include this_year
+    end
+
+    it "should not register for that year twice, no matter how many times you call register" do
+      this_year = FactoryGirl.create(:year, year: 2015)
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+
+      adam.register
+      adam.register
+
+      expect(adam.years.size).to eq 1
+    end
+
+    it "should be able to register for a year other than current year" do
+      this_year = FactoryGirl.create(:year, year: 2015)
+      last_year = FactoryGirl.create(:year, year: 2014)
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+
+      adam.register(last_year)
+
+      expect(adam.years).to include last_year
+      expect(adam.years).not_to include this_year
+    end
+  end
 end

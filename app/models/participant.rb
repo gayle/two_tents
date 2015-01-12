@@ -11,8 +11,6 @@ class Participant < ActiveRecord::Base
   # Copied this over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
   #after_initialize :add_current_year
 
-  #scope :not_admin, -> { where('upper(lastname) <> ? and upper(lastname) <> ?', 'ADMIN', 'ADMINISTRATOR') }
-
   scope :registered, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
   # Couldn't get the scope to work.  It just returned anyone who had been registered in a past year ever,
@@ -42,6 +40,11 @@ class Participant < ActiveRecord::Base
 
   def list_name
     "#{lastname}, #{firstname}"
+  end
+
+  def register(year=Year.current)
+    self.years ||= []
+    self.years << year if not self.years.include?(year)
   end
 
   private
