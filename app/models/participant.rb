@@ -45,6 +45,7 @@ class Participant < ActiveRecord::Base
   def register(year=Year.current)
     self.years ||= []
     self.years << year if not self.years.include?(year)
+    self
   end
 
   private
