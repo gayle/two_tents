@@ -2,7 +2,7 @@ class Participant < ActiveRecord::Base
   has_and_belongs_to_many :years
 
   # TODO add these associations back once we have them
-  #belongs_to :family
+  belongs_to :family
   #belongs_to :user, :dependent => :destroy
 
   # at least validate presence fields used directly or indirectlyr for sorting
@@ -26,6 +26,21 @@ class Participant < ActiveRecord::Base
     #  -- AND SOMETHING THAT SAYS IF THE PERSON IS REGISTERED FOR THIS YEAR THEN DON"T INCLUDE THIS ROW
     #  ORDER BY lastname, firstname
 
+  # TODO Try this for the not_registered scope:
+  # select distinct participants.name, participants.id
+  # from participants
+  # inner join participants_years on participants_years.participant_id = participants.id
+  # inner join years on years.id = participants_years.year_id
+  # where participant_id not in (select participant_id from participants_years where year_id = 3)
+  # ;
+  #
+  # select participants.name, participants.id
+  # from participants
+  # inner join participants_years on participants_years.participant_id = participants.id
+  # inner join years on years.id = participants_years.year_id
+  # where participant_id not in (select participant_id from participants_years where year_id = 3)
+  # group by participants.name, participants.id
+  # ;
   def self.not_registered
     Participant.all - Participant.registered
   end
