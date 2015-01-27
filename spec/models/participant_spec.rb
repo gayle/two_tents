@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Participant, :type => :model do
+  before do
+    @this_year = FactoryGirl.create(:year, year: 2015)
+    @last_year = FactoryGirl.create(:year, year: 2014)
+  end
   # Copied after_initialize over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
   #it "should add current year to new records if not specified" do
   #  year = FactoryGirl.create(:year)
@@ -19,13 +23,10 @@ RSpec.describe Participant, :type => :model do
 
   context ".registered" do
     it "should be able to list current participants" do
-      this_year = FactoryGirl.create(:year, year: 2015)
-      last_year = FactoryGirl.create(:year, year: 2014)
-
-      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
-      bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
-      chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
-      #bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
+      bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [@last_year])
+      chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [@this_year])
+      #bill.years = [@last_year] # remove current year that gets added by default in after_initialize. They have only past year.
       #bill.save!
 
       expect(Participant.registered).to include adam
@@ -36,18 +37,41 @@ RSpec.describe Participant, :type => :model do
 
   context ".not_registered" do
     it "should be able to list past participants that are not registered this year" do
-      this_year = FactoryGirl.create(:year, year: 2015)
-      last_year = FactoryGirl.create(:year, year: 2014)
-
-      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [last_year, this_year])
-      bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [last_year])
-      chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [this_year])
-      #bill.years = [last_year] # remove current year that gets added by default in after_initialize. They have only past year.
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
+      bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [@last_year])
+      chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [@this_year])
+      #bill.years = [@last_year] # remove current year that gets added by default in after_initialize. They have only past year.
       #bill.save!
 
       expect(Participant.not_registered).not_to include adam
       expect(Participant.not_registered).to include bill
       expect(Participant.not_registered).not_to include chad
+    end
+  end
+
+  context "#full_name" do
+    it "should display first name then last name" do
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
+      expect(adam.full_name).to eq "Adam Apple"
+    end
+  end
+
+  context "#list_name" do
+    it "should display last name then first name" do
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
+      expect(adam.list_name).to eq "Apple, Adam"
+    end
+  end
+
+  context "#registered?" do
+    it "should determine whether participants are registered" do
+      adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
+      bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana", years: [@last_year])
+      chad = FactoryGirl.create(:participant, firstname: "Chad", lastname: "Cherry", years: [@this_year])
+
+      expect(adam.registered?(@this_year)).to eq true
+      expect(bill.registered?(@this_year)).to eq false
+      expect(chad.registered?(@this_year)).to eq true
     end
   end
 
@@ -79,17 +103,15 @@ RSpec.describe Participant, :type => :model do
 
   context "#register" do
     it "should register for current year" do
-      this_year = FactoryGirl.create(:year, year: 2015)
       adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
-      expect(adam.years).not_to include this_year
+      expect(adam.years).not_to include @this_year
 
       adam.register
 
-      expect(adam.years).to include this_year
+      expect(adam.years).to include @this_year
     end
 
     it "should not register for that year twice, no matter how many times you call register" do
-      this_year = FactoryGirl.create(:year, year: 2015)
       adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
 
       adam.register
@@ -99,14 +121,12 @@ RSpec.describe Participant, :type => :model do
     end
 
     it "should be able to register for a year other than current year" do
-      this_year = FactoryGirl.create(:year, year: 2015)
-      last_year = FactoryGirl.create(:year, year: 2014)
       adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
 
-      adam.register(last_year)
+      adam.register(@last_year)
 
-      expect(adam.years).to include last_year
-      expect(adam.years).not_to include this_year
+      expect(adam.years).to include @last_year
+      expect(adam.years).not_to include @this_year
     end
   end
 end

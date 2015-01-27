@@ -63,6 +63,10 @@ class Participant < ActiveRecord::Base
     self
   end
 
+  def registered?(year=Year.current)
+    years.include? year
+  end
+
   private
 
   def add_current_year
