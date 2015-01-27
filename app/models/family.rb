@@ -8,13 +8,29 @@ class Family < ActiveRecord::Base
   validates_presence_of :familyname, :message =>"Family Name Can't be blank"
   validates_presence_of :participants, :message =>"Participants were not added"
 
-  # TODO
-  #scope :registered
-  # or method called registered
-
   after_save :check_if_empty
 
   before_save :concatenate_family_name
+
+  # TODO put some validation so that we always have a main contact? Or else change concatenate_family_name to work w/o one.
+
+  # TODO
+  #scope :registered
+  # or method called registered
+  def self.registered(year=Year.current)
+    Family.all.select{|f|
+      current_participants = f.participants.select{|p|
+        p.years.include? year
+      }
+      current_participants.present?
+    }
+  end
+
+  # TODO make named scope?
+  def registered_participants
+    participants.select{|p| p.registered?}
+  end
+
 
   def concatenate_family_name
     # put main contact's family name first.  Then concatenate the rest of the names to an array.  Then join on " and " for readability

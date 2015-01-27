@@ -31,6 +31,49 @@ RSpec.describe Family, :type => :model do
     end
   end
 
-  context ".registered" do
+  context "registered families and participants" do
+    before do
+      this_year = FactoryGirl.create(:year, year: 2015)
+      last_year = FactoryGirl.create(:year, year: 2014)
+
+      # Family where all members are registered
+      donald = FactoryGirl.create(:participant, :firstname => "Donald", :lastname =>  "Duck", :birthdate => Date.today-23.years,  :main_contact => true)
+      daisy = FactoryGirl.create(:participant, :firstname => "Daisy",  :lastname =>  "Duck", :birthdate => Date.today-22.years)
+      donald.register(this_year)
+      daisy.register(this_year)
+      @all_registered = FactoryGirl.create(:family, participants: [donald, daisy])
+
+      # Family where all members were registered last year only some registered this year
+      mickey = FactoryGirl.create(:participant, :firstname => "Mickey", :lastname =>  "Mouse", :birthdate => Date.today-30.years, :main_contact => true)
+      minnie = FactoryGirl.create(:participant, :firstname => "Minnie", :lastname =>  "Mouse", :birthdate => Date.today-29.years)
+      baby = FactoryGirl.create(:participant, :firstname => "Baby",   :lastname =>  "Mouse", :birthdate => Date.today-1.year)
+      mickey.register(last_year)
+      minnie.register(last_year)
+      baby.register(last_year)
+      minnie.register(this_year)
+      baby.register(this_year)
+      @some_registered = FactoryGirl.create(:family, participants: [mickey, minnie, baby])
+
+      # Family where members were registered last year but not this year
+      fred    = FactoryGirl.create(:participant, :firstname => "Fred",  :lastname   => "Flintstone", :birthdate => Date.today-40.years, :main_contact => true)
+      wilma   = FactoryGirl.create(:participant, :firstname => "Wilma", :lastname   => "Flintstone", :birthdate => Date.today-38.years)
+      pebbles = FactoryGirl.create(:participant, :firstname => "Pebbles", :lastname => "Flintstone", :birthdate => Date.today-2.years)
+      fred.register(last_year)
+      wilma.register(last_year)
+      pebbles.register(last_year)
+      @registered_last_year = FactoryGirl.create(:family, participants: [fred, wilma, pebbles])
+    end
+
+    it ".registered should only return families with at least one member registered for the current year" do
+      expect(Family.registered.size).to eq 2
+    end
+
+    it "#registered_participants should only return participants within families who are registered for the current year" do
+      # retrieve value created above fresh from database
+      fam = Family.where(familyname: @some_registered.familyname).first
+
+      expect(fam.participants.size).to eq 3 # validate data setup
+      expect(fam.registered_participants.size).to eq 2
+    end
   end
 end
