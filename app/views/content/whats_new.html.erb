@@ -1,19 +1,23 @@
 <h2>What's New for <%= @year %>!</h2>
 
 <div class="span-24">
-  <h4>Theme: CHRISTmas in July, It All Began With a Family.</h4>
+  <h4>Theme: <%= @theme %></h4>
 
-  <div class="row">Come to family camp where families will get pumped up during Family Fitness.
-    What camp is this that meets in July to celebrate the birth of Jesus?  Our focus is Christ and what he has done, at vespers and classes we will worship the Son.
+  <div class="row">
+    Our Heavenly Father has a camp, J-E-S-U-S; and at Widewater there are some familyl campers, J-E-S-U-S.
   </div>
 
   <div class="row">
-    Activities such as archery, crafts and swimming for you, volleyball, kickball, and canoeing too. There are more things to do than you can count, so plan on coming to camp and you will find out.
+    There are vespers here & canoeing there, here a kickball, there some archery, plus worship time where you can share.
+    There's a camp fire here, & some crafts there, here a swimming, there some volleyball, it makes for a good time everywhere.
   </div>
 
   <div class="row">
-    Haste, haste, to <%= link_to "register for family camp", "#{root_url}#facilities" %>. 
-	To reserve your place, send it by May 9, 2014, please don't delay.   
+    Our Heavenly Father has a camp, J-E-S-U-S.
+  </div>
+
+  <div class="row">
+    <%= link_to "How to register? Click here!", "#{root_url}#facilities" %>.
   </div>
 </div>
 

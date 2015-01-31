@@ -10,5 +10,6 @@ class ContentController < ApplicationController
   def whats_new
     current = Year.current
     @year = current.year
+    @theme = current.theme
   end
 end
