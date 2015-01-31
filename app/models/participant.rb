@@ -53,7 +53,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.all_with_dietary_restrictions
-    Participant.all.select {|p|
+    Participant.registered.select {|p|
       p.dietary_restrictions.present?
     }
   end
