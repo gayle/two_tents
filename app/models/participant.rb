@@ -232,11 +232,8 @@ class Participant < ActiveRecord::Base
     pre_k = participants.select {|p|
       (p.age >= 3 and p.age <= 5) or (p.grade.match /(kindergarten)/i if p.grade.present?)
     }
-    younger_elementary = participants.select {|p|
-      p.grade.match /(^1st|first|2nd|second)/i if p.grade.present?
-    }
-    older_elementary = participants.select {|p|
-      p.grade.match /(^3rd|third|4th|fourth)/i if p.grade.present?
+    elementary = participants.select {|p|
+      p.grade.match /(^1st|first|2nd|second|3rd|third|4th|fourth)/i if p.grade.present?
     }
     middle_school = participants.select {|p|
       p.grade.match /(^5th|fifth|6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?
@@ -244,14 +241,18 @@ class Participant < ActiveRecord::Base
     high_school = participants.select {|p|
       p.grade.match /(^9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?
     }
-    other = (participants - child_care - pre_k - younger_elementary - older_elementary - middle_school - high_school).reject { |p| p.grade.blank? }
+    post_high = participants.select {|p|
+      # Want to include 18 to 28.  But exclude anyone who might be 18 but whose grade is 12th or twelfth
+      (p.age >= 18 and p.age <= 28) and (!p.grade.match /(12th|twelfth)/i)
+    }
+    other = (participants - child_care - pre_k - elementary - middle_school - high_school - post_high).reject { |p| p.grade.blank? }
 
-    { "1: child_care" => sort_by_age(child_care),
-      "2: pre_k" => sort_by_age(pre_k),
-      "3: younger_elementary" => sort_by_grade(younger_elementary),
-      "4: older_elementary" => sort_by_grade(older_elementary),
-      "5: middle_school" => sort_by_age(middle_school),
-      "6: high_school" => sort_by_grade(high_school),
+    { "1: child care" => sort_by_age(child_care),
+      "2: pre-k" => sort_by_age(pre_k),
+      "3: elementary" => sort_by_grade(elementary),
+      "4: middle school" => sort_by_grade(middle_school),
+      "5: high school" => sort_by_grade(high_school),
+      "6: post-high" => sort_by_name(post_high),
       "7: other" => sort_by_name(other) }
   end
 
@@ -303,6 +304,7 @@ class Participant < ActiveRecord::Base
       [sort_this, p.age]
     end
     # TODO take into account that kindergarten is less than 1st.  And Fifth is greater than Second
+    # TODO take into account that the string 9th is less than 10th, even though 9 is greater than 1
   end
 
   def self.sort_by_name(participants_in_group)
