@@ -2,6 +2,8 @@
 source 'http://gemcutter.org'
 source 'http://gems.github.com'
 
+ruby "1.8.7"
+
 gem "rails", "2.3.9"
 gem "rake", "0.8.7"
 gem "will_paginate", "~> 2.3.15"
