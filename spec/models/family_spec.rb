@@ -65,20 +65,20 @@ def create_family_where_nobody_is_registered
   # * Main contact should be created last or close to last
   # * should not create in order or reverse order of birthdates, but it should created in weird order
   dogs = [
-      FactoryGirl.create(:participant, :firstname => "Puppy2", :lastname => "Dogs", :birthdate => twin_birthdate),
-      FactoryGirl.create(:participant, :firstname => "Odie", :lastname => "Dogs", :birthdate => Time.now - 30.years),
-      FactoryGirl.create(:participant, :firstname => "Puppy1", :lastname => "Dogs", :birthdate => twin_birthdate)
+      FactoryGirl.create(:participant, firstname: "Puppy2", lastname: "Dogs", birthdate: twin_birthdate),
+      FactoryGirl.create(:participant, firstname: "Odie", lastname: "Dogs", birthdate: Time.now - 30.years),
+      FactoryGirl.create(:participant, firstname: "Puppy1", lastname: "Dogs", birthdate: twin_birthdate)
   ]
   cats = [
-      FactoryGirl.create(:participant, :firstname => "Kitty", :lastname => "Cats", :birthdate => Time.now - 1.year),
-      FactoryGirl.create(:participant, :firstname => "Garfield", :lastname => "Cats", :birthdate => Time.now - 31.years, :main_contact => true),
+      FactoryGirl.create(:participant, firstname: "Kitty", lastname: "Cats", birthdate: Time.now - 1.year),
+      FactoryGirl.create(:participant, firstname: "Garfield", lastname: "Cats", birthdate: Time.now - 31.years, :main_contact => true),
   ]
   FactoryGirl.create(:family, participants: dogs+cats)
 end
 
 def create_family_where_all_are_registered
-  daisy = FactoryGirl.create(:participant, :firstname => "Daisy", :lastname => "Duck", :birthdate => Date.today-22.years)
-  donald = FactoryGirl.create(:participant, :firstname => "Donald", :lastname => "Duck", :birthdate => Date.today-23.years, :main_contact => true)
+  daisy = FactoryGirl.create(:participant, firstname: "Daisy", lastname: "Duck", birthdate: Date.today-22.years)
+  donald = FactoryGirl.create(:participant, firstname: "Donald", lastname: "Duck", birthdate: Date.today-23.years, :main_contact => true)
   donald.register(@this_year)
   daisy.register(@this_year)
   FactoryGirl.create(:family, participants: [donald, daisy])
@@ -86,9 +86,9 @@ end
 
 # Family where all members were registered last year only some registered this year
 def create_family_where_only_some_are_registered
-  mickey = FactoryGirl.create(:participant, :firstname => "Mickey", :lastname => "Mouse", :birthdate => Date.today-30.years, :main_contact => true)
-  minnie = FactoryGirl.create(:participant, :firstname => "Minnie", :lastname => "Mouse", :birthdate => Date.today-29.years)
-  baby = FactoryGirl.create(:participant, :firstname => "Baby", :lastname => "Mouse", :birthdate => Date.today-1.year)
+  mickey = FactoryGirl.create(:participant, firstname: "Mickey", lastname: "Mouse", birthdate: Date.today-30.years, :main_contact => true)
+  minnie = FactoryGirl.create(:participant, firstname: "Minnie", lastname: "Mouse", birthdate: Date.today-29.years)
+  baby = FactoryGirl.create(:participant, firstname: "Baby", lastname: "Mouse", birthdate: Date.today-1.year)
   mickey.register(@last_year)
   minnie.register(@last_year)
   baby.register(@last_year)
@@ -99,9 +99,9 @@ end
 
 # Family where members were registered last year but not this year
 def create_family_who_was_registered_last_year
-  fred = FactoryGirl.create(:participant, :firstname => "Fred", :lastname => "Flintstone", :birthdate => Date.today-40.years, :main_contact => true)
-  wilma = FactoryGirl.create(:participant, :firstname => "Wilma", :lastname => "Flintstone", :birthdate => Date.today-38.years)
-  pebbles = FactoryGirl.create(:participant, :firstname => "Pebbles", :lastname => "Flintstone", :birthdate => Date.today-2.years)
+  fred = FactoryGirl.create(:participant, firstname: "Fred", lastname: "Flintstone", birthdate: Date.today-40.years, main_contact: true)
+  wilma = FactoryGirl.create(:participant, firstname: "Wilma", lastname: "Flintstone", birthdate: Date.today-38.years)
+  pebbles = FactoryGirl.create(:participant, firstname: "Pebbles", lastname: "Flintstone", birthdate: Date.today-2.years)
   fred.register(@last_year)
   wilma.register(@last_year)
   pebbles.register(@last_year)
@@ -109,10 +109,10 @@ def create_family_who_was_registered_last_year
 end
 
 def create_family_with_no_main_contact
-  scooby = FactoryGirl.create(:participant, :firstname => "Scooby", :lastname => "Doo",     :birthdate => Date.today-15.years)
-  shaggy = FactoryGirl.create(:participant, :firstname => "Shaggy", :lastname => "Rogers",  :birthdate => Date.today-15.years)
-  fred   = FactoryGirl.create(:participant, :firstname => "Fred",   :lastname => "Jones",   :birthdate => Date.today-15.years)
-  velma  = FactoryGirl.create(:participant, :firstname => "Velma",  :lastname => "Dinkley", :birthdate => Date.today-15.years)
-  daphne = FactoryGirl.create(:participant, :firstname => "Daphne", :lastname => "Blake",   :birthdate => Date.today-15.years)
+  scooby = FactoryGirl.create(:participant, firstname: "Scooby", lastname: "Doo",     birthdate: Date.today-15.years)
+  shaggy = FactoryGirl.create(:participant, firstname: "Shaggy", lastname: "Rogers",  birthdate: Date.today-15.years)
+  fred   = FactoryGirl.create(:participant, firstname: "Fred",   lastname: "Jones",   birthdate: Date.today-15.years)
+  velma  = FactoryGirl.create(:participant, firstname: "Velma",  lastname: "Dinkley", birthdate: Date.today-15.years)
+  daphne = FactoryGirl.create(:participant, firstname: "Daphne", lastname: "Blake",   birthdate: Date.today-15.years)
   FactoryGirl.create(:family, participants: [scooby, shaggy, fred, velma, daphne])
 end
