@@ -44,6 +44,10 @@ class Family < ActiveRecord::Base
     end
   end
 
+  def main_contact_name
+    main_contact.firstname rescue "no main contact for this family"
+  end
+
   private
 
   def check_if_empty

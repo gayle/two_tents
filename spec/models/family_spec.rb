@@ -64,6 +64,16 @@ RSpec.describe Family, :type => :model do
       expect(@with_no_main_contact.full_address).to include "unknown"
     end
   end
+
+  context "#main_contact_name" do
+    it "should show main contact's first name" do
+      expect(@all_registered.main_contact_name).to eq "Donald"
+    end
+
+    it "should indicate when there is no main contact" do
+      expect(@with_no_main_contact.main_contact_name).to eq "no main contact for this family"
+    end
+  end
 end
 
 private
