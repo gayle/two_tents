@@ -8,9 +8,14 @@ class Participant < ActiveRecord::Base
   # at least validate presence fields used directly or indirectlyr for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
+  # This was in old rails 2 version but not really sure I need it.
+  #   named_scope :main_contact, :conditions => { :main_contact => true }
+  #   would be like this in rails 4:    scope :main_contact, -> { where(:main_contact => true) }
+
   # Copied this over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
   #after_initialize :add_current_year
 
+  # In old rails2, I think this used to be called 'current' but there was something else called 'registered' that was basically the same. Use this one.
   scope :registered, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
   # Couldn't get the scope to work.  It just returned anyone who had been registered in a past year ever,
@@ -41,9 +46,13 @@ class Participant < ActiveRecord::Base
   # where participant_id not in (select participant_id from participants_years where year_id = 3)
   # group by participants.name, participants.id
   # ;
+
+  # Note in old rails2 this used to be called 'past'.  So in controllers/views/whatever, use this instead of 'past'
   def self.not_registered
     Participant.all - Participant.registered
   end
+
+  scope :with_dietary_restrictions, -> {registered.where('dietary_restrictions IS NOT NULL')}
 
   def <=>(other_participant)
     list_name <=> other_participant.list_name

@@ -44,6 +44,15 @@ RSpec.describe Participant, :type => :model do
       end
     end
 
+    context ".with_dietary_restrictions" do
+      it "should only return participants with dietary restrictions who are registered this year" do
+        @someone_registered_last_year_only.update_attributes!(dietary_restrictions: "Peanut Allergy")
+        @someone_registered_this_year_only.update_attributes!(dietary_restrictions: "Gluten Allergy")
+
+        expect(Participant.with_dietary_restrictions.map{|p| p.dietary_restrictions}).to eq ["Gluten Allergy"]
+      end
+    end
+
     context "#full_name" do
       it "should display first name then last name" do
         @someone_registered_last_and_this_year = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
