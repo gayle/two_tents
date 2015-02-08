@@ -15,7 +15,8 @@ class Family < ActiveRecord::Base
   before_save :concatenate_family_name
 
 
-  # TODO scope :registered?  Not sure how this would work
+  # This gets a list of all families who have at least one registered participant
+  # TODO make this a scope called :registered instead?  Not sure how this would work
   def self.registered(year=Year.current)
     Family.all.select{|f|
       current_participants = f.participants.select{|p|
@@ -25,18 +26,9 @@ class Family < ActiveRecord::Base
     }
   end
 
-  # TODO make named scope?
+  # This gets a list of participants within the given family who are registered
   def registered_participants
     participants.select{|p| p.registered?}
-  end
-
-
-  def concatenate_family_name
-    last_names = []
-    main_contact = participants.detect{|p| p.main_contact == true} # can't use main_contact named scope yet b/c this is a before_save filter and obj hasn't been saved to db
-    last_names << main_contact.lastname if main_contact # make sure main contact is first if there is one.
-    last_names += participants.collect { |p| p.lastname }
-    self.familyname = last_names.uniq.join(" and ")
   end
 
   private
@@ -47,4 +39,13 @@ class Family < ActiveRecord::Base
       self.destroy
     end
   end
+
+  def concatenate_family_name
+    last_names = []
+    main_contact = participants.detect{|p| p.main_contact == true} # can't use main_contact named scope yet b/c this is a before_save filter and obj hasn't been saved to db
+    last_names << main_contact.lastname if main_contact # make sure main contact is first if there is one.
+    last_names += participants.collect { |p| p.lastname }
+    self.familyname = last_names.uniq.join(" and ")
+  end
+
 end
