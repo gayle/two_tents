@@ -54,8 +54,19 @@ class Participant < ActiveRecord::Base
 
   scope :with_dietary_restrictions, -> {registered.where('dietary_restrictions IS NOT NULL')}
 
-  def <=>(other_participant)
-    list_name <=> other_participant.list_name
+  def register(year=Year.current)
+    self.years ||= []
+    self.years << year if not self.years.include?(year)
+    self
+  end
+
+  # note: in rails2 version there was "registered_for_current_year?" and "registered_for_year?(year)" methods. This replaces both, use it instead.
+  def registered?(year=Year.current)
+    years.include? year
+  end
+
+  def only_member_of_associated_family?
+    family && family.participants.size == 1
   end
 
   def full_name
@@ -99,20 +110,6 @@ class Participant < ActiveRecord::Base
     age >= 18
   end
 
-  def register(year=Year.current)
-    self.years ||= []
-    self.years << year if not self.years.include?(year)
-    self
-  end
-
-  def registered?(year=Year.current)
-    years.include? year
-  end
-
-  def only_member_of_associated_family?
-    family && family.participants.size == 1
-  end
-
   # TODO add this once we have the user model
   # def staff?
   #   user.present?
@@ -123,6 +120,9 @@ class Participant < ActiveRecord::Base
   #   return self.user.nil? || !self.user.administrator?
   # end
 
+  def <=>(other_participant)
+    list_name <=> other_participant.list_name
+  end
 
   private
 
