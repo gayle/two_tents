@@ -39,7 +39,7 @@ RSpec.describe Year do
       FactoryGirl.create(:year)
       nextyear = Year.current.year + 1
       FactoryGirl.create(:year, year: nextyear)
-      Year.current.year.should eq nextyear
+      expect(Year.current.year).to eq nextyear
     end
   end
 
