@@ -35,12 +35,7 @@ class Family < ActiveRecord::Base
     if main_contact.nil?
       "address unknown because no main contact for this family"
     else
-      addr = ""
-      addr << "#{main_contact.address}, " if main_contact.address.present?
-      addr << "#{main_contact.city}, "    if main_contact.city.present?
-      addr << "#{main_contact.state} "    if main_contact.state.present?
-      addr << "#{main_contact.zip}"       if main_contact.zip.present?
-      addr
+      main_contact.full_address
     end
   end
 

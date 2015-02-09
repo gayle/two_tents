@@ -55,7 +55,6 @@ RSpec.describe Participant, :type => :model do
 
     context "#full_name" do
       it "should display first name then last name" do
-        @someone_registered_last_and_this_year = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple", years: [@last_year, @this_year])
         expect(@someone_registered_last_and_this_year.full_name).to eq "Adam Apple"
       end
     end
@@ -63,6 +62,33 @@ RSpec.describe Participant, :type => :model do
     context "#list_name" do
       it "should display last name then first name" do
         expect(@someone_registered_last_and_this_year.list_name).to eq "Apple, Adam"
+      end
+    end
+
+    context "#participant_address" do
+      before do
+        @address_attributes = {address: "123 Main St.", city: "Anytown", state: "OH", zip: "44444"}
+      end
+
+      it "should not blow up if participant has no address" do
+        expect(@someone_registered_this_year_only.full_address).to eq "unknown"
+      end
+
+      it "should get participant address" do
+        @someone_registered_this_year_only.update_attributes!(@address_attributes)
+        expect(@someone_registered_this_year_only.full_address).to eq "123 Main St., Anytown, OH 44444"
+      end
+
+      it "should get family's address if participant's address is blank" do
+        # full_address should not blow up at first when participant is not yet part of a family
+        expect(@someone_registered_this_year_only.full_address).to eq "unknown"
+
+        # add participant to a family who has a main contact
+        @someone_registered_last_and_this_year.update_attributes!({main_contact: true}.merge(@address_attributes))
+        FactoryGirl.create(:family, participants: [@someone_registered_this_year_only, @someone_registered_last_and_this_year])
+
+        # Now address should have something
+        expect(@someone_registered_this_year_only.full_address).to eq @someone_registered_last_and_this_year.full_address
       end
     end
 

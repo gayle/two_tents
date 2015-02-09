@@ -66,6 +66,11 @@ class Participant < ActiveRecord::Base
     "#{lastname}, #{firstname}"
   end
 
+  def full_address
+    return formatted_address if formatted_address.present?
+    family.nil? ? "unknown" : family.full_address
+  end
+
   def register(year=Year.current)
     self.years ||= []
     self.years << year if not self.years.include?(year)
@@ -84,5 +89,14 @@ class Participant < ActiveRecord::Base
     self.years << current if current.present? and not self.years.include?(current)
   end
 
+  def formatted_address
+    addr = ""
+    addr << "#{address}, " if address.present?
+    addr << "#{city}, "    if city.present?
+    addr << "#{state} "    if state.present?
+    addr << "#{zip}"       if zip.present?
+    addr.rstrip.chomp(",")
+    addr
+  end
 
 end
