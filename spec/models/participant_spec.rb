@@ -121,40 +121,60 @@ RSpec.describe Participant, :type => :model do
     end
   end
 
-  context "#age and #display_age" do
+  context "age-related things" do
     before do
       @camp_start = Date.new(2010,7,21)
-      FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: (@camp_start+5.days))
+      @camp_end = @camp_start+5.days
+      FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: @camp_end)
     end
 
-    it "when participant is under one month old" do
-      p = FactoryGirl.create(:participant, birthdate: @camp_start - 10.days)
-      expect(p.age).to eq 0
-      expect(p.display_age).to eq "10 days"
+    context "#age and #display_age" do
+      it "when participant is under one month old" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 10.days)
+        expect(p.age).to eq 0
+        expect(p.display_age).to eq "10 days"
+      end
+
+      it "when participant is barely over one month old" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 31.days)
+        expect(p.age).to eq 0
+        expect(p.display_age).to eq "1 month"
+      end
+
+      it "when participant is barely under one year old" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 11.months - 29.days)
+        expect(p.age).to eq 0
+        expect(p.display_age).to eq "11 months"
+      end
+
+      it "when participant is over one year and less than 2 years" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 1.year - 10.months - 10.days)
+        expect(p.age).to eq 1
+        expect(p.display_age).to eq "22 months"
+      end
+
+      it "when participant is over 2 years" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 2.years)
+        expect(p.age).to eq 2
+        expect(p.display_age).to eq "2"
+      end
     end
 
-    it "when participant is barely over one month old" do
-      p = FactoryGirl.create(:participant, birthdate: @camp_start - 31.days)
-      expect(p.age).to eq 0
-      expect(p.display_age).to eq "1 month"
-    end
+    context "#birthday_during_camp?" do
+      it "should be true if birthday is on first day of camp" do
+        p = FactoryGirl.create(:participant, birthdate: Date.new(@camp_start.year-10, @camp_start.month, @camp_start.day))
+        expect(p.birthday_during_camp?).to eq true
+      end
 
-    it "when participant is barely under one year old" do
-      p = FactoryGirl.create(:participant, birthdate: @camp_start - 11.months - 29.days)
-      expect(p.age).to eq 0
-      expect(p.display_age).to eq "11 months"
-    end
+      it "should be true if birthday is on last day of camp" do
+        p = FactoryGirl.create(:participant, birthdate: Date.new(@camp_end.year-10, @camp_end.month, @camp_end.day))
+        expect(p.birthday_during_camp?).to eq true
+      end
 
-    it "when participant is over one year and less than 2 years" do
-      p = FactoryGirl.create(:participant, birthdate: @camp_start - 1.year - 10.months - 10.days)
-      expect(p.age).to eq 1
-      expect(p.display_age).to eq "22 months"
-    end
-
-    it "when participant is over 2 years" do
-      p = FactoryGirl.create(:participant, birthdate: @camp_start - 2.years)
-      expect(p.age).to eq 2
-      expect(p.display_age).to eq "2"
+      it "should be false if birthday is not during camp" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 10.years + 30.days)
+        expect(p.birthday_during_camp?).to eq false
+      end
     end
   end
 

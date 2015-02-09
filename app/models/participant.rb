@@ -88,6 +88,13 @@ class Participant < ActiveRecord::Base
     end
   end
 
+  def birthday_during_camp?
+    return false if birthdate.blank?
+    camp_event_year = Year.current
+    current_year_birthday = Date.new(camp_event_year.starts_on.year, birthdate.month, birthdate.day)
+    camp_event_year.starts_on <= current_year_birthday && current_year_birthday <= camp_event_year.ends_on
+  end
+
   def register(year=Year.current)
     self.years ||= []
     self.years << year if not self.years.include?(year)
