@@ -105,6 +105,21 @@ class Participant < ActiveRecord::Base
     years.include? year
   end
 
+  def only_member_of_associated_family?
+    family && family.participants.size == 1
+  end
+
+  # TODO add this once we have the user model
+  # def staff?
+  #   user.present?
+  # end
+
+  # TODO add this once we have the user model
+  # def can_delete?
+  #   return self.user.nil? || !self.user.administrator?
+  # end
+
+
   private
 
   def add_current_year

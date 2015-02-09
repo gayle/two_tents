@@ -8,7 +8,7 @@ RSpec.describe Participant, :type => :model do
     end
   end
 
-  context "with registrations for various years" do
+  context "with participants registered for various years" do
     before do
       @this_year = FactoryGirl.create(:year, year: 2015)
       @last_year = FactoryGirl.create(:year, year: 2014)
@@ -58,6 +58,18 @@ RSpec.describe Participant, :type => :model do
         expect(@someone_registered_last_and_this_year.registered?(@this_year)).to eq true
         expect(@someone_registered_last_year_only.registered?(@this_year)).to eq false
         expect(@someone_registered_this_year_only.registered?(@this_year)).to eq true
+      end
+    end
+
+    context "#only_member_of_associated_family?" do
+      it "should be true if only member in family" do
+        FactoryGirl.create(:family, participants: [@someone_registered_this_year_only])
+        expect(@someone_registered_this_year_only.only_member_of_associated_family?).to eq true
+      end
+
+      it "should be false if other family members" do
+        FactoryGirl.create(:family, participants: [@someone_registered_last_and_this_year, @someone_registered_this_year_only])
+        expect(@someone_registered_this_year_only.only_member_of_associated_family?).to eq false
       end
     end
   end
