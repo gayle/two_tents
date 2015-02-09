@@ -121,6 +121,43 @@ RSpec.describe Participant, :type => :model do
     end
   end
 
+  context "#age and #display_age" do
+    before do
+      @camp_start = Date.new(2010,7,21)
+      FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: (@camp_start+5.days))
+    end
+
+    it "when participant is under one month old" do
+      p = FactoryGirl.create(:participant, birthdate: @camp_start - 10.days)
+      expect(p.age).to eq 0
+      expect(p.display_age).to eq "10 days"
+    end
+
+    it "when participant is barely over one month old" do
+      p = FactoryGirl.create(:participant, birthdate: @camp_start - 31.days)
+      expect(p.age).to eq 0
+      expect(p.display_age).to eq "1 month"
+    end
+
+    it "when participant is barely under one year old" do
+      p = FactoryGirl.create(:participant, birthdate: @camp_start - 11.months - 29.days)
+      expect(p.age).to eq 0
+      expect(p.display_age).to eq "11 months"
+    end
+
+    it "when participant is over one year and less than 2 years" do
+      p = FactoryGirl.create(:participant, birthdate: @camp_start - 1.year - 10.months - 10.days)
+      expect(p.age).to eq 1
+      expect(p.display_age).to eq "22 months"
+    end
+
+    it "when participant is over 2 years" do
+      p = FactoryGirl.create(:participant, birthdate: @camp_start - 2.years)
+      expect(p.age).to eq 2
+      expect(p.display_age).to eq "2"
+    end
+  end
+
   context "sorting" do
     it "should sort by 'list_name' by default" do
       FactoryGirl.create(:participant, firstname: "Zeb", lastname: "Apple")

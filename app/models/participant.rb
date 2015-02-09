@@ -71,6 +71,23 @@ class Participant < ActiveRecord::Base
     family.nil? ? "unknown" : family.full_address
   end
 
+  # must return a numeric age
+  def age
+    age_parts[:years]
+  end
+
+  def display_age
+    a = age_parts
+    if a[:years] >= 2
+      a[:years].to_s
+    elsif a[:months] > 0
+      months = a[:months] + 12*a[:years]
+      "#{months} #{"month".pluralize(months)}"
+    else
+      "#{a[:days]} #{"day".pluralize(a[:days])}"
+    end
+  end
+
   def register(year=Year.current)
     self.years ||= []
     self.years << year if not self.years.include?(year)
@@ -99,4 +116,24 @@ class Participant < ActiveRecord::Base
     addr
   end
 
+  def age_parts
+    parts={}
+
+    start_of_camp = Year.current.starts_on
+    dob = birthdate.to_date
+
+    parts[:years] = start_of_camp.year - dob.year
+    parts[:months] = start_of_camp.month - dob.month
+    parts[:days] = start_of_camp.day - dob.day
+    if parts[:days] < 0
+      parts[:days] = parts[:days] + Time.days_in_month(dob.month, dob.year)
+      parts[:months] = parts[:months] - 1
+    end
+    if parts[:months] < 0
+      parts[:months] = parts[:months] + 12
+      parts[:years] = parts[:years] - 1
+    end
+
+    parts
+  end
 end
