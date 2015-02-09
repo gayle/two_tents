@@ -8,7 +8,7 @@ RSpec.describe Participant, :type => :model do
     end
   end
 
-  context "with some existing registrations" do
+  context "with registrations for various years" do
     before do
       @this_year = FactoryGirl.create(:year, year: 2015)
       @last_year = FactoryGirl.create(:year, year: 2014)
@@ -53,15 +53,29 @@ RSpec.describe Participant, :type => :model do
       end
     end
 
+    context "#registered?" do
+      it "should determine whether participants are registered" do
+        expect(@someone_registered_last_and_this_year.registered?(@this_year)).to eq true
+        expect(@someone_registered_last_year_only.registered?(@this_year)).to eq false
+        expect(@someone_registered_this_year_only.registered?(@this_year)).to eq true
+      end
+    end
+  end
+
+  context "When displaying personal information" do
+    before do
+      @adam = FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+    end
+
     context "#full_name" do
       it "should display first name then last name" do
-        expect(@someone_registered_last_and_this_year.full_name).to eq "Adam Apple"
+        expect(@adam.full_name).to eq "Adam Apple"
       end
     end
 
     context "#list_name" do
       it "should display last name then first name" do
-        expect(@someone_registered_last_and_this_year.list_name).to eq "Apple, Adam"
+        expect(@adam.list_name).to eq "Apple, Adam"
       end
     end
 
@@ -71,44 +85,38 @@ RSpec.describe Participant, :type => :model do
       end
 
       it "should not blow up if participant has no address" do
-        expect(@someone_registered_this_year_only.full_address).to eq "unknown"
+        expect(@adam.full_address).to eq "unknown"
       end
 
       it "should get participant address" do
-        @someone_registered_this_year_only.update_attributes!(@address_attributes)
-        expect(@someone_registered_this_year_only.full_address).to eq "123 Main St., Anytown, OH 44444"
+        @adam.update_attributes!(@address_attributes)
+        expect(@adam.full_address).to eq "123 Main St., Anytown, OH 44444"
       end
 
       it "should get family's address if participant's address is blank" do
+        @bill = FactoryGirl.create(:participant, firstname: "Bill", lastname: "Banana")
+
         # full_address should not blow up at first when participant is not yet part of a family
-        expect(@someone_registered_this_year_only.full_address).to eq "unknown"
+        expect(@bill.full_address).to eq "unknown"
 
         # add participant to a family who has a main contact
-        @someone_registered_last_and_this_year.update_attributes!({main_contact: true}.merge(@address_attributes))
-        FactoryGirl.create(:family, participants: [@someone_registered_this_year_only, @someone_registered_last_and_this_year])
+        @adam.update_attributes!({main_contact: true}.merge(@address_attributes))
+        FactoryGirl.create(:family, participants: [@adam, @bill])
 
         # Now address should have something
-        expect(@someone_registered_this_year_only.full_address).to eq @someone_registered_last_and_this_year.full_address
-      end
-    end
-
-    context "#registered?" do
-      it "should determine whether participants are registered" do
-        expect(@someone_registered_last_and_this_year.registered?(@this_year)).to eq true
-        expect(@someone_registered_last_year_only.registered?(@this_year)).to eq false
-        expect(@someone_registered_this_year_only.registered?(@this_year)).to eq true
+        expect(@bill.full_address).to eq @adam.full_address
       end
     end
 
     context "#full_name" do
       it "should concatenate full name with first name first" do
-        expect(@someone_registered_last_and_this_year.full_name).to eq "Adam Apple"
+        expect(@adam.full_name).to eq "Adam Apple"
       end
     end
 
     context "#list_name" do
       it "should concatenate list name with last name first" do
-        expect(@someone_registered_last_and_this_year.list_name).to eq "Apple, Adam"
+        expect(@adam.list_name).to eq "Apple, Adam"
       end
     end
   end
