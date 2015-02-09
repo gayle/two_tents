@@ -188,6 +188,18 @@ RSpec.describe Participant, :type => :model do
         expect(p.birthday_during_camp?).to eq false
       end
     end
+
+    context "#hide_age?" do
+      it "should hide if 18 and over" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 18.years)
+        expect(p.hide_age?).to eq true
+      end
+
+      it "should not hide if under 18" do
+        p = FactoryGirl.create(:participant, birthdate: @camp_start - 17.years)
+        expect(p.hide_age?).to eq false
+      end
+    end
   end
 
   context "sorting" do

@@ -95,6 +95,10 @@ class Participant < ActiveRecord::Base
     camp_event_year.starts_on <= current_year_birthday && current_year_birthday <= camp_event_year.ends_on
   end
 
+  def hide_age?
+    age >= 18
+  end
+
   def register(year=Year.current)
     self.years ||= []
     self.years << year if not self.years.include?(year)
