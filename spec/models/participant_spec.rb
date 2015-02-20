@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Participant, :type => :model do
   context "#years" do
     it "should not blow up if no current year available" do
-      participant = Participant.new(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
+      participant = FactoryGirl.create(:participant, firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
       expect(participant.years).to be_blank
     end
   end
@@ -22,7 +22,7 @@ RSpec.describe Participant, :type => :model do
     # Copied after_initialize over from old rails 2, but it seems to cause more problems than it solves.  Taking it out until I find a good use case for it.
     #it "should add current year to new records if not specified" do
     #  year = FactoryGirl.create(:year)
-    #  participant = Participant.new(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
+    #  participant = FactoryGirl.create(firstname: "Joe", lastname: "Schmoe", birthdate: Date.new(1970,06,01))
     #  expect(participant.years).not_to be_empty
     #  expect(participant.years.size).to eq 1
     #  expect(participant.years).to include year
@@ -202,15 +202,228 @@ RSpec.describe Participant, :type => :model do
     end
   end
 
-  context "sorting" do
-    it "should sort by 'list_name' by default" do
-      FactoryGirl.create(:participant, firstname: "Zeb", lastname: "Apple")
-      FactoryGirl.create(:participant, firstname: "Xenia", lastname: "Zimmerman")
-      FactoryGirl.create(:participant, firstname: "Abe", lastname: "Zimmerman")
-      FactoryGirl.create(:participant, firstname: "Adam", lastname: "Apple")
+  context "grouping" do
+    context "#group_by_age" do
+      it "should stuff" do
+        pending
+        #binding.pry # how many participants do I have?
+      end
+    end
 
-      expect(Participant.all.map{|p| p.list_name}).to eq ["Apple, Zeb", "Zimmerman, Xenia", "Zimmerman, Abe", "Apple, Adam"]
-      expect(Participant.all.sort.map{|p| p.list_name}).to eq ["Apple, Adam", "Apple, Zeb", "Zimmerman, Abe", "Zimmerman, Xenia"]
+    context "#group_by_grade" do
+      before do
+        @camp_start = Date.new(2010,7,21)
+        @camp_end = @camp_start+5.days
+        @this_year = FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: @camp_end)
+      end
+
+      it "should only include registered participants" do
+        zero_year_old  = FactoryGirl.create(:participant, :lastname => "Zero", firstname: "A", birthdate: @camp_start-18.days)
+        one_year_old   = FactoryGirl.create(:participant, :lastname => "One",  firstname: "B", birthdate: @camp_start-1.year).register
+
+        participants_by_grade = Participant.group_by_grade
+        child_care_group = participants_by_grade["1: child_care"]
+
+        expect(child_care_group).not_to be_blank
+        expect(child_care_group).not_to include zero_year_old
+        expect(child_care_group).to include one_year_old
+      end
+
+      it "'child care' group should include age 0 to 2" do
+        zero_year_old  = FactoryGirl.create(:participant, :lastname => "Zero", firstname: "A", birthdate: @camp_start-18.days).register
+        one_year_old   = FactoryGirl.create(:participant, :lastname => "One",  firstname: "B", birthdate: @camp_start-1.year).register
+        two_year_old   = FactoryGirl.create(:participant, :lastname => "Two",  firstname: "C", birthdate: @camp_start-2.years).register
+        three_year_old = FactoryGirl.create(:participant, :lastname => "Two",  firstname: "D", birthdate: @camp_start-3.years).register
+
+        participants_by_grade = Participant.group_by_grade
+        child_care_group = participants_by_grade["1: child_care"]
+
+        expect(child_care_group).not_to be_blank
+        expect(child_care_group).to include zero_year_old
+        expect(child_care_group).to include one_year_old
+        expect(child_care_group).to include two_year_old
+        expect(child_care_group).not_to include three_year_old
+      end
+
+      it "'pre-k' group should include age 3 to5 going into kindergarten" do
+        two_year_old   = FactoryGirl.create(:participant, :lastname => "Two",   firstname: "A", birthdate: @camp_start-2.years, :grade => "pre-k").register
+        three_year_old = FactoryGirl.create(:participant, :lastname => "Three", firstname: "B", birthdate: @camp_start-3.years, :grade => "pre-k").register
+        four_year_old  = FactoryGirl.create(:participant, :lastname => "Four",  firstname: "C", birthdate: @camp_start-4.years, :grade => "pre-k").register
+        five_year_old  = FactoryGirl.create(:participant, :lastname => "Five",  firstname: "D", birthdate: @camp_start-5.years, :grade => "pre-k").register
+        six_year_old_going_into_kindergarten = FactoryGirl.create(:participant, :lastname => "Six", :firstname => "K",   birthdate: @camp_start-6.years, :grade => "kindergarten").register
+        six_year_old_going_into_first_grade  = FactoryGirl.create(:participant, :lastname => "Six", :firstname => "1st", birthdate: @camp_start-6.years, :grade => "1st").register
+
+        participants_by_grade = Participant.group_by_grade
+        pre_k_group = participants_by_grade["2: pre_k"]
+
+        expect(pre_k_group).not_to be_blank
+        expect(pre_k_group).not_to include two_year_old
+        expect(pre_k_group).to include three_year_old
+        expect(pre_k_group).to include four_year_old
+        expect(pre_k_group).to include five_year_old
+        expect(pre_k_group).to include six_year_old_going_into_kindergarten
+        expect(pre_k_group).not_to include six_year_old_going_into_first_grade
+      end
+
+      it "'younger elementary' group should include first and second grade" do
+        kindergartener = FactoryGirl.create(:participant, :lastname => "Kay",    firstname: "A", birthdate: @camp_start-5.years, :grade => "Kindergarten").register
+        first_grader   = FactoryGirl.create(:participant, :lastname => "First",  firstname: "B", birthdate: @camp_start-6.years, :grade => "1st").register
+        second_grader  = FactoryGirl.create(:participant, :lastname => "Second", firstname: "C", birthdate: @camp_start-7.years, :grade => "2nd").register
+        third_grader   = FactoryGirl.create(:participant, :lastname => "Third",  firstname: "D", birthdate: @camp_start-8.years, :grade => "3rd").register
+
+        participants_by_grade = Participant.group_by_grade
+        younger_elementary_group = participants_by_grade["3: younger_elementary"]
+
+        expect(younger_elementary_group).not_to be_blank
+        expect(younger_elementary_group).not_to include kindergartener
+        expect(younger_elementary_group).to include first_grader
+        expect(younger_elementary_group).to include second_grader
+        expect(younger_elementary_group).not_to include third_grader
+      end
+
+      it "'older elementary' group should include third and fourth grade" do
+        second_grader = FactoryGirl.create(:participant, :lastname => "Second", firstname: "A", birthdate: @camp_start-7.years,  :grade => "2nd").register
+        third_grader  = FactoryGirl.create(:participant, :lastname => "Third",  firstname: "B", birthdate: @camp_start-8.years,  :grade => "3rd").register
+        fourth_grader = FactoryGirl.create(:participant, :lastname => "Fourth", firstname: "C", birthdate: @camp_start-9.years,  :grade => "4th").register
+        fifth_grader  = FactoryGirl.create(:participant, :lastname => "Fifth",  firstname: "D", birthdate: @camp_start-10.years, :grade => "5th").register
+
+        participants_by_grade = Participant.group_by_grade
+        older_elementary_group = participants_by_grade["4: older_elementary"]
+
+        expect(older_elementary_group).not_to be_blank
+        expect(older_elementary_group).not_to include second_grader
+        expect(older_elementary_group).to include third_grader
+        expect(older_elementary_group).to include fourth_grader
+        expect(older_elementary_group).not_to include fifth_grader
+      end
+      
+      it "'middle school' group should include fifth to eighth grade" do
+        fourth_grader  = FactoryGirl.create(:participant, lastname: "Fourth",  firstname: "A", birthdate: @camp_start-9.years,  grade: "4th").register
+        fifth_grader   = FactoryGirl.create(:participant, lastname: "Fifth",   firstname: "B", birthdate: @camp_start-10.years, grade: "5th").register
+        sixth_grader   = FactoryGirl.create(:participant, lastname: "Sixth",   firstname: "C", birthdate: @camp_start-11.years, grade: "6th").register
+        seventh_grader = FactoryGirl.create(:participant, lastname: "Seventh", firstname: "D", birthdate: @camp_start-12.years, grade: "7th").register
+        eighth_grader  = FactoryGirl.create(:participant, lastname: "Eighth",  firstname: "E", birthdate: @camp_start-13.years, grade: "8th").register
+        ninth_grader   = FactoryGirl.create(:participant, lastname: "Ninth",   firstname: "F", birthdate: @camp_start-14.years, grade: "9th").register
+
+        participants_by_grade = Participant.group_by_grade
+        middle_school_group = participants_by_grade["5: middle_school"]
+
+        expect(middle_school_group).not_to be_blank
+        expect(middle_school_group).not_to include fourth_grader
+        expect(middle_school_group).to include fifth_grader
+        expect(middle_school_group).to include sixth_grader
+        expect(middle_school_group).to include seventh_grader
+        expect(middle_school_group).to include eighth_grader
+        expect(middle_school_group).not_to include ninth_grader
+      end
+
+      it "'high school' group should include ninth to twelth grade" do
+        eighth_grader   = FactoryGirl.create(:participant, lastname: "Eighth",   firstname: "A", birthdate: @camp_start-13.years, grade: "8th").register
+        ninth_grader    = FactoryGirl.create(:participant, lastname: "Ninth",    firstname: "B", birthdate: @camp_start-14.years, grade: "9th").register
+        tenth_grader    = FactoryGirl.create(:participant, lastname: "Tenth",    firstname: "C", birthdate: @camp_start-15.years, grade: "10th").register
+        eleventh_grader = FactoryGirl.create(:participant, lastname: "Eleventh", firstname: "D", birthdate: @camp_start-16.years, grade: "11th").register
+        twelfth_grader  = FactoryGirl.create(:participant, lastname: "Twelfth",  firstname: "E", birthdate: @camp_start-17.years, grade: "12th").register
+        graduate        = FactoryGirl.create(:participant, lastname: "Grad",     firstname: "F", birthdate: @camp_start-18.years, grade: nil).register
+
+        participants_by_grade = Participant.group_by_grade
+        high_school_group = participants_by_grade["6: high_school"]
+
+        expect(high_school_group).not_to be_blank
+        expect(high_school_group).not_to include eighth_grader
+        expect(high_school_group).to include ninth_grader
+        expect(high_school_group).to include tenth_grader
+        expect(high_school_group).to include eleventh_grader
+        expect(high_school_group).to include twelfth_grader
+        expect(high_school_group).not_to include graduate
+      end
+
+      it "'high school' group should not include 17 if grade field not populated" do
+        seventeen_year_old_still_in_high_school       = FactoryGirl.create(:participant, firstname: "A", birthdate: @camp_start-17.years, grade: "12th").register
+        seventeen_year_old_graduated_from_high_school = FactoryGirl.create(:participant, firstname: "B", birthdate: @camp_start-17.years, grade: nil).register
+
+        participants_by_grade = Participant.group_by_grade
+        high_school_group = participants_by_grade["6: high_school"]
+
+        expect(high_school_group).not_to be_blank
+        expect(high_school_group).not_to include seventeen_year_old_graduated_from_high_school
+        expect(high_school_group).to include seventeen_year_old_still_in_high_school
+      end
+
+      it "'other' group should include over 18 if grade field populated" do
+        eighteen_year_old_with_grade    = FactoryGirl.create(:participant, firstname: "A", birthdate: @camp_start-18.years, grade: "senior").register
+        eighteen_year_old_without_grade = FactoryGirl.create(:participant, firstname: "B", birthdate: @camp_start-18.years, grade: nil).register
+
+        participants_by_grade = Participant.group_by_grade
+        other_group = participants_by_grade["7: other"]
+
+        expect(other_group).not_to be_blank
+        expect(other_group).to include eighteen_year_old_with_grade
+        expect(other_group).not_to include eighteen_year_old_without_grade
+      end
+    end
+
+    context "#group_by_birth_month" do
+      it "should stuff" do
+        pending
+        #binding.pry # how many participants do I have?
+      end
+    end
+  end
+
+  context "sorting" do
+    before do
+      @camp_start = Date.new(2010,7,21)
+      @camp_end = @camp_start+5.days
+      FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: @camp_end)
+
+      # create 4 people who are the same age, 2 with same last name, so we can test secondary sorting by name
+      # And make sure some in the same grade are different ages so we can test that sorting
+      @adam   = FactoryGirl.create(:participant, firstname: "Adam",   lastname: "Apple",
+                                   birthdate: @camp_start - 11.years, grade: "6th")
+      @paul   = FactoryGirl.create(:participant, firstname: "Paul",   lastname: "Pear",
+                                   birthdate: @camp_start - 10.years, grade: "6th")
+      @patty  = FactoryGirl.create(:participant, firstname: "Patty",  lastname: "Pear",
+                                   birthdate: @camp_start - 10.years, grade: "5th")
+      @bill   = FactoryGirl.create(:participant, firstname: "Bill",   lastname: "Banana",
+                                   birthdate: @camp_start - 9.years,  grade: "4th")
+      @barry  = FactoryGirl.create(:participant, firstname: "Barry",  lastname: "Elder",
+                                   birthdate: @camp_start - 10.years, grade: "4th")
+      @cherry = FactoryGirl.create(:participant, firstname: "Cherry", lastname: "Cordial",
+                                   birthdate: @camp_start - 10.years, grade: "5th")
+    end
+
+    it "should sort by 'list_name' by default" do
+      unsorted = ["Apple, Adam", "Pear, Paul", "Pear, Patty", "Banana, Bill", "Elder, Barry", "Cordial, Cherry"]
+      sorted =   ["Apple, Adam", "Banana, Bill", "Cordial, Cherry", "Elder, Barry", "Pear, Patty", "Pear, Paul"]
+      expect(Participant.all.map{|p| p.list_name}).to eq unsorted
+      expect(Participant.all.sort.map{|p| p.list_name}).to eq sorted
+    end
+
+    context "#sort_by_age" do
+      it "should sort by age, then by name" do
+        sorted_participants = Participant.sort_by_age([@cherry, @bill, @adam, @paul, @barry, @patty])
+        expected_participants = [@bill, @cherry, @barry, @patty, @paul, @adam]
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
+    end
+
+    context "#sort_by_grade" do
+      it "should sort by grade, then by age" do
+        sorted_participants = Participant.sort_by_grade([@cherry, @bill, @adam, @paul, @barry, @patty])
+        expected_participants = [@bill, @barry, @cherry, @patty, @paul, @adam]
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
+    end
+
+    context "#sort_by_name" do
+      it "should sort by last name, first name" do
+        sorted_participants = Participant.sort_by_name([@cherry, @bill, @adam, @paul, @barry, @patty])
+        expected_participants = [@adam, @bill, @cherry, @barry, @patty, @paul]
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
     end
   end
 

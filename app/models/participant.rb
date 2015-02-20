@@ -110,6 +110,64 @@ class Participant < ActiveRecord::Base
     age >= 18
   end
 
+  def self.group_by_age
+
+  end
+
+  def self.group_by_grade
+    participants = Participant.registered
+    child_care = participants.select {|p|
+      p.age <= 2
+    }
+    pre_k = participants.select {|p|
+      (p.age >= 3 and p.age <= 5) or (p.grade.match /(kindergarten)/i if p.grade.present?)
+    }
+    younger_elementary = participants.select {|p|
+      p.grade.match /(^1st|first|2nd|second)/i if p.grade.present?
+    }
+    older_elementary = participants.select {|p|
+      p.grade.match /(^3rd|third|4th|fourth)/i if p.grade.present?
+    }
+    middle_school = participants.select {|p|
+      p.grade.match /(^5th|fifth|6th|sixth|7th|seventh|8th|eighth)/i if p.grade.present?
+    }
+    high_school = participants.select {|p|
+      p.grade.match /(^9th|ninth|10th|tenth|11th|eleventh|12th|twelfth)/i if p.grade.present?
+    }
+    other = (participants - child_care - pre_k - younger_elementary - older_elementary - middle_school - high_school).reject { |p| p.grade.blank? }
+
+    { "1: child_care" => sort_by_age(child_care),
+      "2: pre_k" => sort_by_age(pre_k),
+      "3: younger_elementary" => sort_by_grade(younger_elementary),
+      "4: older_elementary" => sort_by_grade(older_elementary),
+      "5: middle_school" => sort_by_age(middle_school),
+      "6: high_school" => sort_by_grade(high_school),
+      "7: other" => sort_by_name(other) }
+  end
+
+  def self.group_by_birth_month
+
+  end
+
+  def self.sort_by_age(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.age, p.lastname, p.firstname]
+    end
+  end
+
+  def self.sort_by_grade(participants_in_group)
+    participants_in_group.sort_by do |p|
+      sort_this = p.grade || ""
+      [sort_this, p.age]
+    end
+  end
+
+  def self.sort_by_name(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.lastname, p.firstname]
+    end
+  end
+
   # TODO add this once we have the user model
   # def staff?
   #   user.present?
