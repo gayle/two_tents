@@ -6,7 +6,9 @@ class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
     puts "year_results.blank? '#{year_results.blank?}'"
     puts "year_results.nil? '#{year_results.nil?}'"
     puts "year_results.class '#{year_results.class}'"
-    if year_results.blank?
+    puts "year_results.to_a '#{year_results.to_a}'"
+    puts "year_results.to_a.blank? '#{year_results.to_a.blank?}'"
+    if year_results.blank? # Blank is false.  What ina PG::Result means no rows came back?
       execute %{INSERT INTO years (year) VALUES ('2010')}
       year_results = execute("SELECT * FROM years WHERE year = '2010'")
       puts "year_results=#{year_results.to_a}"
