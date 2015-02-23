@@ -5,7 +5,7 @@ class Participant < ActiveRecord::Base
   belongs_to :family
   #belongs_to :user, :dependent => :destroy
 
-  # at least validate presence fields used directly or indirectlyr for sorting
+  # at least validate presence fields used directly or indirectly for sorting
   validates_presence_of :lastname, :firstname, :birthdate
 
   # This was in old rails 2 version but not really sure I need it.
@@ -111,7 +111,17 @@ class Participant < ActiveRecord::Base
   end
 
   def self.group_by_age
-
+    h = Hash.new
+    age_groups = AgeGroup.all.sort_by { |ag| ag.min }
+    age_groups.each do |ag|
+      participants = select_participants_by_age_group(ag.min, ag.max)
+      if ag.sortby == "name"
+        h[ag.text] = sort_by_name(participants)
+      else
+        h[ag.text] = sort_by_age(participants)
+      end
+    end
+    h
   end
 
   def self.group_by_grade
@@ -146,7 +156,21 @@ class Participant < ActiveRecord::Base
   end
 
   def self.group_by_birth_month
-
+    participants = Participant.registered
+    # Use 2-digit month so we can sort chronologically by month
+    { "01 January"   => sort_by_birth_day(participants.select { |p| p.birthdate.month == 1 }),
+      "02 February"  => sort_by_birth_day(participants.select { |p| p.birthdate.month == 2 }),
+      "03 March"     => sort_by_birth_day(participants.select { |p| p.birthdate.month == 3 }),
+      "04 April"     => sort_by_birth_day(participants.select { |p| p.birthdate.month == 4 }),
+      "05 May"       => sort_by_birth_day(participants.select { |p| p.birthdate.month == 5 }),
+      "06 June"      => sort_by_birth_day(participants.select { |p| p.birthdate.month == 6 }),
+      "07 July"      => sort_by_birth_day(participants.select { |p| p.birthdate.month == 7 }),
+      "08 August"    => sort_by_birth_day(participants.select { |p| p.birthdate.month == 8 }),
+      "09 September" => sort_by_birth_day(participants.select { |p| p.birthdate.month == 9 }),
+      "10 October"   => sort_by_birth_day(participants.select { |p| p.birthdate.month == 10 }),
+      "11 November"  => sort_by_birth_day(participants.select { |p| p.birthdate.month == 11 }),
+      "12 December"  => sort_by_birth_day(participants.select { |p| p.birthdate.month == 12 })
+    }
   end
 
   def self.sort_by_age(participants_in_group)
@@ -219,5 +243,17 @@ class Participant < ActiveRecord::Base
     end
 
     parts
+  end
+
+  def self.sort_by_birth_day(participants_in_group)
+    participants_in_group.sort_by do |p|
+      [p.birthdate.day, p.lastname, p.firstname]
+    end
+  end
+
+  def self.select_participants_by_age_group(min, max)
+    Participant.registered.select do |p|
+      p.age >= min and p.age <= max
+    end
   end
 end

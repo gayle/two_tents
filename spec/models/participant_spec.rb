@@ -204,9 +204,93 @@ RSpec.describe Participant, :type => :model do
 
   context "grouping" do
     context "#group_by_age" do
-      it "should stuff" do
-        pending
-        #binding.pry # how many participants do I have?
+      before do
+        @camp_start = Date.new(2010,7,21)
+        @camp_end = @camp_start+5.days
+        @this_year = FactoryGirl.create(:year, year: @camp_start.year, starts_on: @camp_start, ends_on: @camp_end)
+
+        @zero_to_one  = FactoryGirl.create(:age_group, min: 0, max: 1, text: "zero and one")
+        @two_to_six = FactoryGirl.create(:age_group, min: 2, max: 6, text: "two and three", sortby: "age")
+        @eighteen_and_over = FactoryGirl.create(:age_group, min: 18, max: 999, text: "adults", sortby: "name")
+      end
+
+      it "should only include registered participants" do
+        zero_year_old  = FactoryGirl.create(:participant, :lastname => "Zero", firstname: "A", birthdate: @camp_start-18.days)
+        one_year_old   = FactoryGirl.create(:participant, :lastname => "One",  firstname: "B", birthdate: @camp_start-1.year).register
+        two_year_old   = FactoryGirl.create(:participant, :lastname => "Two",  firstname: "C", birthdate: @camp_start-2.year).register
+
+        participants_by_age = Participant.group_by_age
+
+        expect(participants_by_age).not_to be_blank
+        expect(participants_by_age[@zero_to_one.text]).not_to include zero_year_old
+        expect(participants_by_age[@zero_to_one.text]).to include one_year_old
+        expect(participants_by_age[@two_to_six.text]).to include two_year_old
+      end
+
+      it "should be sort by age by default when no sortby is set" do
+        expect(@zero_to_one.sortby).to be_nil
+        baby2    = FactoryGirl.create(:participant, :lastname => "Two",   firstname: "Baby",    birthdate: @camp_start-11.days).register
+        baby1    = FactoryGirl.create(:participant, :lastname => "One",   firstname: "Baby",    birthdate: @camp_start-18.days).register
+        toddler3 = FactoryGirl.create(:participant, :lastname => "Three", firstname: "Toddler", birthdate: @camp_start-15.months).register
+        toddler2 = FactoryGirl.create(:participant, :lastname => "Two",   firstname: "Toddler", birthdate: @camp_start-18.months).register
+        toddler1 = FactoryGirl.create(:participant, :lastname => "One",   firstname: "Toddler", birthdate: @camp_start-16.months).register
+
+        participants_by_age = Participant.group_by_age
+        sorted_participants = participants_by_age[@zero_to_one.text]
+        expected_participants = [baby1, baby2, toddler1, toddler3, toddler2]
+
+        expect(sorted_participants).not_to be_blank
+        expect(sorted_participants).to eq(expected_participants),
+                               "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
+
+      it "should be able to specify to sort by age within a group" do
+        expect(@two_to_six.sortby).to eq "age"
+        kid2    = FactoryGirl.create(:participant, :lastname => "Kid",   firstname: "Two",   birthdate: @camp_start-2.years).register
+        kid1    = FactoryGirl.create(:participant, :lastname => "Kid",   firstname: "One",   birthdate: @camp_start-5.years).register
+        child3  = FactoryGirl.create(:participant, :lastname => "Child", firstname: "Three", birthdate: @camp_start-4.years).register
+        child2  = FactoryGirl.create(:participant, :lastname => "Child", firstname: "Two",   birthdate: @camp_start-3.years).register
+        child1  = FactoryGirl.create(:participant, :lastname => "Child", firstname: "One",   birthdate: @camp_start-6.years).register
+
+        participants_by_age = Participant.group_by_age
+        sorted_participants = participants_by_age[@two_to_six.text]
+        expected_participants = [kid2, child2, child3, kid1, child1]
+
+        expect(sorted_participants).not_to be_blank
+        expect(sorted_participants).to eq(expected_participants),
+                               "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
+
+      it "should sort by name when age is the same" do
+        expect(@two_to_six.sortby).to eq "age"
+        p1 = FactoryGirl.create(:participant, :lastname => "A", firstname: "A", birthdate: @camp_start-4.years).register
+        p2 = FactoryGirl.create(:participant, :lastname => "B", firstname: "B", birthdate: @camp_start-4.years).register
+        p3 = FactoryGirl.create(:participant, :lastname => "A", firstname: "B", birthdate: @camp_start-4.years).register
+
+        participants_by_age = Participant.group_by_age
+        sorted_participants = participants_by_age[@two_to_six.text]
+        expected_participants = [p1, p3, p2]
+
+        expect(sorted_participants).not_to be_blank
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
+      end
+
+      it "should be able to specify to sort by name within a group" do
+        expect(@eighteen_and_over.sortby).to eq "name"
+        adult1 = FactoryGirl.create(:participant, :lastname => "A", firstname: "B", birthdate: @camp_start-24.years).register
+        adult2 = FactoryGirl.create(:participant, :lastname => "B", firstname: "A", birthdate: @camp_start-25.years).register
+        adult3 = FactoryGirl.create(:participant, :lastname => "D", firstname: "A", birthdate: @camp_start-26.years).register
+        adult4 = FactoryGirl.create(:participant, :lastname => "C", firstname: "A", birthdate: @camp_start-27.years).register
+        adult5 = FactoryGirl.create(:participant, :lastname => "A", firstname: "A", birthdate: @camp_start-28.years).register
+
+        participants_by_age = Participant.group_by_age
+        sorted_participants = participants_by_age[@eighteen_and_over.text]
+        expected_participants = [adult5, adult1, adult2, adult4, adult3]
+
+        expect(sorted_participants).not_to be_blank
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
       end
     end
 
@@ -363,9 +447,79 @@ RSpec.describe Participant, :type => :model do
     end
 
     context "#group_by_birth_month" do
-      it "should stuff" do
-        pending
-        #binding.pry # how many participants do I have?
+      before do
+        @this_year = FactoryGirl.create(:year)
+
+        @jan = FactoryGirl.create(:participant, lastname: "Jan", firstname: "X", birthdate: Date.parse("1980-01-01") ).register
+        @feb = FactoryGirl.create(:participant, lastname: "Feb", firstname: "X", birthdate: Date.parse("1980-02-01") ).register
+        @mar = FactoryGirl.create(:participant, lastname: "Mar", firstname: "X", birthdate: Date.parse("1980-03-01") ).register
+        @apr = FactoryGirl.create(:participant, lastname: "Apr", firstname: "X", birthdate: Date.parse("1980-04-01") ).register
+        @may = FactoryGirl.create(:participant, lastname: "May", firstname: "X", birthdate: Date.parse("1980-05-01") ).register
+        @jun = FactoryGirl.create(:participant, lastname: "Jun", firstname: "X", birthdate: Date.parse("1980-06-01") ).register
+        @jul = FactoryGirl.create(:participant, lastname: "Jul", firstname: "X", birthdate: Date.parse("1980-07-01") ).register
+        @aug = FactoryGirl.create(:participant, lastname: "Aug", firstname: "X", birthdate: Date.parse("1980-08-01") ).register
+        @sep = FactoryGirl.create(:participant, lastname: "Sep", firstname: "X", birthdate: Date.parse("1980-09-01") ).register
+        @oct = FactoryGirl.create(:participant, lastname: "Oct", firstname: "X", birthdate: Date.parse("1980-10-01") ).register
+        @nov = FactoryGirl.create(:participant, lastname: "Nov", firstname: "X", birthdate: Date.parse("1980-11-01") ).register
+        @dec = FactoryGirl.create(:participant, lastname: "Dec", firstname: "X", birthdate: Date.parse("1980-12-01") ).register
+      end
+
+      it "should only include registered participants" do
+        non_registered_person = FactoryGirl.create(:participant, lastname: "Jan", firstname: "Z", birthdate: Date.parse("1975-01-01") )
+        participants_by_birth_month = Participant.group_by_birth_month
+        januaries = participants_by_birth_month["01 January"]
+
+        expect(januaries).not_to be_blank
+        expect(januaries).to include @jan
+        expect(januaries).not_to include non_registered_person
+      end
+
+      it "should be able to sort keys with january first and december last" do
+        participants_by_birth_month = Participant.group_by_birth_month
+        expect(participants_by_birth_month).not_to be_blank
+        keys = participants_by_birth_month.keys
+        expect(keys.first).to include "January"
+        expect(keys.last).to include "December"
+      end
+
+      it "should include all keys even when there's nobody for that month" do
+        # Remove Decembers
+        @dec.destroy
+
+        participants_by_birth_month = Participant.group_by_birth_month
+        expect(participants_by_birth_month).not_to be_blank
+        keys = participants_by_birth_month.keys
+
+        expect(keys.size).to eq 12
+        expect(keys).to include "12 December"
+        expect(participants_by_birth_month["12 December"]).to be_blank
+      end
+
+      it "should group by birth month" do
+        another_january = FactoryGirl.create(:participant, lastname: "Jan", firstname: "Z", birthdate: Date.parse("1975-01-01") ).register
+        participants_by_birth_month = Participant.group_by_birth_month
+        januaries = participants_by_birth_month["01 January"]
+
+        expect(januaries).not_to be_blank
+        expect(januaries).to include @jan
+        expect(januaries).to include another_january
+      end
+
+      it "should sort by day within the month, and sort by name if people have the same birth day" do
+        @janZ = FactoryGirl.create(:participant, lastname: "Jan", firstname: "Z", birthdate: Date.parse("1982-01-01") ).register
+        @janW = FactoryGirl.create(:participant, lastname: "Jan", firstname: "W", birthdate: Date.parse("1981-01-01") ).register
+        @janY = FactoryGirl.create(:participant, lastname: "Jan", firstname: "Y", birthdate: Date.parse("1983-01-01") ).register
+        @janA = FactoryGirl.create(:participant, lastname: "Jan", firstname: "A", birthdate: Date.parse("1983-01-03") ).register
+        @janB = FactoryGirl.create(:participant, lastname: "Jan", firstname: "B", birthdate: Date.parse("1983-01-02") ).register
+
+        participants_by_birth_month = Participant.group_by_birth_month
+
+        expect(participants_by_birth_month).not_to be_blank
+        sorted_participants = participants_by_birth_month["01 January"]
+        expect(sorted_participants).not_to be_blank
+        expected_participants = [@janW, @jan, @janY, @janZ, @janB, @janA]
+        expect(sorted_participants).to eq(expected_participants),
+                                       "\n!!! Expected #{expected_participants.map{|p| p.full_name}}, \n!!! Got #{sorted_participants.map{|p| p.full_name}}"
       end
     end
   end
