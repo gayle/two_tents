@@ -4,7 +4,6 @@ class CreateTablesThatCrossRefWithYears < ActiveRecord::Migration
     year_results = execute("SELECT * FROM years WHERE year = '2010'")
     puts "year_results=#{year_results.to_a}"
     puts "year_results.blank? '#{year_results.blank?}'"
-    puts "year_results.blank? '#{year_results.empty?}'"
     puts "year_results.nil? '#{year_results.nil?}'"
     puts "year_results.class '#{year_results.class}'"
     if year_results.blank?
