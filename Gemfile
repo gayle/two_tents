@@ -1,6 +1,5 @@
 # Edit this Gemfile to bundle your application's dependencies.
-source 'http://gemcutter.org'
-source 'http://gems.github.com'
+source 'http://rubygems.org'
 
 ruby "1.8.7"
 
