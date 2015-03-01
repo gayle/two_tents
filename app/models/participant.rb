@@ -60,6 +60,10 @@ class Participant < ActiveRecord::Base
     self
   end
 
+  def unregister()
+    remove_current_year
+  end
+
   # note: in rails2 version there was "registered_for_current_year?" and "registered_for_year?(year)" methods. This replaces both, use it instead.
   def registered?(year=Year.current)
     years.include? year
@@ -212,6 +216,10 @@ class Participant < ActiveRecord::Base
     self.years ||= []
     current = Year.current
     self.years << current if current.present? and not self.years.include?(current)
+  end
+
+  def remove_current_year
+    self.years.delete(Year.current)
   end
 
   def formatted_address

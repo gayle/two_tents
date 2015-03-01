@@ -614,4 +614,17 @@ RSpec.describe Participant, :type => :model do
       expect(@someone.years).not_to include @this_year
     end
   end
+
+  context "#unregister" do
+    before do
+      @this_year = FactoryGirl.create(:year, year: 2015)
+      @someone = FactoryGirl.create(:participant, firstname: "Barry", lastname: "Elder").register
+    end
+
+    it "should unregister for current year" do
+      expect(@someone.registered?).to be true
+      @someone.unregister
+      expect(@someone.registered?).to be false
+    end
+  end
 end
