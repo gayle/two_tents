@@ -18,39 +18,11 @@ class Participant < ActiveRecord::Base
   # In old rails2, I think this used to be called 'current' but there was something else called 'registered' that was basically the same. Use this one.
   scope :registered, -> { joins(:years).where('years.id = ?', Year.current.id) }
 
-  # Couldn't get the scope to work.  It just returned anyone who had been registered in a past year ever,
-  # but I need it to exclude ones who are registered currently.
-  #scope :not_registered, -> { joins(:years).where('years.id <> ?', Year.current.id) }
-  # QUERY NEEDS TO LOOK LIKE THIS:
-    #  SELECT participants.id, lastname, firstname, years.id, years.year
-    #  FROM "participants"
-    #  INNER JOIN "participants_years" ON "participants_years"."participant_id" = "participants"."id"
-    #  INNER JOIN "years" ON "years"."id" = "participants_years"."year_id"
-    #  WHERE firstname <> 'administrator' and lastname <> 'Admin'
-    #  AND (years.id <> 5) -- 5 is 2015
-    #  -- AND SOMETHING THAT SAYS IF THE PERSON IS REGISTERED FOR THIS YEAR THEN DON"T INCLUDE THIS ROW
-    #  ORDER BY lastname, firstname
-
-  # TODO Try this for the not_registered scope:
-  # select distinct participants.name, participants.id
-  # from participants
-  # inner join participants_years on participants_years.participant_id = participants.id
-  # inner join years on years.id = participants_years.year_id
-  # where participant_id not in (select participant_id from participants_years where year_id = 3)
-  # ;
-  #
-  # select participants.name, participants.id
-  # from participants
-  # inner join participants_years on participants_years.participant_id = participants.id
-  # inner join years on years.id = participants_years.year_id
-  # where participant_id not in (select participant_id from participants_years where year_id = 3)
-  # group by participants.name, participants.id
-  # ;
-
-  # Note in old rails2 this used to be called 'past'.  So in controllers/views/whatever, use this instead of 'past'
-  def self.not_registered
-    Participant.all - Participant.registered
-  end
+scope :not_registered, -> {
+    joins('inner join participants_years on participants_years.participant_id = participants.id').
+        joins('inner join years on years.id = participants_years.year_id').
+        where("participant_id not in (select participant_id from participants_years where year_id = ?)", Year.current.id)
+  }
 
   scope :with_dietary_restrictions, -> {registered.where('dietary_restrictions IS NOT NULL')}
 
