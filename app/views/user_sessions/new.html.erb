@@ -3,12 +3,7 @@
 user session = <%= @user_session.inspect %>
 
 <%= form_for @user_session, :as => :user_session, :url => { :action => "create" } do |f| %>
-
-    <% if @user_session.errors.any? %>
-        <% @user_session.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-        <% end %>
-    <% end %>
+    <%= render partial: "shared/errors", locals: {errors: @user_session.errors} %>
 
     <%= f.label :login %><br />
     <%= f.text_field :login %><br />
