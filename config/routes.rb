@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'content#index'
 
+  # authlogic routes
+  resource :user_session
+  resource :account, :controller => 'users'
+  resources :users
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

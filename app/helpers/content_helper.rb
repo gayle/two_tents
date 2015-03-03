@@ -6,7 +6,7 @@ module ContentHelper
     # else
     #   link_to "Staff Login", login_url, :class => "login_link admin_access_link"
     # end
-    link_to "Staff Login", "", :class => "login_link admin_access_link"
+    link_to "Staff Login", new_user_session_path, :class => "login_link admin_access_link"
   end
 
 end

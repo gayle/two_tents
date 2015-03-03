@@ -1,0 +1,22 @@
+<h1>Login</h1>
+
+user session = <%= @user_session.inspect %>
+
+<%= form_for @user_session, :as => :user_session, :url => { :action => "create" } do |f| %>
+
+    <% if @user_session.errors.any? %>
+        <% @user_session.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+    <% end %>
+
+    <%= f.label :login %><br />
+    <%= f.text_field :login %><br />
+    <br />
+    <%= f.label :password %><br />
+    <%= f.password_field :password %><br />
+    <br />
+    <%= f.check_box :remember_me %><%= f.label :remember_me %><br />
+    <br />
+    <%= f.submit "Login" %>
+<% end %>

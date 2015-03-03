@@ -10,6 +10,8 @@ gem 'rails', '4.1.8'
 gem 'pg', '~> 0.18.0.pre20141117110243' # http://stackoverflow.com/questions/26075258/how-to-install-sqlite-or-postgresql-on-windows-8-for-a-ruby-on-rails-setup
                                         # http://stackoverflow.com/questions/27321017/active-support-dependencies-rb247-require-cannot-load-such-file-2-1-pg-ex
 
+gem 'authlogic'
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw] # https://github.com/tzinfo/tzinfo/wiki/Resolving-TZInfo::DataSourceNotFound-Errors
 
 group :development, :test do
