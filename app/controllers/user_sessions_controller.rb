@@ -5,9 +5,7 @@ class UserSessionsController < ApplicationController
   def new
     begin
       @user_session = UserSession.new
-      binding.pry
     rescue Exception => e
-      binding.pry
       puts e.inspect
     end
   end

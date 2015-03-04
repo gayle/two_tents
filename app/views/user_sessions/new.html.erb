@@ -1,7 +1,5 @@
 <h1>Login</h1>
 
-user session = <%= @user_session.inspect %>
-
 <%= form_for @user_session, :as => :user_session, :url => { :action => "create" } do |f| %>
     <%= render partial: "shared/errors", locals: {errors: @user_session.errors} %>
 
