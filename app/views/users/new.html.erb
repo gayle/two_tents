@@ -1,6 +1,6 @@
 <h1>Register</h1>
 
-<% form_for @user, :url => account_path do |f| %>
+<%= form_for @user, :url => account_path do |f| %>
     <%= render partial: "shared/errors", locals: {errors: @user.errors} %>
     <%= render :partial => "form", :object => f %>
     <%= f.submit "Register" %>
