@@ -4,4 +4,5 @@
 </p>
 
 <%= link_to 'Edit', edit_account_path %>
+<%= link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %>
 <%= link_to "Logout", {:controller=> "user_sessions", :action=> "destroy"}, :method => :delete%>

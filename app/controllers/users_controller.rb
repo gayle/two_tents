@@ -34,6 +34,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    user_full_name = @user.try(:participant).try(:fullname) || "Unknown User"
+    user_login = @user.login
+    if @user.destroy
+      # TODO change to get current user from session
+      current_user = "current_user_login" # current_user.login
+      AuditTrail.audit("User '#{user_full_name}' (#{user_login}) removed by user #{current_user}")
+      flash[:notice] = "User '#{user_full_name}' (#{user_login}) deleted"
+    else
+      flash[:error] = "Failed to destroy #{user_login}"
+    end
+    redirect_to :users
+  end
+
   private
 
   def user_params
