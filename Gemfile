@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 
 ruby "1.8.7"
 
-gem "rails", "2.3.9"
+gem "rails", "3.2.17"
 gem "rake", "0.8.7"
 gem "will_paginate", "~> 2.3.15"
 gem "hoptoad_notifier", "2.3.2"  # Perhaps this should be in a :production group?
